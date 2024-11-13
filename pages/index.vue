@@ -1,0 +1,3 @@
+<template>
+  <HeroSection></HeroSection>
+</template>
