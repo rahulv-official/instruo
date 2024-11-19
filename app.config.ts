@@ -15,8 +15,8 @@ export default defineAppConfig({
       showTitle: true,
       darkModeToggle: true,
       logo: {
-        light: "/logo.svg",
-        dark: "/logo-dark.svg",
+        light: "/logo.png",
+        dark: "/logo-dark.png",
       },
       nav: [],
       links: [],
