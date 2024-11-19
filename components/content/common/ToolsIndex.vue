@@ -2,6 +2,7 @@
   <div class="flex w-full flex-col flex-wrap gap-4 py-8">
     <UiAccordion
       v-if="categories.length > 0"
+      v-model="openCategories"
       type="multiple"
     >
       <UiAccordionItem
@@ -81,6 +82,7 @@ const categories = ref<Array<Category>>([]);
 
 const isDark = computed(() => useColorMode().value == "dark");
 const gradientColor = computed(() => (isDark.value ? "#363636" : "#C9C9C9"));
+const openCategories = ref<Array<string>>([]);
 
 onMounted(() => {
   groupByCategory();
@@ -111,5 +113,7 @@ async function groupByCategory() {
   });
 
   categories.value = Object.values(categoryMap);
+  // Set all categories to open by default
+  openCategories.value = categories.value.map((cat) => cat.category);
 }
 </script>
