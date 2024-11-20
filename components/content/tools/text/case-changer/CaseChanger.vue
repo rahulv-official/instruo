@@ -64,12 +64,14 @@
       </div>
 
       <!-- Copy to Clipboard Button -->
-      <UiButton @click="copyToClipboard"> Copy output to clipboard </UiButton>
+      <UiButton @click="copyToClipboard(outputString)"> Copy output to clipboard </UiButton>
     </UiCardContent>
   </UiCard>
 </template>
 
 <script lang="ts" setup>
+import { copyToClipboard } from "~/lib/utils";
+
 export type CaseType = "lowercase" | "uppercase" | "sentence" | "capitalize";
 
 const options = [
@@ -80,17 +82,11 @@ const options = [
 ];
 
 const inputString = ref("");
-const selectedCase = ref("lowercase");
+const selectedCase = ref<CaseType>("lowercase");
 
 const outputString = computed(() => {
   return getConvertedText(inputString.value, selectedCase.value);
 });
-
-function copyToClipboard() {
-  navigator.clipboard.writeText(outputString.value).then(() => {
-    alert("Output copied to clipboard!");
-  });
-}
 
 function getConvertedText(text: string, toCase: CaseType) {
   switch (toCase) {
