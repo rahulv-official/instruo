@@ -1,5 +1,5 @@
 ---
-title: Text Sorting Tool
+title: Text Sorter
 description: Sort your text alphabetically, by length, or numerically.
 ---
 
