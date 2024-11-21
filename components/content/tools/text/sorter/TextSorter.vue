@@ -62,11 +62,15 @@
           :value="outputString"
         ></Textarea>
       </div>
+      <!-- Copy to Clipboard Button -->
+      <UiButton @click="copyToClipboard(outputString)"> Copy output to clipboard </UiButton>
     </UiCardContent>
   </UiCard>
 </template>
 
 <script lang="ts" setup>
+import { copyToClipboard } from "~/lib/utils";
+
 type SortBy = "alphabetically" | "length" | "numerically";
 
 const options = [
