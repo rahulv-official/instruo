@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxt/image", "@vueuse/motion/nuxt", "@nuxt/eslint", "@nuxt/fonts"],
+  modules: ["@nuxt/image", "@vueuse/motion/nuxt", "@nuxt/eslint", "@nuxt/fonts", "nuxt-gtag"],
   components: [
     {
       path: "~/components",
