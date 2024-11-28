@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full flex-col flex-wrap gap-4 py-8">
+  <div class="flex w-full flex-col flex-wrap gap-4">
     <UiAccordion
       v-if="categories.length > 0"
       v-model="openCategories"
