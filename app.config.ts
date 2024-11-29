@@ -4,6 +4,7 @@ export default defineAppConfig({
       name: "instruo.org",
       description:
         "Instruo offers fast, online tools for developers and creatives—code formatting, image compression, text utilities, and more. No installation needed.",
+      ogImage: "https://instruo.org/og-image.png",
     },
     theme: {
       customizable: true,
