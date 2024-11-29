@@ -13,7 +13,9 @@
         <ParticleImage
           image-src="/logo-dark.png"
           :responsive-width="true"
-          :canvas-height="300"
+          :canvas-height="'300'"
+          particle-gap="1"
+          gravity="0.09"
         />
       </div>
       <h2 class="-mt-16 text-center text-5xl font-bold text-white md:text-6xl">instruo.org</h2>

@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  plugins: ["~/plugins/toastPlugin.ts"],
   modules: ["@nuxt/image", "@vueuse/motion/nuxt", "@nuxt/eslint", "@nuxt/fonts", "nuxt-gtag"],
   components: [
     {
