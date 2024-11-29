@@ -19,7 +19,23 @@ export default defineAppConfig({
         dark: "/logo-dark.png",
       },
       nav: [],
-      links: [],
+      links: [
+        {
+          icon: "lucide:github",
+          to: "https://github.com/rahulv-official/instruo",
+          target: "_blank",
+        },
+        {
+          icon: "lucide:x",
+          to: "https://x.com/rahulv_dev",
+          target: "_blank",
+        },
+        {
+          icon: "lucide:bot",
+          to: "https://discord.gg/pPyHNfryrv",
+          target: "_blank",
+        },
+      ],
     },
     aside: {
       useLevel: true,
@@ -39,12 +55,42 @@ export default defineAppConfig({
           to: "https://rahulv.dev",
           target: "_blank",
         },
+        {
+          title: "Beautified using Inspira UI",
+          icon: "lucide:heart",
+          to: "https://inspira-ui.com",
+          target: "_blank",
+        },
       ],
     },
     toc: {
       enable: true,
       title: "On This Page",
       links: [
+        {
+          title: "Star on GitHub",
+          icon: "lucide:star",
+          to: "https://github.com/rahulv-official/instruo",
+          target: "_blank",
+        },
+        {
+          title: "Create Issues",
+          icon: "lucide:circle-dot",
+          to: "https://github.com/rahulv-official/instruo/issues",
+          target: "_blank",
+        },
+        {
+          title: "Forum",
+          icon: "lucide:newspaper",
+          to: "https://github.com/rahulv-official/instruo/discussions",
+          target: "_blank",
+        },
+        {
+          title: "Join Discord",
+          icon: "lucide:bot",
+          to: "https://discord.gg/pPyHNfryrv",
+          target: "_blank",
+        },
         {
           title: "Built by rahulv.dev",
           icon: "lucide:star",

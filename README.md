@@ -1,49 +1,60 @@
-# shadcn-docs-nuxt Minimal Starter
+<p align="center">
+  <a href="https://github.com/rahulv-official/instruo">
+    <img src="./logo.png" alt="Logo" width="150" />
+  </a>
+</p>
+<h1 align="center">
+  Instruo
+</h1>
+<p align="center">
+  <b>Your all-in-one open-source platform for simple, efficient tools.</b><br>
+  A collection of online tools designed for productivity and simplicity.
+</p>
 
-Starter template for [shadcn-docs-nuxt](https://github.com/ZTL-UwU/shadcn-docs-nuxt).
+<p align="center">
+  <a href="https://github.com/rahulv-official/instruo/stargazers">
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/rahulv-official/instruo?style=social">
+  </a>
+  <a href="https://github.com/rahulv-official/instruo/blob/main/LICENSE.md">
+    <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg">
+  </a>  
+</p>
 
-## Setup
+---
 
-Make sure to install the dependencies:
+Welcome to [**Instruo**](https://instruo.org), an open-source project dedicated to providing a collection of practical tools. Whether you need a quick utility to sort text or count words, Instruo has you covered!
 
-```bash
-# yarn
-yarn install
+## ✨ About Instruo
 
-# npm
-npm install
+Instruo is a platform designed to provide essential online tools for everyday tasks. It is easy to use and accessible to everyone, with a focus on simplicity and efficiency.
 
-# pnpm
-pnpm install
+## 🚀 Why Instruo?
 
-# bun
-bun install
-```
+Instruo was created to be a go-to platform for essential tools. The goal is to provide users with a seamless experience that saves time and enhances productivity.
 
-## Development Server
+## 🎯 Key Features
 
-Start the development server on http://localhost:3000
+- **Free and Open Source**: Completely [open source](https://github.com/rahulv-official/instruo) under the MIT license.
+- **Simple and Efficient Tools**: Perform common tasks like sorting text, removing duplicates, and more with ease. Check out the full list of [tools](https://instruo.org/tools).
+- **Mobile Friendly**: Optimized for use on all devices, from desktops to smartphones.
+- **Community-Driven**: Built with contributions and feedback from the community.
 
-```bash
-npm run dev
-```
+## 🙏 Acknowledgments
 
-## Production
+Special thanks to the open-source community for support in bringing Instruo to life.
 
-[![Deploy to NuxtHub](https://hub.nuxt.com/button.svg)](https://hub.nuxt.com/new?repo=ZTL-UwU/shadcn-docs-nuxt-starter)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZTL-UwU%2Fshadcn-docs-nuxt-starter)
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https%3A%2F%2Fgithub.com%2FZTL-UwU%2Fshadcn-docs-nuxt-starter)
+## Author
 
-Build the application for production:
+Hi, I'm [Rahul Vashishtha](https://rahulv.dev). I started Instruo to create a space where utility meets creativity. Instruo is designed to be a versatile platform for everyone. Check out my work on [GitHub](https://github.com/rahul-vashishtha) and join me on this journey [here](https://github.com/rahulv-official/instruo)!
 
-```bash
-npm run build
-```
+## 🌟 Contribute
 
-Locally preview production build:
+We welcome contributions! If you want to suggest features, report bugs, or help improve the project, feel free to open an issue or submit a pull request on [GitHub](https://github.com/rahulv-official/instruo).
 
-```bash
-npm run preview
-```
+Check out the [Contribution Guide](https://instruo.org/getting-started/contribution) to get started.
 
-Checkout the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Sponsorship
+
+You can support the development of this project by sponsoring the maintainer.
+
+Support and sponsor the developer here: [Support Instruo](https://github.com/sponsors/rahul-vashishtha)

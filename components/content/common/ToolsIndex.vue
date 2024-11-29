@@ -67,7 +67,7 @@ interface Category {
 }
 
 const query: QueryBuilderParams = {
-  path: "/tools",
+  path: "/tools/",
   where: [
     {
       _extension: "md",
@@ -94,7 +94,7 @@ async function groupByCategory() {
   const categoryMap: { [key: string]: Category } = {};
 
   data.forEach((item) => {
-    if (item._dir === "") return;
+    if (item._dir === "" || item._dir == "getting-started") return;
 
     const category = item._dir || "root";
     if (!categoryMap[category]) {
