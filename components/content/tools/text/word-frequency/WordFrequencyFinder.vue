@@ -65,7 +65,7 @@ const wordsToFind = ref("");
 const wordsList = computed(() => {
   return wordsToFind.value
     .split(",")
-    .map((word) => word.trim())
+    .map((word) => word.trim().toLowerCase())
     .filter((word) => word);
 });
 
