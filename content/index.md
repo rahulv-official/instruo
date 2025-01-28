@@ -3,20 +3,22 @@ title: Home
 navigation: false
 ---
 
-::hero
----
+## ::hero
+
 announcement:
-  title: 'Release v0.7.5'
-  icon: '🎉'
-  to: https://github.com/ZTL-UwU/shadcn-docs-nuxt/releases
-  target: _blank
+title: 'Release v0.7.5'
+icon: '🎉'
+to: https://github.com/ZTL-UwU/shadcn-docs-nuxt/releases
+target: \_blank
 actions:
-  - name: Get Started
-    to: /getting-started
-  - name: GitHub
-    variant: outline
-    to: https://github.com/ZTL-UwU/shadcn-docs-nuxt
-    leftIcon: 'lucide:github'
+
+- name: Get Started
+  to: /getting-started
+- name: GitHub
+  variant: outline
+  to: https://github.com/ZTL-UwU/shadcn-docs-nuxt
+  leftIcon: 'lucide:github'
+
 ---
 
 #title
