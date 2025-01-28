@@ -1,5 +1,3 @@
 {
-    "recommendations": [
-        "nuxt.mdc"
-    ]
+  "recommendations": ["nuxt.mdc"]
 }
