@@ -60,10 +60,10 @@ grape
 
 ```
 5
+1.23
 apple
 grape
 banana
-1.23
 ```
 
 #### **Numerically**:
