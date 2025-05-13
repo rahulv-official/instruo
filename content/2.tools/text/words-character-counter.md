@@ -44,7 +44,7 @@ The quick brown fox jumps over the lazy dog.
 
 - **No. of Words**: 9
 - **No. of Characters (with spaces)**: 44
-- **No. of Characters (without spaces)**: 35
+- **No. of Characters (without spaces)**: 36
 
 ## Why Use This Tool?
 
