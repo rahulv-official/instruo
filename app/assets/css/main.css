@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme {
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+:root {
+  --ui-bg: var(--color-white);
+  --ui-primary: var(--color-black);
+  --ui-radius: 0.5rem;
+}
+
+.dark {
+  --ui-bg: var(--color-black);
+  --ui-primary: var(--color-white);
+}

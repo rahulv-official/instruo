@@ -1,8 +1,3 @@
-<p align="center">
-  <a href="https://github.com/rahulv-official/instruo">
-    <img src="./logo.png" alt="Logo" width="150" />
-  </a>
-</p>
 <h1 align="center">
   Instruo
 </h1>

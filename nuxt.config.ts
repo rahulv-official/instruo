@@ -1,38 +1,37 @@
+import tailwindcss from "@tailwindcss/vite";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  plugins: ["~/plugins/toastPlugin.ts"],
-  modules: ["@nuxt/image", "@vueuse/motion/nuxt", "@nuxt/eslint", "@nuxt/fonts", "nuxt-gtag"],
+
+  modules: [
+    "@nuxt/content",
+    "@nuxt/eslint",
+    "@nuxt/image",
+    "@nuxt/scripts",
+    "@nuxt/ui",
+    "motion-v/nuxt",
+    "@vueuse/nuxt",
+    "nuxt-gtag",
+  ],
+
+  css: ["~/assets/css/main.css"],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
+  colorMode: {
+    preference: "dark",
+    fallback: "dark",
+  },
+
   components: [
     {
       path: "~/components",
+      global: true,
       pathPrefix: false,
     },
   ],
-
-  eslint: {
-    config: {
-      standalone: false,
-    },
-  },
-
-  fonts: {
-    experimental: {
-      processCSSVariables: true,
-    },
-    families: [
-      {
-        name: "Bricolage Grotesque",
-        provider: "google",
-      },
-      {
-        name: "Manrope",
-        provider: "google",
-      },
-    ],
-  },
-
-  extends: ["shadcn-docs-nuxt"],
-
-  compatibilityDate: "2024-11-11",
 });
