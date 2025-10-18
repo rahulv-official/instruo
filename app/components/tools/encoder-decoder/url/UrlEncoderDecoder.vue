@@ -68,9 +68,12 @@ function runOperation() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 items-center text-lg">
+  <div class="flex flex-col items-center gap-4 text-lg">
     <span class="w-full"> Enter text below and choose encode/decode URL.</span>
-    <UFormField class="w-full" label="Your Input">
+    <UFormField
+      class="w-full"
+      label="Your Input"
+    >
       <UTextarea
         v-model="input"
         placeholder="Your input"
@@ -81,7 +84,7 @@ function runOperation() {
         }"
       />
     </UFormField>
-    <div class="flex items-center justify-center w-full gap-12 max-md:flex-col">
+    <div class="flex w-full items-center justify-center gap-12 max-md:flex-col">
       <URadioGroup
         v-model="operation"
         :items="items"
@@ -92,13 +95,16 @@ function runOperation() {
       />
       <UButton
         :label="operation"
-        class="capitalize h-full"
+        class="h-full capitalize"
         trailing-icon="tabler:rocket"
         size="xl"
         @click="runOperation"
       />
     </div>
-    <UFormField class="w-full" label="Output">
+    <UFormField
+      class="w-full"
+      label="Output"
+    >
       <UTextarea
         v-model="output"
         disabled

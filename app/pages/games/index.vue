@@ -24,42 +24,40 @@ const filteredGames = computed(() => {
 </script>
 
 <template>
-  <div
-    class="flex flex-col w-full items-center justify-center gap-8 relative p-8 max-lg:p-6"
-  >
+  <div class="relative flex w-full flex-col items-center justify-center gap-8 p-8 max-lg:p-6">
     <h1
-      class="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-500 bg-clip-text text-4xl leading-none text-transparent dark:from-white dark:to-gray-50/40 text-pretty text-center font-semibold tracking-tight mt-4"
+      class="pointer-events-none mt-4 bg-gradient-to-b from-black to-gray-500 bg-clip-text text-center text-4xl leading-none font-semibold tracking-tight text-pretty whitespace-pre-wrap text-transparent dark:from-white dark:to-gray-50/40"
     >
       All Tools
     </h1>
 
     <!-- Category Filter -->
-    <div class="flex items-center justify-center gap-2 flex-wrap mt-4">
+    <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
       <UButton
         v-for="category in categories"
         :key="category"
         :label="category"
         :variant="selectedCategory === category ? 'soft' : 'outline'"
         :color="selectedCategory === category ? 'primary' : 'neutral'"
-        class="lowercase rounded-full px-4 py-3"
+        class="rounded-full px-4 py-3 lowercase"
         size="lg"
         @click="selectedCategory = category"
       />
     </div>
 
-    <div class="flex items-center justify-start gap-4 mt-8">
+    <div class="mt-8 flex items-center justify-start gap-4">
       <UPageCard
         v-for="game in filteredGames"
         :key="game.id"
         :title="game.title"
         :description="game.description"
-        class="max-w-sm min-h-52 dark:bg-neutral-900/50 bg-neutral-50 hover:active:scale-[98%] cursor-pointer"
+        class="min-h-52 max-w-sm cursor-pointer bg-neutral-50 hover:active:scale-[98%] dark:bg-neutral-900/50"
         :ui="{
           title: 'text-xl',
         }"
         :to="game.path"
       >
-        <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex flex-wrap items-center gap-2">
           <UBadge
             v-for="tag in game.tags"
             :key="game.id + tag"

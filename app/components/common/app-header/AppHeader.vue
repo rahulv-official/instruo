@@ -28,7 +28,10 @@ const items = computed<NavigationMenuItem[]>(() => [
 </script>
 
 <template>
-  <UHeader mode="drawer" title="instruo.org">
+  <UHeader
+    mode="drawer"
+    title="instruo.org"
+  >
     <UNavigationMenu :items="items" />
 
     <template #right>
@@ -37,7 +40,10 @@ const items = computed<NavigationMenuItem[]>(() => [
     </template>
 
     <template #body>
-      <UNavigationMenu :items="items" orientation="vertical" />
+      <UNavigationMenu
+        :items="items"
+        orientation="vertical"
+      />
     </template>
   </UHeader>
 </template>

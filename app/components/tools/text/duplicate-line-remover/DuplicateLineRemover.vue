@@ -9,9 +9,12 @@ const output = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 items-center text-lg">
+  <div class="flex flex-col items-center gap-4 text-lg">
     <span class="w-full"> Enter text below to remove duplicate lines. </span>
-    <UFormField class="w-full" label="Your Input">
+    <UFormField
+      class="w-full"
+      label="Your Input"
+    >
       <UTextarea
         v-model="input"
         placeholder="Your input"
@@ -22,7 +25,10 @@ const output = computed(() => {
         }"
       />
     </UFormField>
-    <UFormField class="w-full" label="Output">
+    <UFormField
+      class="w-full"
+      label="Output"
+    >
       <UTextarea
         v-model="output"
         disabled

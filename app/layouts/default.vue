@@ -1,12 +1,16 @@
 <template>
-  <div class="w-full min-h-screen flex flex-col">
+  <div class="flex min-h-screen w-full flex-col">
     <AppHeader />
 
     <UMain>
       <NuxtPage />
     </UMain>
 
-    <USeparator icon="i-simple-icons-nuxtdotjs" type="dashed" class="h-px" />
+    <USeparator
+      icon="i-simple-icons-nuxtdotjs"
+      type="dashed"
+      class="h-px"
+    />
 
     <AppFooter />
   </div>

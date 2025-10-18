@@ -1,7 +1,6 @@
 export function isValidURL(str: string): boolean {
   try {
-    new URL(str);
-    return true;
+    return URL.canParse(str);
   } catch {
     return false;
   }

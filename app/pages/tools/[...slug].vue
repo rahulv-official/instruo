@@ -56,7 +56,11 @@ useSeoMeta({
 
     <template #left>
       <UPageAside>
-        <UContentNavigation :navigation="nav?.at(0)?.children" />
+        <UContentNavigation
+          :navigation="nav?.at(0)?.children"
+          highlight
+          variant="link"
+        />
       </UPageAside>
     </template>
 

@@ -31,5 +31,5 @@ export default antfu(
       "vue/singleline-html-element-content-newline": "off",
     },
   },
-  oxlint.configs["flat/recommended"] // oxlint should be the last one
+  oxlint.configs["flat/recommended"], // oxlint should be the last one
 );

@@ -45,9 +45,12 @@ function toCapitalCase(text: string) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 items-center text-lg">
+  <div class="flex flex-col items-center gap-4 text-lg">
     <span class="w-full"> Enter text below and choose case to convert. </span>
-    <UFormField class="w-full" label="Your Input">
+    <UFormField
+      class="w-full"
+      label="Your Input"
+    >
       <UTextarea
         v-model="input"
         placeholder="Your input"
@@ -58,9 +61,7 @@ function toCapitalCase(text: string) {
         }"
       />
     </UFormField>
-    <div
-      class="flex items-center justify-center w-full gap-12 max-md:flex-col mt-2"
-    >
+    <div class="mt-2 flex w-full items-center justify-center gap-12 max-md:flex-col">
       <URadioGroup
         v-model="operation"
         :items="items"
@@ -70,7 +71,10 @@ function toCapitalCase(text: string) {
         }"
       />
     </div>
-    <UFormField class="w-full" label="Output">
+    <UFormField
+      class="w-full"
+      label="Output"
+    >
       <UTextarea
         v-model="output"
         disabled

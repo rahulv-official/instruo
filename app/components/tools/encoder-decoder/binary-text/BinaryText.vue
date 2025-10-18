@@ -31,9 +31,7 @@ function encode(text: string): string {
   } catch (error) {
     toast.add({
       title: "Encoding Error",
-      description: `Failed to convert text to Binary: ${
-        (error as Error).message
-      }`,
+      description: `Failed to convert text to Binary: ${(error as Error).message}`,
       color: "error",
     });
     return "";
@@ -46,15 +44,11 @@ function decode(text: string): string {
   }
   try {
     const binaryArray = text.trim().split(" ");
-    return binaryArray
-      .map((binary) => String.fromCharCode(parseInt(binary, 2)))
-      .join("");
+    return binaryArray.map((binary) => String.fromCharCode(Number.parseInt(binary, 2))).join("");
   } catch (error) {
     toast.add({
       title: "Decoding Error",
-      description: `Failed to convert Binary to text: ${
-        (error as Error).message
-      }`,
+      description: `Failed to convert Binary to text: ${(error as Error).message}`,
       color: "error",
     });
     return "Invalid Binary string.";
@@ -71,11 +65,12 @@ function runOperation() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 items-center text-lg">
-    <span class="w-full">
-      Enter text below and choose encode/decode to/from Binary.</span
+  <div class="flex flex-col items-center gap-4 text-lg">
+    <span class="w-full"> Enter text below and choose encode/decode to/from Binary.</span>
+    <UFormField
+      class="w-full"
+      label="Your Input"
     >
-    <UFormField class="w-full" label="Your Input">
       <UTextarea
         v-model="input"
         placeholder="Your input"
@@ -86,9 +81,7 @@ function runOperation() {
         }"
       />
     </UFormField>
-    <div
-      class="flex items-center justify-center w-full gap-12 max-md:flex-col mt-2"
-    >
+    <div class="mt-2 flex w-full items-center justify-center gap-12 max-md:flex-col">
       <URadioGroup
         v-model="operation"
         :items="items"
@@ -99,13 +92,16 @@ function runOperation() {
       />
       <UButton
         :label="operation"
-        class="capitalize h-full"
+        class="h-full capitalize"
         trailing-icon="tabler:rocket"
         size="xl"
         @click="runOperation"
       />
     </div>
-    <UFormField class="w-full" label="Output">
+    <UFormField
+      class="w-full"
+      label="Output"
+    >
       <UTextarea
         v-model="output"
         disabled

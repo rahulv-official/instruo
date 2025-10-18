@@ -1,5 +1,5 @@
 import type { DefinedCollection } from "@nuxt/content";
-import { defineContentConfig, defineCollection, z } from "@nuxt/content";
+import { defineCollection, defineContentConfig, z } from "@nuxt/content";
 
 const schema = () =>
   z.object({

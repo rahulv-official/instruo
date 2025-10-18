@@ -26,8 +26,8 @@ function sortText(lines: Array<string>) {
       return lines.sort((a, b) => a.length - b.length).join("\n");
     case "numerically":
       return lines
-        .filter((line) => !isNaN(parseFloat(line))) // Keep only numeric lines
-        .sort((a, b) => parseFloat(a) - parseFloat(b))
+        .filter((line) => !Number.isNaN(Number.parseFloat(line))) // Keep only numeric lines
+        .sort((a, b) => Number.parseFloat(a) - Number.parseFloat(b))
         .join("\n");
     default:
       return input.value;
@@ -36,11 +36,12 @@ function sortText(lines: Array<string>) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 items-center text-lg">
-    <span class="w-full">
-      Enter text below and choose sorting type to sort.
-    </span>
-    <UFormField class="w-full" label="Your Input">
+  <div class="flex flex-col items-center gap-4 text-lg">
+    <span class="w-full"> Enter text below and choose sorting type to sort. </span>
+    <UFormField
+      class="w-full"
+      label="Your Input"
+    >
       <UTextarea
         v-model="input"
         placeholder="Your input"
@@ -51,9 +52,7 @@ function sortText(lines: Array<string>) {
         }"
       />
     </UFormField>
-    <div
-      class="flex items-center justify-center w-full gap-12 max-md:flex-col mt-2"
-    >
+    <div class="mt-2 flex w-full items-center justify-center gap-12 max-md:flex-col">
       <URadioGroup
         v-model="operation"
         :items="items"
@@ -63,7 +62,10 @@ function sortText(lines: Array<string>) {
         }"
       />
     </div>
-    <UFormField class="w-full" label="Output">
+    <UFormField
+      class="w-full"
+      label="Output"
+    >
       <UTextarea
         v-model="output"
         disabled

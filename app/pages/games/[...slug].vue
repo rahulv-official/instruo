@@ -6,10 +6,7 @@ const route = useRoute();
 const [{ data: page }, { data: surround }] = await Promise.all([
   useAsyncData(
     route.path,
-    () =>
-      queryCollection("games")
-        .path(route.path)
-        .first() as Promise<GamesCollectionItem>
+    () => queryCollection("games").path(route.path).first() as Promise<GamesCollectionItem>,
   ),
   useAsyncData(`${route.path}-surround`, () => {
     return queryCollectionItemSurroundings("games", route.path, {
@@ -28,13 +25,16 @@ if (!page.value) {
 </script>
 
 <template>
-  <UPage v-if="page" class="container mx-auto max-w-4xl px-8 max-md:px-4">
+  <UPage
+    v-if="page"
+    class="container mx-auto max-w-4xl px-8 max-md:px-4"
+  >
     <UPageHeader
       :title="page.title"
       :description="page.description"
       :headline="`${page.category} Games`"
     >
-      <div class="flex flex-wrap items-center gap-2 mt-4">
+      <div class="mt-4 flex flex-wrap items-center gap-2">
         <UBadge
           v-for="tag in page.tags"
           :key="page.path + tag"
@@ -45,7 +45,10 @@ if (!page.value) {
     </UPageHeader>
 
     <UPageBody>
-      <ContentRenderer v-if="page" :value="page" />
+      <ContentRenderer
+        v-if="page"
+        :value="page"
+      />
 
       <USeparator />
 

@@ -6,17 +6,16 @@ const wordsCount = computed(() => {
   return trimmedString ? trimmedString.split(/\s+/).length : 0;
 });
 const charactersCount = computed(() => input.value.length);
-const charactersCountWithoutSpaces = computed(
-  () => input.value.replace(/\s/g, "").length
-);
+const charactersCountWithoutSpaces = computed(() => input.value.replace(/\s/g, "").length);
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 items-center text-lg">
-    <span class="w-full">
-      Enter text below to count the number of characters and words.
-    </span>
-    <UFormField class="w-full" label="Your Input">
+  <div class="flex flex-col items-center gap-4 text-lg">
+    <span class="w-full"> Enter text below to count the number of characters and words. </span>
+    <UFormField
+      class="w-full"
+      label="Your Input"
+    >
       <UTextarea
         v-model="input"
         placeholder="Your input"
@@ -31,7 +30,7 @@ const charactersCountWithoutSpaces = computed(
     <div class="flex flex-col gap-3 px-2">
       <div>
         No. of words:
-        <span class="text-lg font-bold text-foreground">{{ wordsCount }}</span>
+        <span class="text-foreground text-lg font-bold">{{ wordsCount }}</span>
       </div>
       <div>
         No. of characters (with spaces):
@@ -39,9 +38,7 @@ const charactersCountWithoutSpaces = computed(
       </div>
       <div>
         No. of characters (without spaces):
-        <span class="text-lg font-bold"
-          >{{ charactersCountWithoutSpaces }}
-        </span>
+        <span class="text-lg font-bold">{{ charactersCountWithoutSpaces }} </span>
       </div>
     </div>
   </div>

@@ -1,10 +1,8 @@
-<template>
-  <div ref="containerRef" :class="['shadertoy-container', props.class]" />
-</template>
-
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, type HTMLAttributes } from "vue";
-import { InspiraShaderToy, type MouseMode } from "./InspiraShaderToy";
+import type {HTMLAttributes} from "vue";
+import type {MouseMode} from "./InspiraShaderToy";
+import {  onMounted, onUnmounted, ref, watch } from "vue";
+import { InspiraShaderToy  } from "./InspiraShaderToy";
 
 interface Props {
   mouseMode?: MouseMode;
@@ -30,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const containerRef = ref<HTMLElement>();
-let shader: InspiraShaderToy | undefined = undefined;
+let shader: InspiraShaderToy | undefined;
 
 onMounted(() => {
   if (!containerRef.value) return;
@@ -70,7 +68,7 @@ watch(
     if (v !== undefined && shader) {
       shader.setHue(v);
     }
-  }
+  },
 );
 
 watch(
@@ -79,7 +77,7 @@ watch(
     if (v !== undefined && shader) {
       shader.setSaturation(v);
     }
-  }
+  },
 );
 
 watch(
@@ -88,7 +86,7 @@ watch(
     if (v !== undefined && shader) {
       shader.setBrightness(v);
     }
-  }
+  },
 );
 
 watch(
@@ -97,7 +95,7 @@ watch(
     if (v !== undefined && shader) {
       shader.setSpeed(v);
     }
-  }
+  },
 );
 
 watch(
@@ -106,7 +104,7 @@ watch(
     if (v !== undefined && shader) {
       shader.setMouseSensitivity(v);
     }
-  }
+  },
 );
 
 watch(
@@ -115,9 +113,16 @@ watch(
     if (v !== undefined && shader) {
       shader.setMouseDamping(v);
     }
-  }
+  },
 );
 </script>
+
+<template>
+  <div
+    ref="containerRef"
+    class="shadertoy-container" :class="[props.class]"
+  />
+</template>
 
 <style scoped>
 .shadertoy-container {

@@ -26,13 +26,19 @@ const items: NavigationMenuItem[] = [
       <p class="text-muted text-sm">
         Copyright ©
         {{ new Date().getFullYear() }} |
-        <NuxtLink href="https://igrislabs.com" target="_blank">
+        <NuxtLink
+          href="https://igrislabs.com"
+          target="_blank"
+        >
           Igris Labs
         </NuxtLink>
       </p>
     </template>
 
-    <UNavigationMenu :items="items" variant="link" />
+    <UNavigationMenu
+      :items="items"
+      variant="link"
+    />
 
     <template #right>
       <UButton

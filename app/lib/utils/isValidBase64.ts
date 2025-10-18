@@ -12,8 +12,7 @@ export function isValidBase64(str: string): boolean {
   // - Must only contain A-Z, a-z, 0-9, +, /
   // - May end with = or == (padding)
   // - No other characters allowed
-  const base64Regex =
-    /^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/;
+  const base64Regex = /^(?:[A-Z0-9+/]{4})*(?:[A-Z0-9+/]{2}==|[A-Z0-9+/]{3}=)?$/i;
 
   return base64Regex.test(trimmed);
 }

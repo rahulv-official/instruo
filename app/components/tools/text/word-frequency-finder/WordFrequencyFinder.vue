@@ -15,7 +15,7 @@ const wordFrequencies = computed(() => {
   const words = input.value
     .toLowerCase()
     .split(/\s+/) // Split by whitespace
-    .map((word) => word.replace(/[^\w]/g, "")); // Remove punctuation
+    .map((word) => word.replace(/\W/g, "")); // Remove punctuation
 
   // Count occurrences of each word
   for (const word of words) {
@@ -29,11 +29,12 @@ const wordFrequencies = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 items-center text-lg">
-    <span class="w-full">
-      Enter text below to get the frequency of the words.
-    </span>
-    <UFormField class="w-full" label="Your Input">
+  <div class="flex flex-col items-center gap-4 text-lg">
+    <span class="w-full"> Enter text below to get the frequency of the words. </span>
+    <UFormField
+      class="w-full"
+      label="Your Input"
+    >
       <UTextarea
         v-model="input"
         placeholder="Your input"
@@ -56,10 +57,16 @@ const wordFrequencies = computed(() => {
       />
     </UFormField>
 
-    <div v-if="wordsList.length > 0" class="flex flex-col gap-3 px-2">
-      <div v-for="word in wordsList" :key="word">
+    <div
+      v-if="wordsList.length > 0"
+      class="flex flex-col gap-3 px-2"
+    >
+      <div
+        v-for="word in wordsList"
+        :key="word"
+      >
         No. of {{ word.trim() }}:
-        <span class="text-lg font-bold text-foreground">
+        <span class="text-foreground text-lg font-bold">
           {{ wordFrequencies[word.trim()] || 0 }}
         </span>
       </div>

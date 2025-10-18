@@ -1,4 +1,4 @@
-import { Renderer, Camera, Transform, Geometry, Program, Mesh } from "ogl";
+import { Camera, Geometry, Mesh, Program, Renderer, Transform } from "ogl";
 
 export interface ShaderConfig {
   source: string;
