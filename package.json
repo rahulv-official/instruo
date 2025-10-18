@@ -53,6 +53,17 @@
   "pnpm": {
     "overrides": {
       "vite": "npm:rolldown-vite@latest"
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher",
+      "sharp",
+      "vue-demi"
+    ],
+    "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
+      "better-sqlite3",
+      "esbuild",
+      "unrs-resolver"
+    ]
   }
 }
