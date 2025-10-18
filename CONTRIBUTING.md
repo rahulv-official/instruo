@@ -1,187 +1,149 @@
 # Contributing Guidelines for Instruo
 
-Thank you for your interest in contributing to the **Instruo** project! Your contributions help make this project better for everyone. Please take a moment to read through these guidelines to ensure a smooth collaboration.
+Thanks for your interest in contributing to Instruo — contributions (code, docs, issues, and reviews) are very welcome. This document explains how to get started, where things live in the repo, and the expectations we have for contributions.
 
-## Table of Contents
+## Quick start
 
-1. [Getting Started](#getting-started)
-2. [Code of Conduct](#code-of-conduct)
-3. [How to Contribute](#how-to-contribute)
-   - [Reporting Bugs](#reporting-bugs)
-   - [Suggesting Enhancements](#suggesting-enhancements)
-   - [Adding New Tools](#adding-new-tools)
-4. [Project Structure](#project-structure)
-5. [Style Guidelines](#style-guidelines)
-   - [Coding Standards](#coding-standards)
-   - [Tool Documentation Format](#tool-documentation-format)
-   - [Commit Messages](#commit-messages)
-6. [Documentation Guidelines](#documentation-guidelines)
-7. [Testing](#testing)
-8. [License](#license)
+1. Fork the repository on GitHub and clone your fork:
 
----
+   ```bash
+   git clone git@github.com:<your-username>/instruo.git
+   cd instruo-v2
+   git checkout -b feature/your-short-description
+   ```
 
-## Getting Started
+2. Install dependencies (we use pnpm):
 
-- **Fork the Repository**: Create a personal fork of the project on GitHub.
-- **Clone Your Fork**: Clone your forked repository to your local machine.
-- **Create a Branch**: Create a new branch for your contribution (`git checkout -b feature/YourFeatureName`).
-- **Install Dependencies**: Run `pnpm install` to install all necessary dependencies.
+   ```bash
+   pnpm install
+   ```
+
+3. Start the dev server (Nuxt):
+
+   ```bash
+   pnpm dev
+   ```
+
+Notes: these commands assume the repository root. If your environment differs, adjust accordingly.
 
 ## Code of Conduct
 
-By participating in this project, you agree to abide by the [Code of Conduct](./CODE_OF_CONDUCT.md), which aims to foster an open and welcoming environment.
+All contributors are expected to follow the project's [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-## How to Contribute
+## How to contribute
 
-### Reporting Bugs
+Common contribution types:
 
-If you find a bug, please open an [issue](https://github.com/rahulv-official/instruo/issues) and include:
+- Bug reports / issues: open an issue with reproduction steps and expected behavior.
+- Documentation: improvements to `content/` markdown files and component docs.
+- New tools or UI components: add the component(s) plus content documentation.
+- Tests and bug fixes: submit a PR with tests where appropriate.
 
-- A clear and descriptive title.
-- Steps to reproduce the issue.
-- Expected and actual results.
-- Screenshots or code snippets, if applicable.
+When opening a pull request:
 
-### Suggesting Enhancements
+- Use a short, descriptive title and link any related issues.
+- Keep PRs focused — smaller PRs are easier to review.
+- Use Conventional Commits for the commit history (see below).
 
-We welcome suggestions for new features or improvements. Please open an [issue](https://github.com/rahulv-official/instruo/issues) and include:
+## Project layout (key directories)
 
-- A clear and descriptive title.
-- A detailed description of the enhancement.
-- Any relevant examples or mockups.
+- `app/` – main Nuxt/ Vue application code
+  - `app/components/` – Vue components (shared and tool components)
+  - `app/composables/` – composable utilities (Vue useX hooks)
+  - `app/lib/` – general utility modules (for example `app/lib/utils`)
+  - `app/pages/` – route pages and dynamic routes
+  - `app/layouts/` – application layouts
 
-### Adding New Tools
+- `content/` – markdown content and documentation for tools and games
+  - `content/tools/<category>/<tool>.md` – tool documentation and front matter
+  - `content/games/` – game documentation
 
-We appreciate contributions that add new tools to the platform. Please ensure that:
+- `public/` – static assets
 
-- The tool is generally useful and aligns with the project's goals.
-- You follow the coding and documentation guidelines outlined below.
-- You include tests for your tool.
+This repository uses Nuxt + content-driven pages: adding a markdown file to `content/tools/...` and a matching component under `app/components/tools/...` will generally integrate your tool into the site UI (follow existing conventions in the repo).
 
-## Project Structure
+## Adding a new tool
 
-Understanding the project structure is crucial for effective contribution:
+1. Create the Vue UI component(s) under `app/components/tools/<category>/<ToolName>/`.
+   - Use `PascalCase` for component filenames and the component name.
+   - Prefer TypeScript (`<script setup lang="ts">`) and composition API.
 
-- **Tools Content & Documentation Directory**:
-  - Markdown content for tools is stored in `content/tools/<tool-category>/<tool-name>.md`.
-- **Components Directory**:
-  - Reusable Vue components for tools are stored in `components/content/tools/<tool-category>/<tool-name>/`.
-- **Utilities**:
-  - Utility scripts and helper functions are stored in the `utils/` directory.
+2. Add a content file to `content/tools/<category>/<tool-name>.md`.
+   - Include YAML front matter at the top with `title`, `description`, `category` and `tags`.
+   - Use the repo's content component invocation to embed the tool if applicable (see existing examples).
 
-## Style Guidelines
+Example front matter:
 
-### Coding Standards
+```yaml
+---
+title: Base64 Encoder / Decoder
+description: Encode and decode Base64 strings.
+category: Encoder Decoder
+tags: [encoder, decoder, base64-to-text, text-to-base64, base64]
+---
+```
 
-- **Language**: Use TypeScript for all code where applicable.
-- **Styling**: Use **Tailwind CSS** for consistent styling.
-- **Naming Conventions**: Use `PascalCase` for component names and filenames.
+Then include your component via the content rendering pattern used in the repo (look at existing files in `content/tools/` for the exact syntax used by the content renderer).
 
-### Tool Documentation Format
+3. Add unit tests where appropriate (see Testing below).
 
-For Markdown files documenting tools, follow this structure:
+## Style & tooling
 
-1. **Front Matter**
+- Language: TypeScript is preferred for new code.
+- Styling: Tailwind CSS is used across the app.
+- Formatting: Prettier and the repo's `prettier.config.js` should be respected.
+- Linting: ESLint is configured (`eslint.config.mjs`). Fix lint errors before opening a PR where possible.
 
-   Include YAML front matter with the title and description of the tool:
+Assumption: this repo uses pnpm, TypeScript, Tailwind, Prettier and ESLint (these configs are present in the repository). If your change needs additional tooling, mention it in the PR and add required config files.
 
-   ```yaml
-   ---
-   title: Tool Title
-   description: A brief description of the tool.
-   ---
-   ```
+## Documentation: content file format
 
-2. **Tool Implementation**
+When writing documentation for a tool, use a consistent structure so the site renderer and readers get a predictable experience. A recommended pattern:
 
-   Use the tool component to render the tool interface, for example:
+1. YAML front matter with `title`, `description`, `category` and `tags`.
+2. Short description / "What is this tool?" section.
+3. Features and use cases (bullet lists).
+4. How to use (step-by-step).
+5. Example input/output.
+6. Error handling / limitations.
 
-   ```markdown
-   ::ToolComponentName
-   ::
-   ```
+Also include the content invocation used by the project to mount/render the tool component — check existing tool docs in `content/tools/` for the exact syntax.
 
-3. **What is the Tool?**
+## Commit messages
 
-   Describe what the tool does and its purpose.
+Follow Conventional Commits. Examples:
 
-4. **Features**
+- feat: add Base64 encoder tool
+- fix: correct URL encoder edge case
+- docs: update how-to-use for Text Sorter
 
-   List the key features of the tool.
-
-   ```markdown
-   ## Features
-
-   - **Feature 1**: Description of the feature.
-   - **Feature 2**: Description of the feature.
-   ```
-
-5. **Use Cases**
-
-   Explain the various scenarios where the tool can be useful.
-
-   ```markdown
-   ## Use Cases
-
-   - **Developers**: Encode sensitive data.
-   - **General Users**: Decode Base64 strings received online.
-   ```
-
-6. **How to Use**
-
-   Provide a step-by-step guide on how to use the tool.
-
-   ```markdown
-   ## How to Use
-
-   1. Step 1: Description of the step.
-   2. Step 2: Description of the step.
-   ```
-
-7. **Example Usage**
-
-   Provide input-output examples for the tool.
-
-   ```markdown
-   ## Example Usage
-
-   **Input**: Plain text: `Hello, World!`  
-   **Output**: Base64: `SGVsbG8sIFdvcmxkIQ==`
-   ```
-
-8. **Error Handling**
-
-   Document error scenarios and how the tool handles them.
-
-   ```markdown
-   ## Error Handling
-
-   - **Invalid Input**: Returns a helpful error message.
-   ```
-
-9. **Why Use This Tool?**
-
-   Explain why this tool is helpful.
-
-### Commit Messages
-
-- Use the [Conventional Commits](https://www.conventionalcommits.org/) format.
-- Begin with a type (`feat`, `fix`, `docs`, etc.) followed by a short description.
-- Example: `feat: add Base64 encoding tool`
-
-## Documentation Guidelines
-
-Proper documentation is crucial for users to understand and effectively use the tools and components.
-
-- Use the **Tool Documentation Format** described above for writing documentation in `content/tools/`.
+This makes changelogs and automated tooling easier to maintain.
 
 ## Testing
 
-- **Unit Tests**: Write unit tests for tools or components if applicable.
-- **Cross-Browser Testing**: Ensure compatibility with major browsers.
-- **Visual Testing**: Verify the visual appearance of tools and components.
+- If the change touches logic, add unit tests. The project may not have a test runner configured by default; if it does, follow existing patterns (look for `vitest`, `jest`, or test scripts in `package.json`).
+- Manual testing: run `pnpm dev` and verify the UI/tool works in the browser.
 
-## License
+If you want help adding a test runner or CI for tests, open an issue describing preferred tooling and I can help scaffold it.
 
-By contributing, you agree that your contributions will be licensed under the [MIT License](https://github.com/rahulv-official/instruo/blob/main/LICENSE).
+## CI, hooks and release process
+
+If this project integrates CI or automated releases, please follow the project's PR templates and branch protection rules. If no CI exists yet, propose one in an issue and include example workflows.
+
+## Filing issues
+
+When filing an issue, be concise and include:
+
+- A short, descriptive title.
+- Steps to reproduce.
+- Expected vs actual behavior.
+- Browser/OS and any console errors (if relevant).
+- A minimal reproduction if possible (link to code sandbox or screenshots).
+
+## Licensing
+
+By contributing, you agree that your contributions will be licensed under the project's MIT License (see `LICENSE`).
+
+---
+
+If you'd like this guide expanded (commit hooks, stricter CI checks, PR templates, or a contributor checklist) I can add those — tell me which pieces you'd like next.
