@@ -6,10 +6,7 @@ const route = useRoute();
 const [{ data: page }, { data: surround }] = await Promise.all([
   useAsyncData(
     route.path,
-    () =>
-      queryCollection("tools")
-        .path(route.path)
-        .first() as Promise<ToolsCollectionItem>
+    () => queryCollection("tools").path(route.path).first() as Promise<ToolsCollectionItem>,
   ),
   useAsyncData(`${route.path}-surround`, () => {
     return queryCollectionItemSurroundings("tools", route.path, {
@@ -27,16 +24,26 @@ if (!page.value) {
 }
 
 const nav = inject<Ref<ContentNavigationItem[]>>("tools_navigation");
+
+useSeoMeta({
+  title: `${page.value.title} - Instruo`,
+  ogTitle: `${page.value.title} - Instruo`,
+  description: `${page.value.description}`,
+  ogDescription: `${page.value.description}`,
+});
 </script>
 
 <template>
-  <UPage v-if="page" class="container mx-auto px-8 max-md:px-4">
+  <UPage
+    v-if="page"
+    class="container mx-auto px-8 max-md:px-4"
+  >
     <UPageHeader
       :title="page.title"
       :description="page.description"
       :headline="`${page.category} Tool`"
     >
-      <div class="flex flex-wrap items-center gap-2 mt-4">
+      <div class="mt-4 flex flex-wrap items-center gap-2">
         <UBadge
           v-for="tag in page.tags"
           :key="page.path + tag"
@@ -56,7 +63,10 @@ const nav = inject<Ref<ContentNavigationItem[]>>("tools_navigation");
     <template #right />
 
     <UPageBody>
-      <ContentRenderer v-if="page" :value="page" />
+      <ContentRenderer
+        v-if="page"
+        :value="page"
+      />
 
       <USeparator />
 
