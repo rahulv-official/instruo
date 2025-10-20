@@ -16,6 +16,10 @@ export default defineNuxtConfig({
     "nuxt-gtag",
   ],
 
+  nitro: {
+    preset: "cloudflare-pages",
+  },
+
   css: ["~/assets/css/main.css"],
 
   vite: {
