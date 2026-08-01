@@ -6,18 +6,26 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
-    "@nuxt/content",
     "@nuxt/eslint",
     "@nuxt/image",
     "@nuxt/scripts",
     "@nuxt/ui",
-    "motion-v/nuxt",
+    "@nuxt/content",
     "@vueuse/nuxt",
     "nuxt-gtag",
   ],
 
+  alias: {
+    "#wordle-answers": new URL("./node_modules/wordles/wordles.json", import.meta.url).pathname,
+    "#wordle-guesses": new URL("./node_modules/wordles/nonwordles.json", import.meta.url).pathname,
+  },
+
   nitro: {
     preset: "cloudflare-pages",
+  },
+
+  routeRules: {
+    "/games/encoder-decoder/wordle": { redirect: "/games/word/wordle" },
   },
 
   css: ["~/assets/css/main.css"],
@@ -27,8 +35,15 @@ export default defineNuxtConfig({
   },
 
   colorMode: {
-    preference: "dark",
-    fallback: "dark",
+    preference: "system",
+    fallback: "light",
+  },
+
+  icon: {
+    provider: "none",
+    clientBundle: {
+      scan: true,
+    },
   },
 
   components: [

@@ -3,36 +3,28 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 
 const items: NavigationMenuItem[] = [
   {
-    label: "Igris Labs",
-    to: "https://igrislabs.com",
-    target: "_blank",
+    label: "Tools",
+    to: "/tools",
   },
   {
-    label: "rahulv.dev",
-    to: "https://rahulv.dev",
-    target: "_blank",
+    label: "Games",
+    to: "/games",
   },
   {
-    label: "Inspira UI",
-    to: "https://inspira-ui.com",
+    label: "Contribute",
+    to: "https://github.com/rahulv-official/instruo",
     target: "_blank",
   },
 ];
 </script>
 
 <template>
-  <UFooter>
+  <UFooter class="border-default/70 mt-20 border-t">
     <template #left>
-      <p class="text-muted text-sm">
-        Copyright ©
-        {{ new Date().getFullYear() }} |
-        <NuxtLink
-          href="https://igrislabs.com"
-          target="_blank"
-        >
-          Igris Labs
-        </NuxtLink>
-      </p>
+      <div class="space-y-1">
+        <p class="text-highlighted text-sm font-medium">Instruo</p>
+        <p class="text-muted text-sm">Free browser tools. No account required.</p>
+      </div>
     </template>
 
     <UNavigationMenu
@@ -42,28 +34,20 @@ const items: NavigationMenuItem[] = [
 
     <template #right>
       <UButton
-        icon="i-simple-icons-discord"
-        color="neutral"
-        variant="ghost"
-        to="https://go.nuxt.com/discord"
-        target="_blank"
-        aria-label="Discord"
-      />
-      <UButton
-        icon="i-simple-icons-x"
-        color="neutral"
-        variant="ghost"
-        to="https://go.nuxt.com/x"
-        target="_blank"
-        aria-label="X"
-      />
-      <UButton
         icon="i-simple-icons-github"
         color="neutral"
         variant="ghost"
-        to="https://github.com/nuxt/nuxt"
+        to="https://github.com/rahulv-official/instruo"
         target="_blank"
-        aria-label="GitHub"
+        aria-label="Instruo on GitHub"
+      />
+      <UButton
+        icon="i-lucide-heart"
+        color="neutral"
+        variant="ghost"
+        to="https://github.com/sponsors/rahul-vashishtha"
+        target="_blank"
+        aria-label="Sponsor Instruo"
       />
     </template>
   </UFooter>

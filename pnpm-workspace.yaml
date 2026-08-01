@@ -1,2 +1,16 @@
+shellEmulator: true
+trustPolicy: no-downgrade
+
+overrides:
+  vite: npm:rolldown-vite@7.3.1
+
+ignoredBuiltDependencies:
+  - "@parcel/watcher"
+  - sharp
+  - vue-demi
+
 onlyBuiltDependencies:
+  - "@tailwindcss/oxide"
   - better-sqlite3
+  - esbuild
+  - unrs-resolver

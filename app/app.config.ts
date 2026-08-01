@@ -1,11 +1,12 @@
 export default defineAppConfig({
   ui: {
     colors: {
+      primary: "orange",
       neutral: "zinc",
     },
     button: {
       slots: {
-        base: "active:hover:scale-[97%] transition-all ease-linear duration-100 disabled:active:hover:scale-100",
+        base: "rounded-none transition-[color,background-color,border-color,transform] duration-200 active:scale-[0.98] disabled:active:scale-100",
       },
     },
   },

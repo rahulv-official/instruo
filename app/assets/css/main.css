@@ -1,17 +1,50 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+@source "../../../content/**/*";
+
 @theme {
+  --font-sans: "Manrope", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
 }
 
 :root {
   --ui-bg: var(--color-white);
-  --ui-primary: var(--color-black);
-  --ui-radius: 0.5rem;
+  --ui-primary: var(--ui-color-primary-700);
+  --ui-radius: 0;
+  --ui-container: 96rem;
+  --ui-header-height: 4rem;
 }
 
 .dark {
-  --ui-bg: var(--color-black);
-  --ui-primary: var(--color-white);
+  --ui-bg: var(--color-zinc-950);
+  --ui-primary: var(--ui-color-primary-400);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 20rem;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--ui-primary) 28%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

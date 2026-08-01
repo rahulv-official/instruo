@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-const title = "Instro - Your Everyday Toolkit for the Web";
-const description = "A collection of online tools designed for productivity and simplicity.";
+const title = "Instruo | Free browser tools for everyday tasks";
+const description =
+  "Use fast, private utilities for text, encoding, data, and quick browser games. No account or installation required.";
 
 const [{ data: tools }, { data: games }] = await Promise.all([
   useAsyncData("search_tools", () => queryCollectionSearchSections("tools")),
@@ -25,6 +26,15 @@ useSeoMeta({
   description,
   ogDescription: description,
 });
+
+useHead({
+  htmlAttrs: { lang: "en" },
+  titleTemplate: (pageTitle) => (pageTitle ? `${pageTitle} | Instruo` : title),
+  meta: [
+    { name: "theme-color", content: "#18181b" },
+    { name: "color-scheme", content: "light dark" },
+  ],
+});
 </script>
 
 <template>
@@ -36,7 +46,7 @@ useSeoMeta({
       :files="files"
       :navigation="nav"
       :color-mode="false"
-      class="bg-white/20 backdrop-blur-xl dark:bg-black/10"
+      class="bg-default/95 rounded-none backdrop-blur-xl"
     />
   </UApp>
 </template>

@@ -17,7 +17,7 @@ const collections: Record<string, DefinedCollection> = {
   }),
   games: defineCollection({
     type: "page",
-    source: "games/**/*md",
+    source: "games/**/*.md",
     schema: schema(),
   }),
 };
