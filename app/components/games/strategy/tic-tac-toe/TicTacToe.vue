@@ -29,6 +29,8 @@ const movesPlayed = computed(() => board.value.filter(Boolean).length);
 const isDraw = computed(() => movesPlayed.value === 9 && !winner.value);
 const currentMark = computed<Mark>(() => (movesPlayed.value % 2 === 0 ? "X" : "O"));
 const finished = computed(() => Boolean(winner.value) || isDraw.value);
+const playerLost = computed(() => mode.value === "computer" && winner.value === "O");
+const playerWon = computed(() => mode.value === "computer" && winner.value === "X");
 const status = computed(() => {
   if (winner.value) {
     if (mode.value === "computer") return winner.value === "X" ? "You win." : "Computer wins.";
@@ -137,15 +139,51 @@ function changeMode(value: string | undefined) {
     <div class="mx-auto grid max-w-xl gap-6">
       <div class="flex flex-col items-center gap-5">
         <p
-          class="text-highlighted min-h-6 text-center font-medium"
+          class="flex min-h-6 items-center gap-2 text-center font-medium"
+          :class="
+            playerLost
+              ? 'text-error'
+              : playerWon || (mode === 'local' && winner)
+                ? 'text-success'
+                : isDraw
+                  ? 'text-warning'
+                  : 'text-highlighted'
+          "
           role="status"
           aria-live="polite"
         >
+          <UIcon
+            v-if="playerLost"
+            name="i-lucide-circle-x"
+            class="size-4 shrink-0"
+            aria-hidden="true"
+          />
+          <UIcon
+            v-else-if="playerWon || (mode === 'local' && winner)"
+            name="i-lucide-circle-check"
+            class="size-4 shrink-0"
+            aria-hidden="true"
+          />
+          <UIcon
+            v-else-if="isDraw"
+            name="i-lucide-circle-minus"
+            class="size-4 shrink-0"
+            aria-hidden="true"
+          />
           {{ status }}
         </p>
 
         <div
-          class="border-inverted grid h-[min(80vw,26rem)] w-[min(80vw,26rem)] grid-cols-3 grid-rows-3 border-2"
+          class="grid h-[min(80vw,26rem)] w-[min(80vw,26rem)] grid-cols-3 grid-rows-3 border-2 transition-colors duration-200"
+          :class="
+            playerLost
+              ? 'border-error'
+              : playerWon || (mode === 'local' && winner)
+                ? 'border-success'
+                : isDraw
+                  ? 'border-warning'
+                  : 'border-inverted'
+          "
           aria-label="Tic Tac Toe board"
         >
           <button

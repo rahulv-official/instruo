@@ -5,11 +5,11 @@ const [{ data: tools }, { data: games }] = await Promise.all([
 ]);
 
 const featuredPaths = [
+  "/tools/image/image-resizer",
+  "/tools/security/password-generator",
   "/tools/developer/json-formatter",
+  "/tools/developer/timestamp-converter",
   "/tools/text/word-char-counter",
-  "/tools/encoder-decoder/base64",
-  "/tools/developer/uuid-generator",
-  "/tools/text/slug-generator",
 ];
 const featureSpans = [
   "lg:col-span-7",
@@ -18,7 +18,14 @@ const featureSpans = [
   "lg:col-span-5",
   "lg:col-span-3",
 ];
-const gameSpans = ["lg:col-span-7", "lg:col-span-5", "lg:col-span-5", "lg:col-span-7"];
+const gameSpans = [
+  "lg:col-span-7",
+  "lg:col-span-5",
+  "lg:col-span-5",
+  "lg:col-span-7",
+  "lg:col-span-7",
+  "lg:col-span-5",
+];
 
 const featuredTools = computed(() => {
   const byPath = new Map((tools.value ?? []).map((tool) => [tool.path, tool]));
@@ -45,18 +52,21 @@ const categories = computed(() => {
       name,
       count,
       label: name === "Developer" ? "Developer Tools" : name,
-      description: {
-        Developer: "Format structured data and generate identifiers.",
-        "Encoder Decoder": "Translate Base64, binary, Morse code, and URLs.",
-        Text: "Count, clean, sort, and reshape plain text.",
-      }[name],
+      description:
+        {
+          Developer: "Format data, create digests, and convert timestamps.",
+          "Encoder Decoder": "Translate Base64, binary, Morse code, and URLs.",
+          Image: "Resize and compress local image files.",
+          Security: "Generate strong passwords on this device.",
+          Text: "Count, clean, sort, and reshape plain text.",
+        }[name] ?? "Focused utilities that run in your browser.",
     }));
 });
 
 useSeoMeta({
-  title: "Free browser tools for text and data",
+  title: "Free browser tools and games",
   description:
-    "Format JSON, clean text, encode data, generate IDs, and play quick puzzles in your browser. No signup or installation.",
+    "Resize images, generate passwords, format data, clean text, and play quick games in your browser. No signup or installation.",
 });
 </script>
 
@@ -242,7 +252,7 @@ useSeoMeta({
             </h2>
           </div>
           <p class="text-muted max-w-md leading-7 lg:col-span-4 lg:justify-self-end">
-            Word, number, logic, and strategy games that begin as soon as the page opens.
+            Arcade, word, number, logic, and strategy games that begin as soon as the page opens.
           </p>
         </div>
 
@@ -297,7 +307,8 @@ useSeoMeta({
             Your input stays in this browser.
           </h2>
           <p class="text-muted mt-6 max-w-2xl text-lg leading-8">
-            Current tools process text and data on this page. Nothing is sent to an Instruo server.
+            Current tools process text, data, and images on this page. Nothing is sent to an Instruo
+            server.
           </p>
         </div>
         <div class="lg:col-span-4 lg:justify-self-end">

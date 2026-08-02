@@ -152,9 +152,14 @@ function handleKeydown(event: KeyboardEvent) {
   const element = event.target as HTMLElement | null;
   if (element?.matches("input, textarea, [contenteditable='true']")) return;
 
-  if (event.key === "Enter") pressKey("ENTER");
-  else if (event.key === "Backspace" || event.key === "Delete") pressKey("BACKSPACE");
-  else if (/^[a-z]$/i.test(event.key)) pressKey(event.key.toUpperCase());
+  if (event.key === "Enter") {
+    if (status.value !== "playing") return;
+    event.preventDefault();
+    pressKey("ENTER");
+  } else if (event.key === "Backspace" || event.key === "Delete") {
+    event.preventDefault();
+    pressKey("BACKSPACE");
+  } else if (/^[a-z]$/i.test(event.key)) pressKey(event.key.toUpperCase());
 }
 
 function newWord() {
@@ -174,11 +179,35 @@ useEventListener("keydown", handleKeydown);
     <div class="mx-auto max-w-2xl">
       <div class="flex flex-col items-center gap-7">
         <p
-          class="min-h-6 w-full text-center text-sm"
-          :class="notice.error && status === 'playing' ? 'text-error' : 'text-toned'"
+          class="flex min-h-6 w-full items-center justify-center gap-2 text-center text-sm"
+          :class="
+            status === 'lost' || (notice.error && status === 'playing')
+              ? 'text-error'
+              : status === 'won'
+                ? 'text-success'
+                : 'text-toned'
+          "
           role="status"
           aria-live="polite"
         >
+          <UIcon
+            v-if="status === 'lost'"
+            name="i-lucide-circle-x"
+            class="size-4 shrink-0"
+            aria-hidden="true"
+          />
+          <UIcon
+            v-else-if="status === 'won'"
+            name="i-lucide-circle-check"
+            class="size-4 shrink-0"
+            aria-hidden="true"
+          />
+          <UIcon
+            v-else-if="notice.error"
+            name="i-lucide-circle-alert"
+            class="size-4 shrink-0"
+            aria-hidden="true"
+          />
           {{ message }}
         </p>
 

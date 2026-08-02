@@ -215,10 +215,29 @@ function numberClass(value: number) {
         class="border-default/70 grid gap-4 border-b pb-4 sm:grid-cols-[1fr_auto] sm:items-center"
       >
         <p
-          class="text-toned text-sm"
+          class="flex items-center gap-2 text-sm"
+          :class="
+            gameStatus === 'lost'
+              ? 'text-error'
+              : gameStatus === 'won'
+                ? 'text-success'
+                : 'text-toned'
+          "
           role="status"
           aria-live="polite"
         >
+          <UIcon
+            v-if="gameStatus === 'lost'"
+            name="i-lucide-circle-x"
+            class="size-4 shrink-0"
+            aria-hidden="true"
+          />
+          <UIcon
+            v-else-if="gameStatus === 'won'"
+            name="i-lucide-circle-check"
+            class="size-4 shrink-0"
+            aria-hidden="true"
+          />
           {{ statusText }}
         </p>
         <div class="flex gap-6 font-mono text-sm tabular-nums">
@@ -235,7 +254,14 @@ function numberClass(value: number) {
 
       <div class="w-full overflow-x-auto pb-2">
         <div
-          class="border-inverted mx-auto grid w-max border-2"
+          class="mx-auto grid w-max border-2 transition-colors duration-200"
+          :class="
+            gameStatus === 'lost'
+              ? 'border-error'
+              : gameStatus === 'won'
+                ? 'border-success'
+                : 'border-inverted'
+          "
           :style="boardStyle"
           aria-label="Minesweeper board"
         >
@@ -243,7 +269,7 @@ function numberClass(value: number) {
             v-for="(cell, index) in cells"
             :key="index"
             type="button"
-            class="focus-visible:ring-primary border-default/70 flex size-8 items-center justify-center border-r border-b font-mono text-sm font-semibold focus-visible:z-10 focus-visible:ring-2 focus-visible:outline-none"
+            class="focus-visible:ring-primary border-default/70 flex size-8 items-center justify-center border-r border-b font-mono text-sm font-semibold transition-colors duration-150 focus-visible:z-10 focus-visible:ring-2 focus-visible:outline-none"
             :class="[
               cell.open ? 'bg-muted/30' : 'bg-default hover:bg-elevated/60',
               cell.mine && cell.open ? 'bg-error/15 text-error' : '',

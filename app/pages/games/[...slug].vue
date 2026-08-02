@@ -26,7 +26,7 @@ useSeoMeta({
 <template>
   <div
     v-if="page"
-    class="grid w-full lg:grid-cols-[16rem_minmax(0,1fr)]"
+    class="grid w-full lg:grid-cols-[18rem_minmax(0,1fr)]"
   >
     <div
       class="border-default/70 px-5 pt-8 lg:min-h-[calc(100dvh-4rem)] lg:border-r lg:px-5 lg:py-10"

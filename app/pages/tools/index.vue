@@ -4,7 +4,7 @@ const { data: tools } = await useAsyncData("tools", () => queryCollection("tools
 useSeoMeta({
   title: "All browser tools",
   description:
-    "Search free browser utilities for text conversion, encoding, JSON formatting, counting, sorting, and cleanup.",
+    "Search free browser utilities for image resizing, password generation, hashing, timestamp conversion, text, and data.",
 });
 </script>
 
@@ -12,7 +12,7 @@ useSeoMeta({
   <Catalogue
     :items="tools ?? []"
     title="Browser tools for quick jobs."
-    description="Format JSON, clean text, encode data, count words, and generate IDs without installing another app."
+    description="Resize images, generate passwords, format data, clean text, and create identifiers without installing another app."
     search-placeholder="Search tools, categories, or tasks…"
   />
 </template>
