@@ -30,6 +30,11 @@ useSeoMeta({
 useHead({
   htmlAttrs: { lang: "en" },
   titleTemplate: (pageTitle) => (pageTitle ? `${pageTitle} | Instruo` : title),
+  link: [
+    { rel: "icon", type: "image/svg+xml", href: "/logo.svg" },
+    { rel: "icon", type: "image/x-icon", href: "/favicon.ico", sizes: "32x32" },
+    { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+  ],
   meta: [
     { name: "theme-color", content: "#18181b" },
     { name: "color-scheme", content: "light dark" },

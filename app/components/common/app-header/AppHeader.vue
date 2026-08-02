@@ -33,11 +33,13 @@ const items = computed<NavigationMenuItem[]>(() => [
         class="group flex items-center gap-3"
         aria-label="Instruo home"
       >
-        <span
-          class="bg-primary text-inverted flex size-8 items-center justify-center font-mono text-sm font-semibold"
+        <img
+          src="/logo.svg"
+          alt=""
+          width="32"
+          height="32"
+          class="size-8 shrink-0"
         >
-          I/
-        </span>
         <span class="text-highlighted text-base font-semibold tracking-tight">Instruo</span>
       </NuxtLink>
     </template>

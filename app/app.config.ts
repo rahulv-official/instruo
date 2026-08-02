@@ -40,7 +40,7 @@ export default defineAppConfig({
         label: "Created by",
         children: [
           { label: "Rahul Vashishtha", to: "https://rahulv.dev", target: "_blank" },
-          { label: "Igris Labs", to: "https://github.com/igris-labs", target: "_blank" },
+          { label: "Igris Labs", to: "https://igrislabs.com", target: "_blank" },
         ],
       },
     ],

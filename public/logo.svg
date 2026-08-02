@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Instruo">
+  <rect width="64" height="64" fill="#f97316"/>
+  <path fill="#18181b" d="M14 14h22v8h-7v20h7v8H14v-8h7V22h-7z"/>
+  <path fill="#18181b" d="M44 14h8L40 50h-8z"/>
+</svg>
