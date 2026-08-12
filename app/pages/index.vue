@@ -11,6 +11,14 @@ const featuredPaths = [
   "/tools/developer/timestamp-converter",
   "/tools/text/word-char-counter",
 ];
+const featuredGamePaths = [
+  "/games/number/2048",
+  "/games/word/wordle",
+  "/games/number/sudoku",
+  "/games/arcade/snake",
+  "/games/logic/minesweeper",
+  "/games/strategy/tic-tac-toe",
+];
 const featureSpans = [
   "lg:col-span-7",
   "lg:col-span-5",
@@ -36,9 +44,12 @@ const featuredTools = computed(() => {
 
 const quickLaunchTools = computed(() => featuredTools.value.slice(0, 4));
 
-const featuredGames = computed(() =>
-  (games.value ?? []).toSorted((a, b) => a.title.localeCompare(b.title)),
-);
+const featuredGames = computed(() => {
+  const byPath = new Map((games.value ?? []).map((game) => [game.path, game]));
+  return featuredGamePaths
+    .map((path) => byPath.get(path))
+    .filter((game): game is NonNullable<typeof game> => Boolean(game));
+});
 
 const categories = computed(() => {
   const counts = new Map<string, number>();
