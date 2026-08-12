@@ -40,9 +40,9 @@ export default defineNuxtConfig({
   },
 
   icon: {
-    provider: "none",
+    serverBundle: "remote",
     clientBundle: {
-      scan: true,
+      scan: false,
     },
   },
 

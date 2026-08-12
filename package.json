@@ -17,8 +17,6 @@
     "build:copy": "cp public/_routes.json dist/_routes.json"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.121",
-    "@iconify-json/simple-icons": "^1.2.92",
     "@nuxt/content": "3.15.2",
     "@nuxt/image": "2.1.0",
     "@nuxt/scripts": "1.3.2",

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 type Choice = "rock" | "paper" | "scissors";
 type Outcome = "draw" | "lost" | "won";
+type ChoiceIcon = "tabler:circle" | "tabler:note" | "tabler:scissors";
 
-const choices: { label: string; value: Choice; icon: string }[] = [
+const choices: { label: string; value: Choice; icon: ChoiceIcon }[] = [
   { label: "Rock", value: "rock", icon: "tabler:circle" },
   { label: "Paper", value: "paper", icon: "tabler:note" },
   { label: "Scissors", value: "scissors", icon: "tabler:scissors" },
@@ -137,7 +138,12 @@ if (import.meta.dev && Object.values(winningChoice).length !== choices.length) {
           :disabled="isComplete"
           @click="play(choice.value)"
         >
-          <UIcon :name="choice.icon" />{{ choice.label }}
+          <Icon
+            :name="choice.icon"
+            class="mr-2 inline-block size-5 align-text-bottom"
+            aria-hidden="true"
+          />
+          {{ choice.label }}
         </button>
       </div>
 
