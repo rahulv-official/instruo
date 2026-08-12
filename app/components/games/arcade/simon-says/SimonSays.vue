@@ -7,6 +7,37 @@ const inputIndex = ref(0);
 const level = ref(0);
 const phase = ref<Phase>("idle");
 let timers: ReturnType<typeof setTimeout>[] = [];
+let audioContext: AudioContext | null = null;
+
+const padFrequencies = [293.66, 329.63, 392, 523.25];
+
+function getAudioContext() {
+  if (!import.meta.client) return null;
+  if (!audioContext) {
+    const AudioContextConstructor = window.AudioContext
+      ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!AudioContextConstructor) return null;
+    audioContext = new AudioContextConstructor();
+  }
+  if (audioContext.state === "suspended") void audioContext.resume();
+  return audioContext;
+}
+
+function playPadSound(index: number, duration = 0.24) {
+  const context = getAudioContext();
+  if (!context) return;
+  const start = context.currentTime;
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+  oscillator.type = "sine";
+  oscillator.frequency.value = padFrequencies[index] ?? padFrequencies[0]!;
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(0.18, start + 0.012);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+  oscillator.connect(gain).connect(context.destination);
+  oscillator.start(start);
+  oscillator.stop(start + duration + 0.02);
+}
 
 const statusText = computed(() => {
   if (phase.value === "showing") return "Watch the pattern.";
@@ -35,6 +66,7 @@ function playSequence() {
       return;
     }
     activePad.value = sequence.value[index]!;
+    playPadSound(activePad.value, 0.34);
     timers.push(
       setTimeout(() => {
         activePad.value = null;
@@ -51,6 +83,7 @@ function playSequence() {
 }
 
 function start() {
+  getAudioContext();
   level.value = 1;
   sequence.value = [Math.floor(Math.random() * pads.length)];
   playSequence();
@@ -58,6 +91,7 @@ function start() {
 
 function pressPad(index: number) {
   if (phase.value !== "playing") return;
+  playPadSound(index);
   if (sequence.value[inputIndex.value] !== index) {
     phase.value = "lost";
     return;
@@ -71,7 +105,11 @@ function pressPad(index: number) {
   timers.push(setTimeout(playSequence, 720));
 }
 
-onBeforeUnmount(clearTimers);
+onBeforeUnmount(() => {
+  clearTimers();
+  void audioContext?.close();
+  audioContext = null;
+});
 </script>
 
 <template>
@@ -101,6 +139,7 @@ onBeforeUnmount(clearTimers);
           }"
           :data-active="activePad === index"
           :disabled="phase !== 'playing'"
+          :aria-label="`Play ${color} pad`"
           @click="pressPad(index)"
         >
           <UIcon
