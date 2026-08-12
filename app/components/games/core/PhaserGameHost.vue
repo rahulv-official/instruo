@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import type { PhaserGameFactory, PhaserGameState } from "~/core/phaser/types";
+import { PHASER_GAME_ASPECT } from "~/core/phaser/constants";
 
 const props = withDefaults(
   defineProps<{
     create: PhaserGameFactory;
     label?: string;
+    loadingTitle?: string;
+    loadingCopy?: string;
   }>(),
-  { label: "Interactive game" },
+  {
+    label: "Interactive game",
+    loadingTitle: "LOADING GAME",
+    loadingCopy: "Preparing your next round…",
+  },
 );
 
 const emit = defineEmits<{
@@ -17,6 +24,8 @@ const emit = defineEmits<{
 
 const mount = ref<HTMLElement | null>(null);
 const loading = ref(true);
+const isFullscreen = ref(false);
+const fullscreenTarget = ref<HTMLElement | null>(null);
 let game: Awaited<ReturnType<PhaserGameFactory>> | undefined;
 let disposed = false;
 
@@ -28,13 +37,44 @@ function restart() {
   game?.restartGame?.();
 }
 
-defineExpose({ restart, start });
+function getFullscreenTarget() {
+  return mount.value?.closest<HTMLElement>("[data-phaser-game-shell]") ?? mount.value;
+}
+
+function syncFullscreen() {
+  const target = fullscreenTarget.value ?? getFullscreenTarget();
+  fullscreenTarget.value = target;
+  isFullscreen.value = document.fullscreenElement === target;
+}
+
+async function toggleFullscreen() {
+  const target = fullscreenTarget.value ?? getFullscreenTarget();
+  if (!target) return;
+
+  try {
+    if (document.fullscreenElement === target) await document.exitFullscreen();
+    else await target.requestFullscreen();
+  } catch {
+    // Fullscreen can be denied by browser policy; game remains playable inline.
+  }
+}
+
+defineExpose({ isFullscreen, restart, start, toggleFullscreen });
 
 onMounted(async () => {
   if (!mount.value) return;
 
+  fullscreenTarget.value = getFullscreenTarget();
+  document.addEventListener("fullscreenchange", syncFullscreen);
+  syncFullscreen();
+
   try {
-    await document.fonts.load('16px "Kenney Future"');
+    // Load both weights before Phaser rasterizes any canvas text. This keeps
+    // the first frame from swapping from a fallback into the scalable UI font.
+    await Promise.all([
+      document.fonts.load('400 16px "Manrope"'),
+      document.fonts.load('700 16px "Manrope"'),
+    ]);
     game = await props.create(
       mount.value,
       (state) => emit("state", state),
@@ -60,6 +100,7 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   disposed = true;
+  document.removeEventListener("fullscreenchange", syncFullscreen);
   game?.destroy(true);
 });
 </script>
@@ -68,6 +109,7 @@ onBeforeUnmount(() => {
   <div
     ref="mount"
     class="phaser-game-host"
+    :style="{ '--phaser-game-aspect': PHASER_GAME_ASPECT }"
     :aria-label="props.label"
     :aria-busy="loading"
     role="application"
@@ -88,9 +130,9 @@ onBeforeUnmount(() => {
           width="208"
           height="64"
         />
-        <span>LOADING SKY</span>
+        <span>{{ props.loadingTitle }}</span>
       </div>
-      <span class="phaser-game-loading__copy">Warming up your wings…</span>
+      <span class="phaser-game-loading__copy">{{ props.loadingCopy }}</span>
     </div>
   </div>
 </template>
@@ -100,13 +142,14 @@ onBeforeUnmount(() => {
   position: relative;
   display: grid;
   width: min(100%, 26.25rem);
-  min-height: 40rem;
+  aspect-ratio: var(--phaser-game-aspect);
   margin-inline: auto;
   overflow: hidden;
   border: 1px solid #17324c;
   background: #b9e6f3;
   box-shadow: 0 18px 50px rgb(23 50 76 / 18%);
   contain: layout paint;
+  touch-action: none;
 }
 
 .phaser-game-loading {
@@ -121,7 +164,7 @@ onBeforeUnmount(() => {
   padding: 1rem;
   background: #17324c;
   color: #fff;
-  font-family: "Kenney Future", var(--font-mono), monospace;
+  font-family: var(--font-sans), system-ui, sans-serif;
 }
 
 .phaser-game-loading__sun {
@@ -177,7 +220,61 @@ onBeforeUnmount(() => {
   height: auto !important;
   margin: auto;
   background: #b9e6f3;
-  image-rendering: pixelated;
+  image-rendering: auto;
+  touch-action: none;
+}
+
+.phaser-game-host:fullscreen {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 0;
+  max-width: none;
+  border: 0;
+  border-radius: 0;
+  background: #111820;
+  box-shadow: none;
+  place-items: center;
+}
+
+.phaser-game-host:fullscreen :deep(canvas) {
+  width: min(100vw, calc(100dvh * var(--phaser-game-aspect))) !important;
+  height: min(100dvh, calc(100vw / var(--phaser-game-aspect))) !important;
+  max-width: 100vw;
+  max-height: 100dvh;
+  image-rendering: auto;
+}
+
+:global([data-phaser-game-shell]:fullscreen) {
+  position: relative !important;
+  inset: 0 !important;
+  display: grid !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #111820 !important;
+  box-shadow: none !important;
+  place-items: center !important;
+}
+
+:global([data-phaser-game-shell]:fullscreen > .phaser-game-host) {
+  width: min(100vw, calc(100dvh * var(--phaser-game-aspect))) !important;
+  height: min(100dvh, calc(100vw / var(--phaser-game-aspect))) !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+:global([data-phaser-game-shell]:fullscreen .phaser-game-host canvas) {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  image-rendering: auto !important;
 }
 
 @keyframes loading-float {

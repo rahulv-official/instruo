@@ -1,6 +1,11 @@
 import type { GameObjects } from "phaser";
 
 import type { PhaserGameFactory, PhaserGameHandle, PhaserGameState } from "~/core/phaser/types";
+import {
+  PHASER_GAME_HEIGHT as HEIGHT,
+  PHASER_GAME_WIDTH as WIDTH,
+  PHASER_GAME_SCALE as WORLD_SCALE,
+} from "~/core/phaser/constants";
 import { PHASER_EVENTS, phaserEventBus } from "~/core/phaser/EventBus";
 
 export interface FlappyBirdState extends PhaserGameState {
@@ -18,16 +23,15 @@ interface PipePair {
   scored: boolean;
 }
 
-const WIDTH = 420;
-const HEIGHT = 640;
-const GROUND_Y = HEIGHT - 54;
-const BIRD_X = 112;
-const BIRD_RADIUS = 16;
-const PIPE_WIDTH = 64;
-const PIPE_GAP = 176;
-const PIPE_SPEED = 188;
-const GRAVITY = 980;
-const FLAP_VELOCITY = -350;
+const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GROUND_Y = HEIGHT - 54 * WORLD_SCALE;
+const BIRD_X = 112 * WORLD_SCALE;
+const BIRD_RADIUS = 16 * WORLD_SCALE;
+const PIPE_WIDTH = 64 * WORLD_SCALE;
+const PIPE_GAP = 176 * WORLD_SCALE;
+const PIPE_SPEED = 188 * WORLD_SCALE;
+const GRAVITY = 980 * WORLD_SCALE;
+const FLAP_VELOCITY = -350 * WORLD_SCALE;
 const BEST_KEY = "instruo:flappy-bird-best";
 const HUD_DEPTH = 100;
 
@@ -64,7 +68,12 @@ function writeBest(best: number) {
   }
 }
 
-export const createFlappyBirdGame: PhaserGameFactory = async (parent, onState, onReady, onError) => {
+export const createFlappyBirdGame: PhaserGameFactory = async (
+  parent,
+  onState,
+  onReady,
+  onError,
+) => {
   const Phaser = (await import("phaser")).default;
 
   class FlappyScene extends Phaser.Scene {
@@ -93,6 +102,9 @@ export const createFlappyBirdGame: PhaserGameFactory = async (parent, onState, o
 
     create() {
       try {
+        // The larger logical world is the camera's native viewport. Let the
+        // host scale it responsively instead of zooming a smaller scene.
+        this.cameras.main.setZoom(1).setScroll(0, 0);
         this.cameras.main.setBackgroundColor("#b9e6f3");
         this.createSceneArt();
         this.createBird();
@@ -113,8 +125,8 @@ export const createFlappyBirdGame: PhaserGameFactory = async (parent, onState, o
         this.add
           .text(WIDTH / 2, HEIGHT / 2, "GAME COULD NOT LOAD", {
             color: "#17324c",
-            fontFamily: "monospace",
-            fontSize: "16px",
+            fontFamily: GAME_FONT,
+            fontSize: `${16 * WORLD_SCALE}px`,
             fontStyle: "bold",
           })
           .setOrigin(0.5);
@@ -191,72 +203,78 @@ export const createFlappyBirdGame: PhaserGameFactory = async (parent, onState, o
     }
 
     private createSceneArt() {
-      this.add.rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, COLORS.sky).setDepth(0);
-      this.add.circle(64, 116, 56, COLORS.cloud, 0.78).setDepth(1);
-      this.add.circle(103, 106, 38, COLORS.cloud, 0.78).setDepth(1);
-      this.add.circle(143, 126, 54, COLORS.cloud, 0.78).setDepth(1);
-      this.add.circle(329, 142, 52, COLORS.cloud, 0.64).setDepth(1);
-      this.add.circle(369, 156, 70, COLORS.cloud, 0.64).setDepth(1);
-      this.add.rectangle(WIDTH / 2, 286, WIDTH, 2, COLORS.skyDeep, 0.22).setDepth(1);
-      this.add.rectangle(WIDTH / 2, GROUND_Y + 27, WIDTH, 54, COLORS.ground).setDepth(5);
-      this.add.rectangle(WIDTH / 2, GROUND_Y, WIDTH, 7, COLORS.groundAccent).setDepth(6);
+      this.addToWorld(this.add.rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, COLORS.sky)).setDepth(0);
+      this.addToWorld(this.add.circle(64 * WORLD_SCALE, 116 * WORLD_SCALE, 56 * WORLD_SCALE, COLORS.cloud, 0.78)).setDepth(1);
+      this.addToWorld(this.add.circle(103 * WORLD_SCALE, 106 * WORLD_SCALE, 38 * WORLD_SCALE, COLORS.cloud, 0.78)).setDepth(1);
+      this.addToWorld(this.add.circle(143 * WORLD_SCALE, 126 * WORLD_SCALE, 54 * WORLD_SCALE, COLORS.cloud, 0.78)).setDepth(1);
+      this.addToWorld(this.add.circle(329 * WORLD_SCALE, 142 * WORLD_SCALE, 52 * WORLD_SCALE, COLORS.cloud, 0.64)).setDepth(1);
+      this.addToWorld(this.add.circle(369 * WORLD_SCALE, 156 * WORLD_SCALE, 70 * WORLD_SCALE, COLORS.cloud, 0.64)).setDepth(1);
+      this.addToWorld(this.add.rectangle(WIDTH / 2, 286 * WORLD_SCALE, WIDTH, 2 * WORLD_SCALE, COLORS.skyDeep, 0.22)).setDepth(1);
+      this.addToWorld(this.add.rectangle(WIDTH / 2, GROUND_Y + 27 * WORLD_SCALE, WIDTH, 54 * WORLD_SCALE, COLORS.ground)).setDepth(5);
+      this.addToWorld(this.add.rectangle(WIDTH / 2, GROUND_Y, WIDTH, 7 * WORLD_SCALE, COLORS.groundAccent)).setDepth(6);
 
-      this.add.text(24, 22, "SKYBOUND", {
-        color: "#17324c",
-        fontFamily: "Kenney Future, monospace",
-        fontSize: "17px",
-        fontStyle: "bold",
-      }).setDepth(HUD_DEPTH);
-      this.add
-        .text(WIDTH - 24, 27, "FLAPPY BIRD", {
+      this.addToWorld(this.add
+        .text(24 * WORLD_SCALE, 22 * WORLD_SCALE, "SKYBOUND", {
+          color: "#17324c",
+          fontFamily: GAME_FONT,
+          fontSize: `${17 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setDepth(HUD_DEPTH));
+      this.addToWorld(this.add
+        .text(WIDTH - 24 * WORLD_SCALE, 27 * WORLD_SCALE, "FLAPPY BIRD", {
           color: "#32627b",
-          fontFamily: "Kenney Future, monospace",
-          fontSize: "9px",
+          fontFamily: GAME_FONT,
+          fontSize: `${9 * WORLD_SCALE}px`,
         })
         .setOrigin(1, 0)
-        .setDepth(HUD_DEPTH);
+        .setDepth(HUD_DEPTH));
 
-      const scorePlate = this.add.rectangle(WIDTH / 2, 98, 126, 88, COLORS.panel, 0.94);
-      scorePlate.setStrokeStyle(2, COLORS.ink, 0.12).setDepth(HUD_DEPTH);
-      this.scoreText = this.add
-        .text(WIDTH / 2, 68, "0", {
+      const scorePlate = this.addToWorld(this.add.rectangle(WIDTH / 2, 98 * WORLD_SCALE, 126 * WORLD_SCALE, 88 * WORLD_SCALE, COLORS.panel, 0.94));
+      scorePlate.setStrokeStyle(2 * WORLD_SCALE, COLORS.ink, 0.12).setDepth(HUD_DEPTH);
+      this.scoreText = this.addToWorld(this.add
+        .text(WIDTH / 2, 68 * WORLD_SCALE, "0", {
           color: "#17324c",
-          fontFamily: "Kenney Future, monospace",
-          fontSize: "42px",
+          fontFamily: GAME_FONT,
+          fontSize: `${42 * WORLD_SCALE}px`,
           fontStyle: "bold",
         })
         .setOrigin(0.5, 0)
-        .setDepth(HUD_DEPTH + 1);
-      this.bestText = this.add
-        .text(WIDTH / 2, 118, `BEST  ${this.best}`, {
+        .setDepth(HUD_DEPTH + 1));
+      this.bestText = this.addToWorld(this.add
+        .text(WIDTH / 2, 118 * WORLD_SCALE, `BEST  ${this.best}`, {
           color: "#32627b",
-          fontFamily: "Kenney Future, monospace",
-          fontSize: "10px",
-          letterSpacing: 1,
+          fontFamily: GAME_FONT,
+          fontSize: `${10 * WORLD_SCALE}px`,
+          letterSpacing: 1 * WORLD_SCALE,
         })
         .setOrigin(0.5)
-        .setDepth(HUD_DEPTH + 1);
+        .setDepth(HUD_DEPTH + 1));
 
-      const hintY = HEIGHT - 30;
-      const hint = this.add.rectangle(WIDTH / 2, hintY, 246, 34, COLORS.panel, 0.94);
-      hint.setStrokeStyle(1, COLORS.ink, 0.16).setDepth(HUD_DEPTH);
-      this.add
+      const hintY = HEIGHT - 30 * WORLD_SCALE;
+      const hint = this.addToWorld(this.add.rectangle(WIDTH / 2, hintY, 246 * WORLD_SCALE, 34 * WORLD_SCALE, COLORS.panel, 0.94));
+      hint.setStrokeStyle(1 * WORLD_SCALE, COLORS.ink, 0.16).setDepth(HUD_DEPTH);
+      this.addToWorld(this.add
         .text(WIDTH / 2, hintY, "CLICK  /  SPACE  TO FLAP", {
           color: "#17324c",
-          fontFamily: "Kenney Future, monospace",
-          fontSize: "9px",
+          fontFamily: GAME_FONT,
+          fontSize: `${9 * WORLD_SCALE}px`,
         })
         .setOrigin(0.5)
-        .setDepth(HUD_DEPTH + 1);
+        .setDepth(HUD_DEPTH + 1));
     }
 
     private createBird() {
-      this.bird = this.add.circle(BIRD_X, this.birdY, BIRD_RADIUS, COLORS.bird);
-      this.bird.setStrokeStyle(3, COLORS.birdDark).setDepth(20);
-      this.wing = this.add.ellipse(BIRD_X - 7, this.birdY + 5, 14, 8, COLORS.birdDark);
+      this.bird = this.addToWorld(this.add.circle(BIRD_X, this.birdY, BIRD_RADIUS, COLORS.bird));
+      this.bird.setStrokeStyle(3 * WORLD_SCALE, COLORS.birdDark).setDepth(20);
+      this.wing = this.addToWorld(this.add.ellipse(BIRD_X - 7 * WORLD_SCALE, this.birdY + 5 * WORLD_SCALE, 14 * WORLD_SCALE, 8 * WORLD_SCALE, COLORS.birdDark));
       this.wing.setDepth(20);
-      this.eye = this.add.circle(BIRD_X + 7, this.birdY - 5, 3, COLORS.ink);
+      this.eye = this.addToWorld(this.add.circle(BIRD_X + 7 * WORLD_SCALE, this.birdY - 5 * WORLD_SCALE, 3 * WORLD_SCALE, COLORS.ink));
       this.eye.setDepth(21);
+    }
+
+    private addToWorld<T extends GameObjects.GameObject>(object: T) {
+      return object;
     }
 
     private resetRound() {
@@ -312,26 +330,26 @@ export const createFlappyBirdGame: PhaserGameFactory = async (parent, onState, o
     private setBirdY(value: number) {
       this.birdY = value;
       this.bird.y = value;
-      this.wing.y = value + 5;
-      this.eye.y = value - 5;
+      this.wing.y = value + 5 * WORLD_SCALE;
+      this.eye.y = value - 5 * WORLD_SCALE;
     }
 
     private spawnPipe() {
-      const gapTop = Phaser.Math.Between(146, GROUND_Y - PIPE_GAP - 44);
+      const gapTop = Phaser.Math.Between(146 * WORLD_SCALE, GROUND_Y - PIPE_GAP - 44 * WORLD_SCALE);
       const gapBottom = gapTop + PIPE_GAP;
       const x = WIDTH + PIPE_WIDTH;
       const topHeight = gapTop;
       const bottomHeight = GROUND_Y - gapBottom;
-      const top = this.add.rectangle(x, topHeight / 2, PIPE_WIDTH, topHeight, COLORS.pipe);
-      const bottom = this.add.rectangle(
+      const top = this.addToWorld(this.add.rectangle(x, topHeight / 2, PIPE_WIDTH, topHeight, COLORS.pipe));
+      const bottom = this.addToWorld(this.add.rectangle(
         x,
         gapBottom + bottomHeight / 2,
         PIPE_WIDTH,
         bottomHeight,
         COLORS.pipe,
-      );
-      top.setStrokeStyle(3, COLORS.pipeDark);
-      bottom.setStrokeStyle(3, COLORS.pipeDark);
+      ));
+      top.setStrokeStyle(3 * WORLD_SCALE, COLORS.pipeDark);
+      bottom.setStrokeStyle(3 * WORLD_SCALE, COLORS.pipeDark);
       top.setDepth(10);
       bottom.setDepth(10);
       this.pipes.push({ top, bottom, x, gapTop, gapBottom, scored: false });
@@ -377,8 +395,8 @@ export const createFlappyBirdGame: PhaserGameFactory = async (parent, onState, o
   }
 
   const game = new Phaser.Game({
-    // Canvas keeps this small pixel-art game reliable on browsers where a
-    // WebGL context is unavailable or blocked by privacy settings.
+    // A larger logical canvas keeps the pixel-art scene crisp while FIT
+    // scales it into the responsive host.
     type: Phaser.CANVAS,
     width: WIDTH,
     height: HEIGHT,
@@ -391,8 +409,8 @@ export const createFlappyBirdGame: PhaserGameFactory = async (parent, onState, o
       autoCenter: Phaser.Scale.CENTER_BOTH,
     },
     render: {
-      antialias: false,
-      roundPixels: true,
+      antialias: true,
+      roundPixels: false,
     },
   });
 

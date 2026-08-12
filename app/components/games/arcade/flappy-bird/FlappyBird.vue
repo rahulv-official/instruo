@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { FlappyBirdState } from "./createFlappyBirdGame";
 import type PhaserGameHost from "~/components/games/core/PhaserGameHost.vue";
-import type { FlappyBirdState } from "~/core/phaser/createFlappyBirdGame";
-import { createFlappyBirdGame } from "~/core/phaser/createFlappyBirdGame";
+import { createFlappyBirdGame } from "./createFlappyBirdGame";
 
 const gameHost = useTemplateRef<typeof PhaserGameHost>("gameHost");
 const loaded = ref(false);
@@ -10,7 +10,9 @@ const state = shallowRef<FlappyBirdState>({ status: "ready", score: 0, best: 0 }
 
 function updateState(nextState: Record<string, unknown>) {
   if (
-    (nextState.status === "ready" || nextState.status === "playing" || nextState.status === "over") &&
+    (nextState.status === "ready" ||
+      nextState.status === "playing" ||
+      nextState.status === "over") &&
     typeof nextState.score === "number" &&
     typeof nextState.best === "number"
   ) {
@@ -24,7 +26,9 @@ function updateState(nextState: Record<string, unknown>) {
 </script>
 
 <template>
-  <ToolWorkbench description="A bright, local flight game. Thread the pipes, chase your best score, and play again instantly.">
+  <ToolWorkbench
+    description="A bright, local flight game. Thread the pipes, chase your best score, and play again instantly."
+  >
     <div class="mx-auto grid max-w-xl gap-5">
       <div class="border-default/70 flex items-center justify-between border-b pb-4">
         <div>
@@ -32,22 +36,34 @@ function updateState(nextState: Record<string, unknown>) {
           <p class="text-muted mt-1 font-mono text-xs">Flappy Bird · local arcade run</p>
         </div>
         <div class="text-muted flex gap-4 font-mono text-xs">
-          <span>Score <strong class="text-highlighted">{{ state.score }}</strong></span>
-          <span>Best <strong class="text-highlighted">{{ state.best }}</strong></span>
+          <span>
+            Score <strong class="text-highlighted">{{ state.score }}</strong>
+          </span>
+          <span>
+            Best <strong class="text-highlighted">{{ state.best }}</strong>
+          </span>
         </div>
       </div>
 
       <div
         class="flappy-stage"
+        data-phaser-game-shell
         :class="{ 'is-over': loaded && state.status === 'over' }"
       >
         <PhaserGameHost
           ref="gameHost"
           :create="createFlappyBirdGame"
           label="Flappy Bird game stage"
+          loading-title="LOADING SKY"
+          loading-copy="Warming up your wings…"
           @state="updateState"
           @ready="loaded = true"
           @error="gameError = true"
+        />
+
+        <PhaserFullscreenButton
+          :is-fullscreen="gameHost?.isFullscreen ?? false"
+          @toggle="gameHost?.toggleFullscreen()"
         />
 
         <Transition name="flappy-fade">
@@ -56,7 +72,12 @@ function updateState(nextState: Record<string, unknown>) {
             class="flappy-overlay flappy-overlay--start"
           >
             <div class="flappy-card">
-              <div class="flappy-card__spark" aria-hidden="true">✦</div>
+              <div
+                class="flappy-card__spark"
+                aria-hidden="true"
+              >
+                ✦
+              </div>
               <h2>Ready for takeoff?</h2>
               <p>Keep the little flyer in the clear sky. One tap keeps the journey going.</p>
               <button
@@ -71,7 +92,13 @@ function updateState(nextState: Record<string, unknown>) {
                   width="232"
                   height="70"
                 />
-                <span><Icon name="tabler:player-play-filled" aria-hidden="true" /> Play now</span>
+                <span>
+                  <Icon
+                    name="tabler:player-play-filled"
+                    aria-hidden="true"
+                  />
+                  Play now
+                </span>
               </button>
               <p class="flappy-card__hint">Click, tap, or press Space</p>
             </div>
@@ -87,7 +114,12 @@ function updateState(nextState: Record<string, unknown>) {
             aria-labelledby="flappy-over-title"
           >
             <div class="flappy-card flappy-card--over">
-              <div class="flappy-card__mark" aria-hidden="true"><Icon name="tabler:wind" /></div>
+              <div
+                class="flappy-card__mark"
+                aria-hidden="true"
+              >
+                <Icon name="tabler:wind" />
+              </div>
               <h2 id="flappy-over-title">Flight over</h2>
               <p class="flappy-card__score">{{ state.score }}</p>
               <p class="flappy-card__label">SCORE</p>
@@ -104,7 +136,13 @@ function updateState(nextState: Record<string, unknown>) {
                   width="232"
                   height="70"
                 />
-                <span><Icon name="tabler:refresh" aria-hidden="true" /> Try again</span>
+                <span>
+                  <Icon
+                    name="tabler:refresh"
+                    aria-hidden="true"
+                  />
+                  Try again
+                </span>
               </button>
               <p class="flappy-card__hint">Your next flight starts fresh</p>
             </div>
@@ -117,7 +155,12 @@ function updateState(nextState: Record<string, unknown>) {
           role="alert"
         >
           <div class="flappy-card flappy-card--over">
-            <div class="flappy-card__mark" aria-hidden="true"><Icon name="tabler:alert-triangle" /></div>
+            <div
+              class="flappy-card__mark"
+              aria-hidden="true"
+            >
+              <Icon name="tabler:alert-triangle" />
+            </div>
             <h2>Flight deck unavailable</h2>
             <p>Something blocked the game renderer. Reload this page and try once more.</p>
           </div>
@@ -131,7 +174,9 @@ function updateState(nextState: Record<string, unknown>) {
       >
         The game could not load. Reload the page to try again.
       </p>
-      <p class="text-muted text-center font-mono text-xs">Click, tap, or press Space to flap. No account needed.</p>
+      <p class="text-muted text-center font-mono text-xs">
+        Click, tap, or press Space to flap. No account needed.
+      </p>
     </div>
   </ToolWorkbench>
 </template>
@@ -154,7 +199,9 @@ function updateState(nextState: Record<string, unknown>) {
 .flappy-stage.is-over :deep(canvas) {
   filter: blur(6px) saturate(0.72);
   transform: scale(1.035);
-  transition: filter 280ms ease, transform 280ms ease;
+  transition:
+    filter 280ms ease,
+    transform 280ms ease;
 }
 
 .flappy-overlay {
@@ -189,7 +236,7 @@ function updateState(nextState: Record<string, unknown>) {
 
 .flappy-card h2 {
   margin: 0;
-  font-family: "Kenney Future", var(--font-sans), sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 1.45rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -213,7 +260,7 @@ function updateState(nextState: Record<string, unknown>) {
   border-radius: 999px;
   background: #f4bd68;
   color: #17324c;
-  font-family: "Kenney Future", var(--font-sans), sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 1.25rem;
 }
 
@@ -232,11 +279,13 @@ function updateState(nextState: Record<string, unknown>) {
   border: 0;
   color: #fff;
   cursor: pointer;
-  font-family: "Kenney Future", var(--font-sans), sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  transition: transform 140ms ease, filter 140ms ease;
+  transition:
+    transform 140ms ease,
+    filter 140ms ease;
 }
 
 .flappy-asset-button img {
@@ -277,7 +326,7 @@ function updateState(nextState: Record<string, unknown>) {
 .flappy-card__score {
   margin-top: 0.25rem !important;
   color: #17324c !important;
-  font-family: "Kenney Future", var(--font-sans), sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 3.3rem !important;
   font-weight: 700;
   line-height: 1;
