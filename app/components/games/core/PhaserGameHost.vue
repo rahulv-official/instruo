@@ -8,6 +8,7 @@ const props = withDefaults(
     label?: string;
     loadingTitle?: string;
     loadingCopy?: string;
+    loadingBackground?: string;
   }>(),
   {
     label: "Interactive game",
@@ -21,6 +22,13 @@ const emit = defineEmits<{
   error: [error: unknown];
   ready: [];
 }>();
+
+const hostStyle = computed(() => ({
+  "--phaser-game-aspect": PHASER_GAME_ASPECT,
+  ...(props.loadingBackground
+    ? { "--phaser-game-loading-bg": props.loadingBackground }
+    : {}),
+}));
 
 const mount = ref<HTMLElement | null>(null);
 const loading = ref(true);
@@ -116,7 +124,7 @@ onBeforeUnmount(() => {
     ref="mount"
     class="phaser-game-host"
     :class="{ 'is-loading': loading }"
-    :style="{ '--phaser-game-aspect': PHASER_GAME_ASPECT }"
+    :style="hostStyle"
     :aria-label="props.label"
     :aria-busy="loading"
     role="application"
@@ -158,11 +166,12 @@ onBeforeUnmount(() => {
 .phaser-game-host {
   position: relative;
   display: grid;
-  width: min(100%, 26.25rem);
+  width: 100%;
+  max-width: none;
   aspect-ratio: var(--phaser-game-aspect);
   margin-inline: auto;
   overflow: hidden;
-  border: 1px solid #17324c;
+  border: 1px solid var(--phaser-game-loading-bg, #17324c);
   background: var(--phaser-game-loading-bg, #17324c);
   box-shadow: 0 18px 50px rgb(23 50 76 / 18%);
   contain: layout paint;
@@ -252,7 +261,7 @@ onBeforeUnmount(() => {
   max-width: none;
   border: 0;
   border-radius: 0;
-  background: #111820;
+  background: var(--phaser-game-loading-bg, #111820);
   box-shadow: none;
   place-items: center;
 }
@@ -275,7 +284,7 @@ onBeforeUnmount(() => {
   max-width: none !important;
   border: 0 !important;
   border-radius: 0 !important;
-  background: #111820 !important;
+  background: var(--phaser-game-loading-bg, #111820) !important;
   box-shadow: none !important;
   place-items: center !important;
 }

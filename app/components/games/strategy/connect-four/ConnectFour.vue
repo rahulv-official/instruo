@@ -1,185 +1,111 @@
 <script setup lang="ts">
-type Player = "red" | "yellow";
+import type { ConnectFourGameState } from "./createConnectFourGame";
+import type PhaserGameHost from "~/components/games/core/PhaserGameHost.vue";
+import { createConnectFourGame } from "./createConnectFourGame";
 
-const columns = 7;
-const rows = 6;
-const cells = Array.from({ length: rows * columns }, (_, index) => index);
-const directions = [
-  [0, 1],
-  [1, 0],
-  [1, 1],
-  [1, -1],
-];
-
-const board = shallowRef<(Player | null)[]>(Array<Player | null>(rows * columns).fill(null));
-const currentPlayer = ref<Player>("red");
-
-const winningLine = computed(() => getWinningLine(board.value));
-const winner = computed(() => (winningLine.value ? board.value[winningLine.value[0]!] : null));
-const winningCells = computed(() => new Set(winningLine.value ?? []));
-const moves = computed(() => board.value.filter(Boolean).length);
-const isDraw = computed(() => moves.value === rows * columns && !winner.value);
-const finished = computed(() => Boolean(winner.value) || isDraw.value);
-const status = computed(() => {
-  if (winner.value) return `${playerLabel(winner.value)} wins with four in a row.`;
-  if (isDraw.value) return "Draw. The board is full.";
-  return `${playerLabel(currentPlayer.value)} to drop a disc.`;
+const gameHost = useTemplateRef<typeof PhaserGameHost>("gameHost");
+const loaded = ref(false);
+const gameError = ref(false);
+const state = shallowRef<ConnectFourGameState>({
+  status: "ready",
+  currentPlayer: "red",
+  winner: null,
+  moves: 0,
+  winningLine: [],
 });
 
-function playerLabel(player: Player) {
-  return player === "red" ? "Red" : "Yellow";
-}
+const playerLabel = computed(() => state.value.currentPlayer === "red" ? "Red" : "Yellow");
+const resultTitle = computed(() => state.value.winner ? `${state.value.winner === "red" ? "Red" : "Yellow"} wins` : "Board full");
+const resultCopy = computed(() => state.value.winner ? "Four connected. Clean drop, strong finish." : "Every slot is filled. Reset and try a new opening.");
 
-function getWinningLine(state: (Player | null)[]) {
-  for (let row = 0; row < rows; row += 1) {
-    for (let column = 0; column < columns; column += 1) {
-      const player = state[row * columns + column];
-      if (!player) continue;
-
-      for (const [rowStep, columnStep] of directions) {
-        const line = Array.from({ length: 4 }, (_, offset) => {
-          const nextRow = row + rowStep! * offset;
-          const nextColumn = column + columnStep! * offset;
-          if (nextRow < 0 || nextRow >= rows || nextColumn < 0 || nextColumn >= columns) return -1;
-          return nextRow * columns + nextColumn;
-        });
-        if (line.every((index) => index >= 0 && state[index] === player)) return line;
-      }
-    }
-  }
-  return null;
-}
-
-function canPlay(column: number) {
-  return board.value[column] === null && !finished.value;
-}
-
-function drop(column: number) {
-  if (!canPlay(column)) return;
-
-  const nextBoard = [...board.value];
-  for (let row = rows - 1; row >= 0; row -= 1) {
-    const index = row * columns + column;
-    if (nextBoard[index] === null) {
-      nextBoard[index] = currentPlayer.value;
-      break;
-    }
-  }
-  board.value = nextBoard;
-  if (!getWinningLine(nextBoard) && !nextBoard.every(Boolean)) {
-    currentPlayer.value = currentPlayer.value === "red" ? "yellow" : "red";
-  }
-}
-
-function reset() {
-  board.value = Array<Player | null>(rows * columns).fill(null);
-  currentPlayer.value = "red";
-}
-
-function discClass(player: Player | null) {
-  if (player === "red") return "bg-error border-error";
-  if (player === "yellow") return "bg-warning border-warning";
-  return "border-default/70 bg-default";
-}
-
-if (import.meta.dev) {
-  const check = Array<Player | null>(rows * columns).fill(null);
-  check[35] = "red";
-  check[36] = "red";
-  check[37] = "red";
-  check[38] = "red";
-  if (getWinningLine(check)?.join(",") !== "35,36,37,38") {
-    throw new Error("Connect Four line check failed");
+function updateState(next: Record<string, unknown>) {
+  if (
+    (next.status === "ready" || next.status === "playing" || next.status === "over") &&
+    (next.currentPlayer === "red" || next.currentPlayer === "yellow") &&
+    (next.winner === null || next.winner === "red" || next.winner === "yellow") &&
+    typeof next.moves === "number" &&
+    Array.isArray(next.winningLine)
+  ) {
+    state.value = {
+      status: next.status,
+      currentPlayer: next.currentPlayer,
+      winner: next.winner,
+      moves: next.moves,
+      winningLine: next.winningLine.filter((value): value is number => typeof value === "number"),
+    };
   }
 }
 </script>
 
 <template>
-  <ToolWorkbench
-    description="Drop discs into a seven-column board. First player to make four in a row wins."
-  >
-    <div class="mx-auto grid max-w-2xl gap-6">
-      <div class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
-        <p
-          class="flex min-w-0 flex-1 items-center gap-2 text-sm leading-6"
-          :class="
-            winner
-              ? winner === 'red'
-                ? 'text-error'
-                : 'text-warning'
-              : isDraw
-                ? 'text-warning'
-                : 'text-toned'
-          "
-          role="status"
-          aria-live="polite"
-        >
-          <UIcon
-            v-if="winner"
-            :name="winner === 'red' ? 'i-lucide-circle-x' : 'i-lucide-circle-check'"
-            class="size-4 shrink-0"
-            aria-hidden="true"
-          />
-          <UIcon
-            v-else-if="isDraw"
-            name="i-lucide-circle-minus"
-            class="size-4 shrink-0"
-            aria-hidden="true"
-          />
-          {{ status }}
-        </p>
-        <span class="text-toned shrink-0 font-mono text-sm">{{ moves }}/42</span>
-      </div>
+  <ToolWorkbench description="Drop discs into a physical-feeling board. First player to connect four wins.">
+    <div class="mx-auto grid max-w-xl gap-5">
+      <header class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
+        <div>
+          <p class="text-highlighted text-sm font-semibold">Connect Four</p>
+          <p class="text-muted mt-1 font-mono text-xs">Drop Zone · two-player local match</p>
+        </div>
+        <div class="text-muted flex items-center gap-3 font-mono text-xs">
+          <span>{{ playerLabel }} to move</span>
+          <span><strong class="text-highlighted">{{ state.moves }}</strong>/42</span>
+        </div>
+      </header>
 
-      <div class="flex justify-center">
-        <div
-          class="bg-muted/30 grid aspect-[7/6] w-[min(100%,36rem)] grid-cols-7 grid-rows-6 border-2 p-1.5 sm:p-2"
-          :class="
-            winner
-              ? winner === 'red'
-                ? 'border-error'
-                : 'border-warning'
-              : isDraw
-                ? 'border-warning'
-                : 'border-inverted'
-          "
-          aria-label="Connect Four board"
-        >
-          <button
-            v-for="index in cells"
-            :key="index"
-            type="button"
-            class="focus-visible:ring-primary flex min-h-0 min-w-0 items-center justify-center p-1 transition-colors duration-200 focus-visible:z-10 focus-visible:ring-2 focus-visible:outline-none sm:p-1.5"
-            :disabled="!canPlay(index % columns)"
-            :aria-label="`Column ${(index % columns) + 1}, row ${Math.floor(index / columns) + 1}${board[index] ? `, ${playerLabel(board[index]!)}` : ''}`"
-            @click="drop(index % columns)"
-          >
-            <span
-              class="size-[76%] rounded-full border-2 transition-[background-color,border-color,transform] duration-200"
-              :class="[
-                discClass(board[index] ?? null),
-                winningCells.has(index) ? 'ring-success/20 scale-110 ring-4' : '',
-              ]"
-              aria-hidden="true"
-            />
-          </button>
+      <div
+        class="relative overflow-hidden border border-default"
+        data-phaser-game-shell
+        style="--phaser-game-loading-bg: #162336"
+      >
+        <PhaserGameHost
+          ref="gameHost"
+          :create="createConnectFourGame"
+          label="Connect Four game stage"
+          loading-title="LOADING DROP ZONE"
+          loading-copy="Polishing the board and discs…"
+          loading-background="#162336"
+          :class="{ 'blur-sm': loaded && state.status === 'over' }"
+          @state="updateState"
+          @ready="loaded = true"
+          @error="gameError = true"
+        />
+
+        <PhaserFullscreenButton
+          :is-fullscreen="gameHost?.isFullscreen ?? false"
+          @toggle="gameHost?.toggleFullscreen()"
+        />
+
+        <div v-if="loaded && state.status === 'ready'" class="absolute inset-0 z-10 grid place-items-center bg-default/70 p-5">
+          <div class="grid w-full max-w-sm gap-4 border border-default bg-elevated p-6 text-center shadow-xl">
+            <div class="mx-auto grid size-14 place-items-center bg-primary text-2xl text-inverted" aria-hidden="true"><Icon name="tabler:circle-dot" /></div>
+            <h2 class="text-xl font-semibold text-highlighted">Set your opening</h2>
+            <p class="text-sm leading-6 text-muted">Red starts. Drop discs, watch them bounce into place, and build a line before your opponent does.</p>
+            <button type="button" class="relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold text-inverted transition-transform active:translate-y-px focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" @click.stop="gameHost?.start()">
+              <NuxtImg src="/game-assets/kenney/ui/PNG/Green/Default/button_rectangle_depth_gloss.png" alt="" aria-hidden="true" class="absolute inset-0 size-full" width="232" height="70" />
+              <span class="relative inline-flex items-center gap-2"><Icon name="tabler:player-play-filled" aria-hidden="true" /> Start match</span>
+            </button>
+            <p class="font-mono text-xs text-muted">Tap a column · arrows + Enter</p>
+          </div>
+        </div>
+
+        <div v-if="loaded && state.status === 'over'" class="absolute inset-0 z-10 grid place-items-center bg-default/70 p-5" role="dialog" aria-modal="true" aria-labelledby="connect-four-over-title">
+          <div class="grid w-full max-w-sm gap-4 border border-default bg-elevated p-6 text-center shadow-xl">
+            <div class="mx-auto grid size-14 place-items-center bg-primary text-2xl text-inverted" aria-hidden="true"><Icon :name="state.winner ? 'tabler:trophy' : 'tabler:equal'" /></div>
+            <h2 id="connect-four-over-title" class="text-xl font-semibold text-highlighted">{{ resultTitle }}</h2>
+            <p class="text-sm leading-6 text-muted">{{ resultCopy }}</p>
+            <p class="font-mono text-xs uppercase tracking-[0.18em] text-muted">{{ state.moves }} moves played</p>
+            <button type="button" class="relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold text-inverted transition-transform active:translate-y-px focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" @click.stop="gameHost?.restart()">
+              <NuxtImg src="/game-assets/kenney/ui/PNG/Green/Default/button_rectangle_depth_gloss.png" alt="" aria-hidden="true" class="absolute inset-0 size-full" width="232" height="70" />
+              <span class="relative inline-flex items-center gap-2"><Icon name="tabler:refresh" aria-hidden="true" /> New match</span>
+            </button>
+          </div>
+        </div>
+
+        <div v-if="gameError" class="absolute inset-0 z-20 grid place-items-center bg-default p-5" role="alert">
+          <UAlert color="error" variant="subtle" title="Game unavailable" description="Reload the page and try once more." icon="i-lucide-circle-alert" />
         </div>
       </div>
 
-      <div
-        class="border-default/70 flex flex-wrap items-center justify-between gap-4 border-t pt-5"
-      >
-        <p class="text-muted text-sm leading-6">
-          Red starts. Play locally with another person on this device.
-        </p>
-        <UButton
-          label="New round"
-          color="neutral"
-          variant="outline"
-          icon="i-lucide-refresh-cw"
-          @click="reset"
-        />
-      </div>
+      <p class="text-center font-mono text-xs text-muted">Red starts · bounce, block, connect four · no account needed</p>
     </div>
   </ToolWorkbench>
 </template>
