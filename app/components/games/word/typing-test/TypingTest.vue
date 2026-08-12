@@ -74,7 +74,8 @@ onBeforeUnmount(() => timer && clearInterval(timer));
         aria-label="Typing progress"
       />
       <div class="flex justify-between">
-        <span class="text-muted font-mono text-sm">{{ words }} words</span><UButton
+        <span class="text-muted font-mono text-sm">{{ words }} words</span
+        ><UButton
           label="Reset"
           color="neutral"
           variant="outline"

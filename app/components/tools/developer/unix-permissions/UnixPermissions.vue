@@ -31,9 +31,11 @@ const result = computed(() => {
         />
       </UFormField>
       <div class="border-default/70 grid gap-3 border p-5">
-        <span class="text-muted text-xs uppercase">Symbolic mode</span><strong class="text-highlighted font-mono text-3xl">{{
+        <span class="text-muted text-xs uppercase">Symbolic mode</span
+        ><strong class="text-highlighted font-mono text-3xl">{{
           result.symbolic || "---------"
-        }}</strong><code class="text-toned text-sm">{{ result.command || "chmod 755 file" }}</code>
+        }}</strong
+        ><code class="text-toned text-sm">{{ result.command || "chmod 755 file" }}</code>
       </div>
     </div>
   </ToolWorkbench>

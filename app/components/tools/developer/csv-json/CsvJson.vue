@@ -32,8 +32,8 @@ const result = computed(() => {
           :rows="14"
           class="w-full font-mono"
           placeholder="name,score"
-        />
-      </UFormField><UFormField
+        /> </UFormField
+      ><UFormField
         label="JSON output"
         :error="result.error || undefined"
       >

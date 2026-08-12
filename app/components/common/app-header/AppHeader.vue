@@ -39,7 +39,7 @@ const items = computed<NavigationMenuItem[]>(() => [
           width="32"
           height="32"
           class="size-8 shrink-0"
-        >
+        />
         <span class="text-highlighted text-base font-semibold tracking-tight">Instruo</span>
       </NuxtLink>
     </template>

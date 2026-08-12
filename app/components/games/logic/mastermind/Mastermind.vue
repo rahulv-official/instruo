@@ -82,11 +82,15 @@ function reset() {
           :key="`${attempt.value}-${attempts.indexOf(attempt)}`"
           class="mastermind-row border-default/70 flex items-center justify-between border-b py-3 font-mono"
         >
-          <span>{{ attempt.value }}</span><span class="text-muted text-sm">{{ attempt.exact }} exact · {{ attempt.close }} close</span>
+          <span>{{ attempt.value }}</span
+          ><span class="text-muted text-sm"
+            >{{ attempt.exact }} exact · {{ attempt.close }} close</span
+          >
         </li>
       </ol>
       <div class="flex items-center justify-between">
-        <span class="text-muted font-mono text-xs">{{ attempts.length }}/8 attempts</span><UButton
+        <span class="text-muted font-mono text-xs">{{ attempts.length }}/8 attempts</span
+        ><UButton
           label="New code"
           color="neutral"
           variant="outline"

@@ -203,73 +203,147 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
     }
 
     private createSceneArt() {
-      this.addToWorld(this.add.rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, COLORS.sky)).setDepth(0);
-      this.addToWorld(this.add.circle(64 * WORLD_SCALE, 116 * WORLD_SCALE, 56 * WORLD_SCALE, COLORS.cloud, 0.78)).setDepth(1);
-      this.addToWorld(this.add.circle(103 * WORLD_SCALE, 106 * WORLD_SCALE, 38 * WORLD_SCALE, COLORS.cloud, 0.78)).setDepth(1);
-      this.addToWorld(this.add.circle(143 * WORLD_SCALE, 126 * WORLD_SCALE, 54 * WORLD_SCALE, COLORS.cloud, 0.78)).setDepth(1);
-      this.addToWorld(this.add.circle(329 * WORLD_SCALE, 142 * WORLD_SCALE, 52 * WORLD_SCALE, COLORS.cloud, 0.64)).setDepth(1);
-      this.addToWorld(this.add.circle(369 * WORLD_SCALE, 156 * WORLD_SCALE, 70 * WORLD_SCALE, COLORS.cloud, 0.64)).setDepth(1);
-      this.addToWorld(this.add.rectangle(WIDTH / 2, 286 * WORLD_SCALE, WIDTH, 2 * WORLD_SCALE, COLORS.skyDeep, 0.22)).setDepth(1);
-      this.addToWorld(this.add.rectangle(WIDTH / 2, GROUND_Y + 27 * WORLD_SCALE, WIDTH, 54 * WORLD_SCALE, COLORS.ground)).setDepth(5);
-      this.addToWorld(this.add.rectangle(WIDTH / 2, GROUND_Y, WIDTH, 7 * WORLD_SCALE, COLORS.groundAccent)).setDepth(6);
+      this.addToWorld(
+        this.add.rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, COLORS.sky),
+      ).setDepth(0);
+      this.addToWorld(
+        this.add.circle(64 * WORLD_SCALE, 116 * WORLD_SCALE, 56 * WORLD_SCALE, COLORS.cloud, 0.78),
+      ).setDepth(1);
+      this.addToWorld(
+        this.add.circle(103 * WORLD_SCALE, 106 * WORLD_SCALE, 38 * WORLD_SCALE, COLORS.cloud, 0.78),
+      ).setDepth(1);
+      this.addToWorld(
+        this.add.circle(143 * WORLD_SCALE, 126 * WORLD_SCALE, 54 * WORLD_SCALE, COLORS.cloud, 0.78),
+      ).setDepth(1);
+      this.addToWorld(
+        this.add.circle(329 * WORLD_SCALE, 142 * WORLD_SCALE, 52 * WORLD_SCALE, COLORS.cloud, 0.64),
+      ).setDepth(1);
+      this.addToWorld(
+        this.add.circle(369 * WORLD_SCALE, 156 * WORLD_SCALE, 70 * WORLD_SCALE, COLORS.cloud, 0.64),
+      ).setDepth(1);
+      this.addToWorld(
+        this.add.rectangle(
+          WIDTH / 2,
+          286 * WORLD_SCALE,
+          WIDTH,
+          2 * WORLD_SCALE,
+          COLORS.skyDeep,
+          0.22,
+        ),
+      ).setDepth(1);
+      this.addToWorld(
+        this.add.rectangle(
+          WIDTH / 2,
+          GROUND_Y + 27 * WORLD_SCALE,
+          WIDTH,
+          54 * WORLD_SCALE,
+          COLORS.ground,
+        ),
+      ).setDepth(5);
+      this.addToWorld(
+        this.add.rectangle(WIDTH / 2, GROUND_Y, WIDTH, 7 * WORLD_SCALE, COLORS.groundAccent),
+      ).setDepth(6);
 
-      this.addToWorld(this.add
-        .text(24 * WORLD_SCALE, 22 * WORLD_SCALE, "SKYBOUND", {
-          color: "#17324c",
-          fontFamily: GAME_FONT,
-          fontSize: `${17 * WORLD_SCALE}px`,
-          fontStyle: "bold",
-        })
-        .setDepth(HUD_DEPTH));
-      this.addToWorld(this.add
-        .text(WIDTH - 24 * WORLD_SCALE, 27 * WORLD_SCALE, "FLAPPY BIRD", {
-          color: "#32627b",
-          fontFamily: GAME_FONT,
-          fontSize: `${9 * WORLD_SCALE}px`,
-        })
-        .setOrigin(1, 0)
-        .setDepth(HUD_DEPTH));
+      this.addToWorld(
+        this.add
+          .text(24 * WORLD_SCALE, 22 * WORLD_SCALE, "SKYBOUND", {
+            color: "#17324c",
+            fontFamily: GAME_FONT,
+            fontSize: `${17 * WORLD_SCALE}px`,
+            fontStyle: "bold",
+          })
+          .setDepth(HUD_DEPTH),
+      );
+      this.addToWorld(
+        this.add
+          .text(WIDTH - 24 * WORLD_SCALE, 27 * WORLD_SCALE, "FLAPPY BIRD", {
+            color: "#32627b",
+            fontFamily: GAME_FONT,
+            fontSize: `${9 * WORLD_SCALE}px`,
+          })
+          .setOrigin(1, 0)
+          .setDepth(HUD_DEPTH),
+      );
 
-      const scorePlate = this.addToWorld(this.add.rectangle(WIDTH / 2, 98 * WORLD_SCALE, 126 * WORLD_SCALE, 88 * WORLD_SCALE, COLORS.panel, 0.94));
+      const scorePlate = this.addToWorld(
+        this.add.rectangle(
+          WIDTH / 2,
+          98 * WORLD_SCALE,
+          126 * WORLD_SCALE,
+          88 * WORLD_SCALE,
+          COLORS.panel,
+          0.94,
+        ),
+      );
       scorePlate.setStrokeStyle(2 * WORLD_SCALE, COLORS.ink, 0.12).setDepth(HUD_DEPTH);
-      this.scoreText = this.addToWorld(this.add
-        .text(WIDTH / 2, 68 * WORLD_SCALE, "0", {
-          color: "#17324c",
-          fontFamily: GAME_FONT,
-          fontSize: `${42 * WORLD_SCALE}px`,
-          fontStyle: "bold",
-        })
-        .setOrigin(0.5, 0)
-        .setDepth(HUD_DEPTH + 1));
-      this.bestText = this.addToWorld(this.add
-        .text(WIDTH / 2, 118 * WORLD_SCALE, `BEST  ${this.best}`, {
-          color: "#32627b",
-          fontFamily: GAME_FONT,
-          fontSize: `${10 * WORLD_SCALE}px`,
-          letterSpacing: 1 * WORLD_SCALE,
-        })
-        .setOrigin(0.5)
-        .setDepth(HUD_DEPTH + 1));
+      this.scoreText = this.addToWorld(
+        this.add
+          .text(WIDTH / 2, 68 * WORLD_SCALE, "0", {
+            color: "#17324c",
+            fontFamily: GAME_FONT,
+            fontSize: `${42 * WORLD_SCALE}px`,
+            fontStyle: "bold",
+          })
+          .setOrigin(0.5, 0)
+          .setDepth(HUD_DEPTH + 1),
+      );
+      this.bestText = this.addToWorld(
+        this.add
+          .text(WIDTH / 2, 118 * WORLD_SCALE, `BEST  ${this.best}`, {
+            color: "#32627b",
+            fontFamily: GAME_FONT,
+            fontSize: `${10 * WORLD_SCALE}px`,
+            letterSpacing: 1 * WORLD_SCALE,
+          })
+          .setOrigin(0.5)
+          .setDepth(HUD_DEPTH + 1),
+      );
 
       const hintY = HEIGHT - 30 * WORLD_SCALE;
-      const hint = this.addToWorld(this.add.rectangle(WIDTH / 2, hintY, 246 * WORLD_SCALE, 34 * WORLD_SCALE, COLORS.panel, 0.94));
+      const hint = this.addToWorld(
+        this.add.rectangle(
+          WIDTH / 2,
+          hintY,
+          246 * WORLD_SCALE,
+          34 * WORLD_SCALE,
+          COLORS.panel,
+          0.94,
+        ),
+      );
       hint.setStrokeStyle(1 * WORLD_SCALE, COLORS.ink, 0.16).setDepth(HUD_DEPTH);
-      this.addToWorld(this.add
-        .text(WIDTH / 2, hintY, "CLICK  /  SPACE  TO FLAP", {
-          color: "#17324c",
-          fontFamily: GAME_FONT,
-          fontSize: `${9 * WORLD_SCALE}px`,
-        })
-        .setOrigin(0.5)
-        .setDepth(HUD_DEPTH + 1));
+      this.addToWorld(
+        this.add
+          .text(WIDTH / 2, hintY, "CLICK  /  SPACE  TO FLAP", {
+            color: "#17324c",
+            fontFamily: GAME_FONT,
+            fontSize: `${9 * WORLD_SCALE}px`,
+          })
+          .setOrigin(0.5)
+          .setDepth(HUD_DEPTH + 1),
+      );
     }
 
     private createBird() {
       this.bird = this.addToWorld(this.add.circle(BIRD_X, this.birdY, BIRD_RADIUS, COLORS.bird));
       this.bird.setStrokeStyle(3 * WORLD_SCALE, COLORS.birdDark).setDepth(20);
-      this.wing = this.addToWorld(this.add.ellipse(BIRD_X - 7 * WORLD_SCALE, this.birdY + 5 * WORLD_SCALE, 14 * WORLD_SCALE, 8 * WORLD_SCALE, COLORS.birdDark));
+      this.wing = this.addToWorld(
+        this.add.ellipse(
+          BIRD_X - 7 * WORLD_SCALE,
+          this.birdY + 5 * WORLD_SCALE,
+          14 * WORLD_SCALE,
+          8 * WORLD_SCALE,
+          COLORS.birdDark,
+        ),
+      );
       this.wing.setDepth(20);
-      this.eye = this.addToWorld(this.add.circle(BIRD_X + 7 * WORLD_SCALE, this.birdY - 5 * WORLD_SCALE, 3 * WORLD_SCALE, COLORS.ink));
+      this.eye = this.addToWorld(
+        this.add.circle(
+          BIRD_X + 7 * WORLD_SCALE,
+          this.birdY - 5 * WORLD_SCALE,
+          3 * WORLD_SCALE,
+          COLORS.ink,
+        ),
+      );
       this.eye.setDepth(21);
     }
 
@@ -340,14 +414,12 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       const x = WIDTH + PIPE_WIDTH;
       const topHeight = gapTop;
       const bottomHeight = GROUND_Y - gapBottom;
-      const top = this.addToWorld(this.add.rectangle(x, topHeight / 2, PIPE_WIDTH, topHeight, COLORS.pipe));
-      const bottom = this.addToWorld(this.add.rectangle(
-        x,
-        gapBottom + bottomHeight / 2,
-        PIPE_WIDTH,
-        bottomHeight,
-        COLORS.pipe,
-      ));
+      const top = this.addToWorld(
+        this.add.rectangle(x, topHeight / 2, PIPE_WIDTH, topHeight, COLORS.pipe),
+      );
+      const bottom = this.addToWorld(
+        this.add.rectangle(x, gapBottom + bottomHeight / 2, PIPE_WIDTH, bottomHeight, COLORS.pipe),
+      );
       top.setStrokeStyle(3 * WORLD_SCALE, COLORS.pipeDark);
       bottom.setStrokeStyle(3 * WORLD_SCALE, COLORS.pipeDark);
       top.setDepth(10);

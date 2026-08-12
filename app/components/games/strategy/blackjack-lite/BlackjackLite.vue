@@ -1,5 +1,8 @@
 <script setup lang="ts">
-interface Card { rank: string; value: number }
+interface Card {
+  rank: string;
+  value: number;
+}
 const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 const deck = ref<Card[]>([]);
 const player = ref<Card[]>([]);
@@ -66,13 +69,16 @@ onMounted(start);
       </p>
       <div class="grid gap-5 sm:grid-cols-2">
         <div class="border-default/70 grid gap-3 border p-5">
-          <span class="text-muted text-xs uppercase">Dealer · {{ finished ? dealerScore : "?" }}</span>
+          <span class="text-muted text-xs uppercase"
+            >Dealer · {{ finished ? dealerScore : "?" }}</span
+          >
           <div class="flex flex-wrap gap-2">
             <span
               v-for="(card, index) in dealer"
               :key="index"
               class="blackjack-card border-primary bg-primary/10 grid size-14 place-items-center border font-mono text-lg"
-            >{{ index === 1 && !finished ? "?" : card.rank }}</span>
+              >{{ index === 1 && !finished ? "?" : card.rank }}</span
+            >
           </div>
         </div>
         <div class="border-default/70 grid gap-3 border p-5">
@@ -82,7 +88,8 @@ onMounted(start);
               v-for="(card, index) in player"
               :key="index"
               class="blackjack-card border-success bg-success/10 grid size-14 place-items-center border font-mono text-lg"
-            >{{ card.rank }}</span>
+              >{{ card.rank }}</span
+            >
           </div>
         </div>
       </div>

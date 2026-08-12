@@ -21,8 +21,8 @@ const output = computed(() =>
           :rows="14"
           class="w-full font-mono"
           placeholder=".card { color: black; }"
-        />
-      </UFormField><UFormField label="Minified CSS">
+        /> </UFormField
+      ><UFormField label="Minified CSS">
         <UTextarea
           :model-value="output"
           readonly

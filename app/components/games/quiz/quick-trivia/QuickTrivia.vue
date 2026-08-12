@@ -122,7 +122,9 @@ if (import.meta.dev && questions.some((question) => !question.options[question.a
           />
           {{ status }}
         </p>
-        <span class="text-toned shrink-0 font-mono text-sm tabular-nums">{{ questionIndex + 1 }}/{{ questions.length }} · {{ score }} points</span>
+        <span class="text-toned shrink-0 font-mono text-sm tabular-nums"
+          >{{ questionIndex + 1 }}/{{ questions.length }} · {{ score }} points</span
+        >
       </div>
 
       <div
@@ -146,7 +148,8 @@ if (import.meta.dev && questions.some((question) => !question.options[question.a
           :disabled="isAnswered"
           @click="selectAnswer(index)"
         >
-          <span class="text-muted mr-3 font-mono">{{ String.fromCharCode(65 + index) }}</span>{{ option }}
+          <span class="text-muted mr-3 font-mono">{{ String.fromCharCode(65 + index) }}</span
+          >{{ option }}
         </button>
       </div>
 

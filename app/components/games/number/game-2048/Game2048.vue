@@ -15,7 +15,9 @@ const state = shallowRef<Game2048State>({
 
 function updateState(nextState: Record<string, unknown>) {
   if (
-    (nextState.status === "ready" || nextState.status === "playing" || nextState.status === "over") &&
+    (nextState.status === "ready" ||
+      nextState.status === "playing" ||
+      nextState.status === "over") &&
     typeof nextState.score === "number" &&
     typeof nextState.highest === "number" &&
     typeof nextState.won === "boolean"
@@ -31,7 +33,9 @@ function updateState(nextState: Record<string, unknown>) {
 </script>
 
 <template>
-  <ToolWorkbench description="Slide and merge matching tiles until you create 2048. Runs locally in your browser.">
+  <ToolWorkbench
+    description="Slide and merge matching tiles until you create 2048. Runs locally in your browser."
+  >
     <div class="mx-auto grid max-w-xl gap-5">
       <div class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
         <div>
@@ -39,8 +43,12 @@ function updateState(nextState: Record<string, unknown>) {
           <p class="text-muted mt-1 font-mono text-xs">Merge Lab · local puzzle run</p>
         </div>
         <div class="text-muted flex gap-4 font-mono text-xs">
-          <span>Score <strong class="text-highlighted">{{ state.score }}</strong></span>
-          <span>Best <strong class="text-highlighted">{{ state.highest }}</strong></span>
+          <span
+            >Score <strong class="text-highlighted">{{ state.score }}</strong></span
+          >
+          <span
+            >Best <strong class="text-highlighted">{{ state.highest }}</strong></span
+          >
         </div>
       </div>
 
@@ -71,9 +79,16 @@ function updateState(nextState: Record<string, unknown>) {
             class="game-overlay"
           >
             <div class="game-card">
-              <div class="game-card__mark" aria-hidden="true">2048</div>
+              <div
+                class="game-card__mark"
+                aria-hidden="true"
+              >
+                2048
+              </div>
               <h2>Ready to merge?</h2>
-              <p>Slide equal tiles together. Build your chain, protect your corner, and chase 2048.</p>
+              <p>
+                Slide equal tiles together. Build your chain, protect your corner, and chase 2048.
+              </p>
               <button
                 type="button"
                 class="game-asset-button"
@@ -86,7 +101,13 @@ function updateState(nextState: Record<string, unknown>) {
                   width="232"
                   height="70"
                 />
-                <span><Icon name="tabler:player-play-filled" aria-hidden="true" /> Start game</span>
+                <span
+                  ><Icon
+                    name="tabler:player-play-filled"
+                    aria-hidden="true"
+                  />
+                  Start game</span
+                >
               </button>
               <p class="game-card__hint">Swipe, arrows, or WASD</p>
             </div>
@@ -102,7 +123,12 @@ function updateState(nextState: Record<string, unknown>) {
             aria-labelledby="game-2048-over-title"
           >
             <div class="game-card">
-              <div class="game-card__mark game-card__mark--over" aria-hidden="true"><Icon name="tabler:rotate-2" /></div>
+              <div
+                class="game-card__mark game-card__mark--over"
+                aria-hidden="true"
+              >
+                <Icon name="tabler:rotate-2" />
+              </div>
               <h2 id="game-2048-over-title">No more moves</h2>
               <p class="game-card__score">{{ state.score }}</p>
               <p class="game-card__label">FINAL SCORE</p>
@@ -119,7 +145,13 @@ function updateState(nextState: Record<string, unknown>) {
                   width="232"
                   height="70"
                 />
-                <span><Icon name="tabler:refresh" aria-hidden="true" /> Try again</span>
+                <span
+                  ><Icon
+                    name="tabler:refresh"
+                    aria-hidden="true"
+                  />
+                  Try again</span
+                >
               </button>
               <p class="game-card__hint">One empty square can change everything</p>
             </div>
@@ -132,7 +164,12 @@ function updateState(nextState: Record<string, unknown>) {
           role="alert"
         >
           <div class="game-card">
-            <div class="game-card__mark game-card__mark--over" aria-hidden="true"><Icon name="tabler:alert-triangle" /></div>
+            <div
+              class="game-card__mark game-card__mark--over"
+              aria-hidden="true"
+            >
+              <Icon name="tabler:alert-triangle" />
+            </div>
             <h2>Game unavailable</h2>
             <p>Something blocked the game renderer. Reload the page and try once more.</p>
           </div>
@@ -146,7 +183,9 @@ function updateState(nextState: Record<string, unknown>) {
       >
         The game could not load. Reload the page to try again.
       </p>
-      <p class="text-muted text-center font-mono text-xs">Swipe the board, or use arrow keys and WASD. No account needed.</p>
+      <p class="text-muted text-center font-mono text-xs">
+        Swipe the board, or use arrow keys and WASD. No account needed.
+      </p>
     </div>
   </ToolWorkbench>
 </template>
@@ -172,7 +211,9 @@ function updateState(nextState: Record<string, unknown>) {
 .game-2048-stage.is-over :deep(canvas) {
   filter: blur(6px) saturate(0.72);
   transform: scale(1.035);
-  transition: filter 280ms ease, transform 280ms ease;
+  transition:
+    filter 280ms ease,
+    transform 280ms ease;
 }
 
 .game-overlay {
@@ -252,7 +293,9 @@ function updateState(nextState: Record<string, unknown>) {
   font-size: 0.84rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  transition: transform 140ms ease, filter 140ms ease;
+  transition:
+    transform 140ms ease,
+    filter 140ms ease;
 }
 
 .game-asset-button img {

@@ -51,8 +51,8 @@ function prettyDecode(value: string) {
             :rows="8"
             class="w-full font-mono"
             placeholder="Decoded header appears here."
-          />
-        </UFormField><UFormField label="Payload">
+          /> </UFormField
+        ><UFormField label="Payload">
           <UTextarea
             :model-value="result.payload"
             readonly

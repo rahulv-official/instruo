@@ -40,8 +40,8 @@ function formatXml(value: string) {
           :rows="14"
           class="w-full font-mono"
           placeholder="<root><item /></root>"
-        />
-      </UFormField><UFormField label="Formatted XML">
+        /> </UFormField
+      ><UFormField label="Formatted XML">
         <UTextarea
           :model-value="output"
           readonly

@@ -111,7 +111,11 @@ onBeforeUnmount(clearTimers);
         </button>
       </div>
       <UButton
-        :label="phase === 'playing' || phase === 'showing' || phase === 'between' ? 'Restart pattern' : 'Start game'"
+        :label="
+          phase === 'playing' || phase === 'showing' || phase === 'between'
+            ? 'Restart pattern'
+            : 'Start game'
+        "
         icon="i-lucide-play"
         size="lg"
         class="justify-center"

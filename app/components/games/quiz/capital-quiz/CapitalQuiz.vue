@@ -78,7 +78,9 @@ function reset() {
         class="mx-auto"
         @click="reset"
       />
-      <span class="text-muted font-mono text-xs">{{ Math.min(index + 1, questions.length) }}/{{ questions.length }}</span>
+      <span class="text-muted font-mono text-xs"
+        >{{ Math.min(index + 1, questions.length) }}/{{ questions.length }}</span
+      >
     </div>
   </ToolWorkbench>
 </template>

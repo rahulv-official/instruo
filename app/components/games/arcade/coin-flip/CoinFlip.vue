@@ -64,14 +64,17 @@ onBeforeUnmount(() => timer && clearTimeout(timer));
               <strong
                 :key="result || 'ready'"
                 class="coin-disc__label"
-              >{{ result?.toUpperCase() || "READY" }}</strong>
+                >{{ result?.toUpperCase() || "READY" }}</strong
+              >
             </Transition>
             <span class="coin-disc__odds">50 / 50</span>
           </button>
         </div>
 
         <div class="grid gap-1">
-          <span class="text-muted font-mono text-[0.7rem] tracking-[0.16em] uppercase">Last toss</span>
+          <span class="text-muted font-mono text-[0.7rem] tracking-[0.16em] uppercase"
+            >Last toss</span
+          >
           <strong class="text-highlighted text-2xl font-semibold">{{
             result || "Not started"
           }}</strong>

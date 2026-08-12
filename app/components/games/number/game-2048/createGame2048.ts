@@ -239,43 +239,80 @@ export const createGame2048: PhaserGameFactory = async (parent, onState, onReady
     }
 
     private createBoardArt() {
-      this.addToWorld(this.add.rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, COLORS.background)).setDepth(0);
-      this.addToWorld(this.add.text(28 * WORLD_SCALE, 26 * WORLD_SCALE, "2048", {
-        color: COLORS.ink,
-        fontFamily: GAME_FONT,
-        fontSize: `${28 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      })).setDepth(100);
-      this.addToWorld(this.add.text(WIDTH - 28 * WORLD_SCALE, 32 * WORLD_SCALE, "MERGE LAB", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${10 * WORLD_SCALE}px`,
-      })).setOrigin(1, 0).setDepth(100);
+      this.addToWorld(
+        this.add.rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, COLORS.background),
+      ).setDepth(0);
+      this.addToWorld(
+        this.add.text(28 * WORLD_SCALE, 26 * WORLD_SCALE, "2048", {
+          color: COLORS.ink,
+          fontFamily: GAME_FONT,
+          fontSize: `${28 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        }),
+      ).setDepth(100);
+      this.addToWorld(
+        this.add.text(WIDTH - 28 * WORLD_SCALE, 32 * WORLD_SCALE, "MERGE LAB", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${10 * WORLD_SCALE}px`,
+        }),
+      )
+        .setOrigin(1, 0)
+        .setDepth(100);
 
-      const scorePlate = this.addToWorld(this.add.rectangle(WIDTH - 82 * WORLD_SCALE, 91 * WORLD_SCALE, 112 * WORLD_SCALE, 58 * WORLD_SCALE, COLORS.board, 1));
+      const scorePlate = this.addToWorld(
+        this.add.rectangle(
+          WIDTH - 82 * WORLD_SCALE,
+          91 * WORLD_SCALE,
+          112 * WORLD_SCALE,
+          58 * WORLD_SCALE,
+          COLORS.board,
+          1,
+        ),
+      );
       scorePlate.setStrokeStyle(2 * WORLD_SCALE, COLORS.accent, 0.55).setDepth(100);
-      this.addToWorld(this.add.text(WIDTH - 82 * WORLD_SCALE, 70 * WORLD_SCALE, "SCORE", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${9 * WORLD_SCALE}px`,
-      })).setOrigin(0.5, 0).setDepth(101);
-      this.scoreText = this.addToWorld(this.add.text(WIDTH - 82 * WORLD_SCALE, 89 * WORLD_SCALE, "0", {
-        color: COLORS.ink,
-        fontFamily: GAME_FONT,
-        fontSize: `${21 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      })).setOrigin(0.5, 0).setDepth(101);
+      this.addToWorld(
+        this.add.text(WIDTH - 82 * WORLD_SCALE, 70 * WORLD_SCALE, "SCORE", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${9 * WORLD_SCALE}px`,
+        }),
+      )
+        .setOrigin(0.5, 0)
+        .setDepth(101);
+      this.scoreText = this.addToWorld(
+        this.add.text(WIDTH - 82 * WORLD_SCALE, 89 * WORLD_SCALE, "0", {
+          color: COLORS.ink,
+          fontFamily: GAME_FONT,
+          fontSize: `${21 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        }),
+      )
+        .setOrigin(0.5, 0)
+        .setDepth(101);
 
-      this.addToWorld(this.add.rectangle(WIDTH / 2, BOARD_Y + BOARD_WIDTH / 2, BOARD_WIDTH, BOARD_WIDTH, COLORS.board)).setDepth(5);
+      this.addToWorld(
+        this.add.rectangle(
+          WIDTH / 2,
+          BOARD_Y + BOARD_WIDTH / 2,
+          BOARD_WIDTH,
+          BOARD_WIDTH,
+          COLORS.board,
+        ),
+      ).setDepth(5);
       for (let position = 0; position < CELL_COUNT; position += 1) {
         const { x, y } = this.positionToPoint(position);
         this.addToWorld(this.add.rectangle(x, y, CELL_SIZE, CELL_SIZE, COLORS.cell)).setDepth(6);
       }
-      this.addToWorld(this.add.text(WIDTH / 2, HEIGHT - 42 * WORLD_SCALE, "SWIPE  /  ARROWS  /  WASD", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${10 * WORLD_SCALE}px`,
-      })).setOrigin(0.5).setDepth(100);
+      this.addToWorld(
+        this.add.text(WIDTH / 2, HEIGHT - 42 * WORLD_SCALE, "SWIPE  /  ARROWS  /  WASD", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${10 * WORLD_SCALE}px`,
+        }),
+      )
+        .setOrigin(0.5)
+        .setDepth(100);
     }
 
     private scoreText!: GameObjects.Text;
@@ -328,7 +365,12 @@ export const createGame2048: PhaserGameFactory = async (parent, onState, onReady
           this.tileViews.set(tile.id, view);
           if (animate) {
             view.container.setScale(0.72);
-            this.tweens.add({ targets: view.container, scale: 1, duration: MOVE_DURATION, ease: "Back.out" });
+            this.tweens.add({
+              targets: view.container,
+              scale: 1,
+              duration: MOVE_DURATION,
+              ease: "Back.out",
+            });
           }
         } else {
           const color = tileColor(tile.value);
@@ -345,7 +387,12 @@ export const createGame2048: PhaserGameFactory = async (parent, onState, onReady
               ease: "Cubic.out",
             });
             if (tile.merged) {
-              this.tweens.add({ targets: view.container, scale: 1.1, duration: MOVE_DURATION / 2, yoyo: true });
+              this.tweens.add({
+                targets: view.container,
+                scale: 1.1,
+                duration: MOVE_DURATION / 2,
+                yoyo: true,
+              });
             }
           } else {
             view.container.setPosition(point.x, point.y);
@@ -356,13 +403,17 @@ export const createGame2048: PhaserGameFactory = async (parent, onState, onReady
 
     private createTileView(tile: Tile, point: { x: number; y: number }) {
       const color = tileColor(tile.value);
-      const plate = this.add.rectangle(0, 0, CELL_SIZE, CELL_SIZE, color.fill).setStrokeStyle(2, COLORS.background, 0.18);
-      const text = this.add.text(0, 0, String(tile.value), {
-        color: color.text,
-        fontFamily: GAME_FONT,
-        fontSize: tileFontSize(tile.value),
-        fontStyle: "bold",
-      }).setOrigin(0.5);
+      const plate = this.add
+        .rectangle(0, 0, CELL_SIZE, CELL_SIZE, color.fill)
+        .setStrokeStyle(2, COLORS.background, 0.18);
+      const text = this.add
+        .text(0, 0, String(tile.value), {
+          color: color.text,
+          fontFamily: GAME_FONT,
+          fontSize: tileFontSize(tile.value),
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5);
       const container = this.add.container(point.x, point.y, [plate, text]).setDepth(TILE_DEPTH);
       this.addToWorld(container);
       return { container, plate, text };
@@ -382,7 +433,8 @@ export const createGame2048: PhaserGameFactory = async (parent, onState, onReady
       this.renderTiles(true);
       this.playSound(result.gained ? "tuck" : "slide", result.gained ? 0.12 : 0.06);
       phaserEventBus.emit(PHASER_EVENTS.action, { game: "2048", action: direction });
-      if (result.gained) phaserEventBus.emit(PHASER_EVENTS.hit, { game: "2048", score: result.gained });
+      if (result.gained)
+        phaserEventBus.emit(PHASER_EVENTS.hit, { game: "2048", score: result.gained });
 
       const highest = Math.max(...this.tiles.map((tile) => tile.value));
       if (!this.won && highest >= BEST_TILE) {

@@ -23,8 +23,8 @@ const rows = computed(() => {
             autoresize
             :rows="10"
             class="w-full font-mono"
-          />
-        </UFormField><UFormField label="Updated">
+          /> </UFormField
+        ><UFormField label="Updated">
           <UTextarea
             v-model="right"
             autoresize
@@ -48,7 +48,8 @@ const rows = computed(() => {
                   : 'text-warning bg-warning/5'
           "
         >
-          <span>{{ row.left || "∅" }}</span><span>{{ row.right || "∅" }}</span>
+          <span>{{ row.left || "∅" }}</span
+          ><span>{{ row.right || "∅" }}</span>
         </li>
       </ol>
     </div>

@@ -91,7 +91,9 @@ onMounted(reset);
           />
           {{ status }}
         </p>
-        <span class="text-toned shrink-0 font-mono text-sm">{{ wrongLetters.length }}/{{ maxMistakes }}</span>
+        <span class="text-toned shrink-0 font-mono text-sm"
+          >{{ wrongLetters.length }}/{{ maxMistakes }}</span
+        >
       </div>
 
       <div class="grid gap-6 sm:grid-cols-[11rem_minmax(0,1fr)] sm:items-center">

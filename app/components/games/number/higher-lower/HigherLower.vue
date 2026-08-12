@@ -51,7 +51,8 @@ function reset() {
         {{ statusText }}
       </p>
       <div class="higher-lower-card border-default/70 bg-muted/20 grid gap-2 border p-10">
-        <span class="text-muted text-xs uppercase">Current number</span><strong class="text-highlighted font-mono text-6xl">{{ current }}</strong>
+        <span class="text-muted text-xs uppercase">Current number</span
+        ><strong class="text-highlighted font-mono text-6xl">{{ current }}</strong>
       </div>
       <div class="grid grid-cols-2 gap-3">
         <UButton
@@ -69,7 +70,8 @@ function reset() {
         />
       </div>
       <div class="flex items-center justify-between">
-        <span class="text-muted font-mono text-sm">Score {{ score }}</span><UButton
+        <span class="text-muted font-mono text-sm">Score {{ score }}</span
+        ><UButton
           label="New round"
           color="neutral"
           variant="outline"

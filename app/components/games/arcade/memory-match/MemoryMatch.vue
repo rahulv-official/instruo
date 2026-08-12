@@ -157,8 +157,13 @@ onMounted(reset);
           {{ statusText }}
         </p>
         <div class="flex shrink-0 gap-5 font-mono text-sm tabular-nums">
-          <span><strong class="text-highlighted">{{ matchedPairs }}/{{ symbols.length }}</strong> pairs</span>
-          <span><strong class="text-highlighted">{{ formattedTime }}</strong> time</span>
+          <span
+            ><strong class="text-highlighted">{{ matchedPairs }}/{{ symbols.length }}</strong>
+            pairs</span
+          >
+          <span
+            ><strong class="text-highlighted">{{ formattedTime }}</strong> time</span
+          >
         </div>
       </div>
 

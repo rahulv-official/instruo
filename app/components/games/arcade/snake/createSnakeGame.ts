@@ -123,7 +123,10 @@ function openingForStage(id: SnakeStageId) {
   }
   if (id === "ruins") {
     const head = 5 * SNAKE_COLUMNS + 2;
-    return { body: [head, head - SNAKE_COLUMNS, head - SNAKE_COLUMNS * 2], direction: "down" as Direction };
+    return {
+      body: [head, head - SNAKE_COLUMNS, head - SNAKE_COLUMNS * 2],
+      direction: "down" as Direction,
+    };
   }
   const head = START_ROW * SNAKE_COLUMNS + START_COLUMN;
   return { body: [head, head - 1, head - 2], direction: "right" as Direction };

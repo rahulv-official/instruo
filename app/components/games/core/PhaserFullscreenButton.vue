@@ -40,7 +40,9 @@ const emit = defineEmits<{
   background: rgb(23 50 76 / 88%);
   color: #fff;
   cursor: pointer;
-  transition: background-color 140ms ease, transform 140ms ease;
+  transition:
+    background-color 140ms ease,
+    transform 140ms ease;
 }
 
 .phaser-game-fullscreen:hover {
