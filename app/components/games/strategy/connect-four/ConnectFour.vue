@@ -101,7 +101,7 @@ if (import.meta.dev) {
     <div class="mx-auto grid max-w-2xl gap-6">
       <div class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
         <p
-          class="flex items-center gap-2 text-sm leading-6"
+          class="flex min-w-0 flex-1 items-center gap-2 text-sm leading-6"
           :class="
             winner
               ? winner === 'red'
@@ -133,7 +133,7 @@ if (import.meta.dev) {
 
       <div class="flex justify-center">
         <div
-          class="bg-muted/30 grid aspect-[7/6] w-[min(94vw,36rem)] grid-cols-7 grid-rows-6 border-2 p-1.5 sm:p-2"
+          class="bg-muted/30 grid aspect-[7/6] w-[min(100%,36rem)] grid-cols-7 grid-rows-6 border-2 p-1.5 sm:p-2"
           :class="
             winner
               ? winner === 'red'

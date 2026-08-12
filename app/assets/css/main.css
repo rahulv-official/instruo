@@ -8,6 +8,14 @@
   --font-mono: "IBM Plex Mono", monospace;
 }
 
+@font-face {
+  font-family: "Kenney Future";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/game-assets/kenney/ui/Font/Kenney%20Future.ttf") format("truetype");
+}
+
 :root {
   --ui-bg: #f1f1f1;
   --ui-bg-muted: #e4e4e7;

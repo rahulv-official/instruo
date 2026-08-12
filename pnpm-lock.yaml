@@ -46,6 +46,9 @@ importers:
       nuxt-gtag:
         specifier: ^4.1.0
         version: 4.1.0(magic-string@1.1.0)(magicast@0.5.4)(oxc-parser@0.140.0)(rolldown@1.2.1)(unplugin@3.3.0(esbuild@0.27.7)(rolldown@1.2.1)(rollup@4.62.4)(vite@7.1.10(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.49.0)(yaml@2.9.0)))
+      phaser:
+        specifier: ^4.2.1
+        version: 4.2.1
       sudoku-gen:
         specifier: ^1.0.2
         version: 1.0.2
@@ -6425,6 +6428,12 @@ packages:
       }
     engines: { node: ">=6" }
 
+  eventemitter3@5.0.4:
+    resolution:
+      {
+        integrity: sha512-mlsTRyGaPBjPedk6Bvw+aqbsXDtoAyAzm5MO7JgU+yVRyMQ5O8bD4Kcci7BS85f93veegeCPkL8R4GLClnjLFw==,
+      }
+
   events-universal@1.0.1:
     resolution:
       {
@@ -8944,6 +8953,12 @@ packages:
     resolution:
       {
         integrity: sha512-LjgdTytVFXeUgtHZr9WYViYSM/g8MkcTPYDlPa3cDqMirHjKiSZPYd6DoL7pK8AJQr+uWkQvCjHNdiMqsrJs+g==,
+      }
+
+  phaser@4.2.1:
+    resolution:
+      {
+        integrity: sha512-WUNwCPJpdjvZiuT6SgCfYVW8Qw/3j0jJ4ws7P2QkhFLFu74sbGuyHJcbFueGkY/AYO4Pi47bNQXn1OCJeLX//w==,
       }
 
   picocolors@1.1.1:
@@ -15917,6 +15932,8 @@ snapshots:
 
   event-target-shim@5.0.1: {}
 
+  eventemitter3@5.0.4: {}
+
   events-universal@1.0.1:
     dependencies:
       bare-events: 2.9.1
@@ -17867,6 +17884,10 @@ snapshots:
   pathe@2.0.3: {}
 
   perfect-debounce@2.1.0: {}
+
+  phaser@4.2.1:
+    dependencies:
+      eventemitter3: 5.0.4
 
   picocolors@1.1.1: {}
 
