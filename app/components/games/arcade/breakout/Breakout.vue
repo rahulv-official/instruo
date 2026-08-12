@@ -10,19 +10,21 @@ const state = shallowRef<BreakoutGameState>({
   status: "ready",
   score: 0,
   lives: 3,
+  level: 1,
   bricks: 48,
   totalBricks: 48,
   won: false,
 });
 
-const resultTitle = computed(() => state.value.won ? "Brick yard cleared" : "Ball lost");
-const resultCopy = computed(() => state.value.won ? "Every brick is down. Clean run." : "Keep the paddle under the ball and try another angle.");
+const resultTitle = computed(() => `Run over at level ${state.value.level}`);
+const resultCopy = computed(() => "Keep the paddle under the ball and try another angle.");
 
 function updateState(next: Record<string, unknown>) {
   if (
     (next.status === "ready" || next.status === "playing" || next.status === "over") &&
     typeof next.score === "number" &&
     typeof next.lives === "number" &&
+    typeof next.level === "number" &&
     typeof next.bricks === "number" &&
     typeof next.totalBricks === "number" &&
     typeof next.won === "boolean"
@@ -31,6 +33,7 @@ function updateState(next: Record<string, unknown>) {
       status: next.status,
       score: next.score,
       lives: next.lives,
+      level: next.level,
       bricks: next.bricks,
       totalBricks: next.totalBricks,
       won: next.won,
@@ -45,11 +48,11 @@ function updateState(next: Record<string, unknown>) {
       <header class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
         <div>
           <p class="text-highlighted text-sm font-semibold">Breakout</p>
-          <p class="text-muted mt-1 font-mono text-xs">Brick Yard · local arcade run</p>
+          <p class="text-muted mt-1 font-mono text-xs">Brick Yard · continuous seeded run</p>
         </div>
         <div class="text-muted flex gap-3 font-mono text-xs">
           <span>Score <strong class="text-highlighted">{{ state.score }}</strong></span>
-          <span><strong class="text-highlighted">{{ state.lives }}</strong> lives</span>
+          <span>Level <strong class="text-highlighted">{{ state.level }}</strong></span>
         </div>
       </header>
 
@@ -80,7 +83,7 @@ function updateState(next: Record<string, unknown>) {
           <div class="grid w-full max-w-sm gap-4 border border-default bg-elevated p-6 text-center shadow-xl">
             <div class="mx-auto grid size-14 place-items-center bg-primary text-2xl text-inverted" aria-hidden="true"><Icon name="tabler:ball-basketball" /></div>
             <h2 class="text-xl font-semibold text-highlighted">Clear the wall</h2>
-            <p class="text-sm leading-6 text-muted">Move the paddle with touch, arrows, or A/D. Every collision changes the angle, so aim for the gaps.</p>
+            <p class="text-sm leading-6 text-muted">Move the paddle with touch, arrows, or A/D. Clear each seeded pattern to unlock a faster, different level.</p>
             <button
               type="button"
               class="relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold text-inverted transition-transform active:translate-y-px focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
@@ -99,7 +102,7 @@ function updateState(next: Record<string, unknown>) {
             <h2 id="breakout-over-title" class="text-xl font-semibold text-highlighted">{{ resultTitle }}</h2>
             <p class="text-sm leading-6 text-muted">{{ resultCopy }}</p>
             <p class="font-mono text-5xl font-bold tabular-nums text-highlighted">{{ state.score }}</p>
-            <p class="font-mono text-xs uppercase tracking-[0.18em] text-muted">Final score · {{ state.lives }} lives left</p>
+            <p class="font-mono text-xs uppercase tracking-[0.18em] text-muted">Level {{ state.level }} · {{ state.lives }} lives left</p>
             <button
               type="button"
               class="relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold text-inverted transition-transform active:translate-y-px focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
@@ -116,7 +119,7 @@ function updateState(next: Record<string, unknown>) {
         </div>
       </div>
 
-      <p class="text-center font-mono text-xs text-muted">{{ state.bricks }} bricks remain · no account needed</p>
+      <p class="text-center font-mono text-xs text-muted">Level {{ state.level }} · {{ state.bricks }}/{{ state.totalBricks }} bricks remain · no account needed</p>
     </div>
   </ToolWorkbench>
 </template>

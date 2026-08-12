@@ -1,6 +1,6 @@
 ---
 title: Breakout
-description: Keep the ball alive, break every brick, and chase a clean local high score.
+description: Clear continuously generated brick patterns, survive the speed ramp, and chase a clean local high score.
 category: Arcade
 tags: [breakout, paddle, bricks, physics, arcade, browser-game]
 icon: i-tabler-ball-basketball
@@ -14,7 +14,7 @@ icon: i-tabler-ball-basketball
 1. Move the paddle under the ball.
 2. Bounce the ball into every brick.
 3. Missing the ball costs one of three lives.
-4. Clear all 48 bricks to win the round.
+4. Clear a pattern to advance. Every level changes the seeded layout and increases ball speed.
 
 ## Controls
 
@@ -26,4 +26,4 @@ Breakout was designed by Atari and released in 1976. Its single-paddle, brick-cl
 
 ## Privacy
 
-The board, score, and best score stay in this browser. No account or network request is required.
+The board, seed, score, level, and best score stay in this browser. No account or network request is required.

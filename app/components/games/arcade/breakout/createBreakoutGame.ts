@@ -14,6 +14,7 @@ export interface BreakoutGameState extends PhaserGameState {
   status: BreakoutStatus;
   score: number;
   lives: number;
+  level: number;
   bricks: number;
   totalBricks: number;
   won: boolean;
@@ -38,6 +39,9 @@ const PADDLE_HEIGHT = 13 * WORLD_SCALE;
 const BALL_RADIUS = 8 * WORLD_SCALE;
 const PADDLE_SPEED = 420 * WORLD_SCALE;
 const BALL_SPEED = 255 * WORLD_SCALE;
+const LEVEL_SPEED_STEP = 0.045;
+const MAX_LEVEL_SPEED = 1.55;
+const LEVEL_CLEAR_BONUS = 100;
 const ARENA_CENTER_Y = 336 * WORLD_SCALE;
 const ARENA_HEIGHT = 420 * WORLD_SCALE;
 const ARENA_WIDTH = WIDTH - 18 * WORLD_SCALE;
@@ -46,6 +50,7 @@ const ARENA_TOP = ARENA_CENTER_Y - ARENA_HEIGHT / 2;
 const ARENA_BOTTOM = ARENA_CENTER_Y + ARENA_HEIGHT / 2;
 const BEST_KEY = "instruo:breakout-best";
 const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const TOTAL_BRICKS = BRICK_COLUMNS * BRICK_ROWS;
 
 /* eslint-disable unicorn/number-literal-case */
 const COLORS = {
@@ -81,6 +86,34 @@ function writeBest(value: number) {
   }
 }
 
+function seededRandom(seed: number) {
+  let value = seed >>> 0;
+  return () => {
+    value = (value * 1_664_525 + 1_013_904_223) >>> 0;
+    return value / 4_294_967_296;
+  };
+}
+
+function createLevelPattern(level: number, seed: number) {
+  if (level === 1) return new Array<boolean>(TOTAL_BRICKS).fill(true);
+
+  const random = seededRandom((seed ^ Math.imul(level, 2_654_435_761)) >>> 0);
+  const pattern = new Array<boolean>(TOTAL_BRICKS).fill(false);
+  const density = Math.min(0.86, 0.56 + level * 0.035);
+
+  for (let row = 0; row < BRICK_ROWS; row += 1) {
+    for (let column = 0; column < Math.ceil(BRICK_COLUMNS / 2); column += 1) {
+      const active = random() < density || row === 0;
+      const left = row * BRICK_COLUMNS + column;
+      const right = row * BRICK_COLUMNS + BRICK_COLUMNS - 1 - column;
+      pattern[left] = active;
+      pattern[right] = active;
+    }
+  }
+
+  return pattern;
+}
+
 export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onReady, onError) => {
   const Phaser = (await import("phaser")).default;
 
@@ -88,6 +121,9 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
     private status: BreakoutStatus = "ready";
     private score = 0;
     private lives = 3;
+    private level = 1;
+    private runSeed = 0;
+    private currentTotalBricks = TOTAL_BRICKS;
     private best = readBest();
     private won = false;
     private bricks: BrickView[] = [];
@@ -95,6 +131,7 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
     private ball!: GameObjects.Arc;
     private scoreText!: GameObjects.Text;
     private livesText!: GameObjects.Text;
+    private levelText!: GameObjects.Text;
     private statusText!: GameObjects.Text;
     private arenaMask?: GameObjects.Graphics;
     private ballX = WIDTH / 2;
@@ -143,7 +180,7 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
     }
 
     override update(_time: number, delta: number) {
-      if (this.status !== "playing" || this.won || this.time.now < this.waitingUntil) return;
+      if (this.status !== "playing" || this.time.now < this.waitingUntil) return;
       const seconds = Math.min(delta, 40) / 1_000;
       const direction = (this.leftDown ? -1 : 0) + (this.rightDown ? 1 : 0);
       if (direction) this.targetPaddleX += direction * PADDLE_SPEED * seconds;
@@ -190,7 +227,7 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
         this.playSound("brick", 0.1);
         this.burstAt(hitBrick.body.x, hitBrick.body.y, hitBrick.color);
         phaserEventBus.emit(PHASER_EVENTS.hit, { game: "breakout", score: this.score });
-        if (this.bricks.every((brick) => !brick.body.active)) this.endRound(true);
+        if (this.bricks.every((brick) => !brick.body.active)) this.completeLevel();
       }
 
       if (this.ballY + BALL_RADIUS >= ARENA_BOTTOM) this.loseLife();
@@ -268,6 +305,11 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
         fontFamily: GAME_FONT,
         fontSize: `${10 * WORLD_SCALE}px`,
       }).setOrigin(1, 0);
+      this.levelText = this.add.text(WIDTH / 2, HEIGHT - 70 * WORLD_SCALE, "LEVEL 1", {
+        color: COLORS.accentText,
+        fontFamily: GAME_FONT,
+        fontSize: `${10 * WORLD_SCALE}px`,
+      }).setOrigin(0.5, 0);
       this.add.text(26 * WORLD_SCALE, HEIGHT - 38 * WORLD_SCALE, "SCORE", {
         color: COLORS.muted,
         fontFamily: GAME_FONT,
@@ -291,22 +333,34 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
       this.status = "ready";
       this.score = 0;
       this.lives = 3;
+      this.level = 1;
+      this.runSeed = Math.floor(Math.random() * 4_294_967_296) >>> 0;
       this.won = false;
       this.waitingUntil = 0;
       this.paddleX = WIDTH / 2;
       this.targetPaddleX = this.paddleX;
-      this.bricks.forEach((brick) => brick.body.setActive(true).setVisible(true));
+      this.buildLevel();
       this.paddle?.setX(this.paddleX);
       this.resetBall();
       this.statusText?.setText("READY TO BREAK").setColor(COLORS.ink);
       this.emitState();
     }
 
+    private buildLevel() {
+      const pattern = createLevelPattern(this.level, this.runSeed);
+      this.currentTotalBricks = pattern.filter(Boolean).length;
+      this.bricks.forEach((brick, index) => {
+        const active = pattern[index] ?? false;
+        brick.body.setActive(active).setVisible(active);
+      });
+    }
+
     private resetBall(wait = false) {
+      const speed = BALL_SPEED * Math.min(MAX_LEVEL_SPEED, 1 + (this.level - 1) * LEVEL_SPEED_STEP);
       this.ballX = this.paddleX;
       this.ballY = PADDLE_Y - 42 * WORLD_SCALE;
-      this.ballVelocityX = (Math.random() > 0.5 ? 1 : -1) * BALL_SPEED * 0.62;
-      this.ballVelocityY = -BALL_SPEED;
+      this.ballVelocityX = (Math.random() > 0.5 ? 1 : -1) * speed * 0.62;
+      this.ballVelocityY = -speed;
       this.waitingUntil = wait ? this.time.now + 520 : 0;
       this.ball?.setVisible(true).setPosition(this.ballX, this.ballY);
     }
@@ -324,7 +378,7 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
       this.lives -= 1;
       this.playSound("miss", 0.12);
       if (this.lives <= 0) {
-        this.endRound(false);
+        this.endRound();
         return;
       }
       this.statusText.setText(`${this.lives} LIVES LEFT`).setColor(COLORS.accentText);
@@ -332,26 +386,26 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
       this.emitState();
     }
 
-    private endRound(won: boolean) {
-      this.won = won;
+    private completeLevel() {
+      this.score += this.level * LEVEL_CLEAR_BONUS;
+      this.level += 1;
+      this.buildLevel();
+      this.statusText.setText(`LEVEL ${this.level}`).setColor(COLORS.accentText);
+      this.playSound("win", 0.2);
+      this.burstAt(WIDTH / 2, ARENA_CENTER_Y, COLORS.accent);
+      phaserEventBus.emit(PHASER_EVENTS.streak, { game: "breakout", streak: this.level });
+      this.resetBall(true);
+      this.waitingUntil = this.time.now + 900;
+      this.emitState();
+    }
+
+    private endRound() {
       this.best = Math.max(this.best, this.score);
       writeBest(this.best);
       this.ball.setVisible(false);
-      if (won) {
-        this.statusText.setText("BRICK YARD CLEARED").setColor("#65d4a0");
-        this.playSound("win", 0.2);
-        this.burstAt(WIDTH / 2, 360 * WORLD_SCALE, COLORS.accent);
-        phaserEventBus.emit(PHASER_EVENTS.streak, { game: "breakout", streak: BRICK_COLUMNS * BRICK_ROWS });
-        this.finishTimer = this.time.delayedCall(750, () => {
-          this.status = "over";
-          this.emitState();
-        });
-      } else {
-        this.status = "over";
-        this.statusText.setText("BALL LOST").setColor("#e87373");
-        phaserEventBus.emit(PHASER_EVENTS.action, { game: "breakout", action: "game-over" });
-        this.emitState();
-      }
+      this.status = "over";
+      this.statusText.setText("BALL LOST").setColor("#e87373");
+      phaserEventBus.emit(PHASER_EVENTS.action, { game: "breakout", action: "game-over" });
       this.emitState();
     }
 
@@ -401,12 +455,14 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
     private emitState() {
       this.scoreText?.setText(String(this.score));
       this.livesText?.setText(`${this.lives} LIVES`);
+      this.levelText?.setText(`LEVEL ${this.level}`);
       onState({
         status: this.status,
         score: this.score,
         lives: this.lives,
+        level: this.level,
         bricks: this.bricks.filter((brick) => brick.body.active).length,
-        totalBricks: BRICK_COLUMNS * BRICK_ROWS,
+        totalBricks: this.currentTotalBricks,
         won: this.won,
       } satisfies BreakoutGameState);
     }
