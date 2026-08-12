@@ -22,13 +22,13 @@ icon: i-lucide-spline
 
 Use arrow keys or WASD on a keyboard. Press Space to pause or continue. On a touch screen, swipe across the board or use the direction buttons below it.
 
-## Speed levels
+## Stages
 
-- Relaxed moves every 180 milliseconds and gives you more time to plan.
-- Classic moves every 120 milliseconds.
-- Fast moves every 75 milliseconds for a sharper reflex challenge.
+- **Meadow** is an open board with a relaxed 160 millisecond step.
+- **Circuit** adds twin barriers and moves at 120 milliseconds.
+- **Ruins** adds broken walls and moves at 88 milliseconds.
 
-Changing the speed does not reset the board.
+Choose a stage before every run. Selecting a new stage resets the board and its route-specific best score.
 
 ## A brief history
 

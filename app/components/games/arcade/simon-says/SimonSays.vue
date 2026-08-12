@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type Phase = "idle" | "showing" | "playing" | "won" | "lost";
+type Phase = "between" | "idle" | "showing" | "playing" | "won" | "lost";
 const pads = ["primary", "success", "warning", "error"] as const;
 const sequence = ref<number[]>([]);
 const activePad = ref<number | null>(null);
@@ -12,6 +12,7 @@ const statusText = computed(() => {
   if (phase.value === "showing") return "Watch the pattern.";
   if (phase.value === "playing")
     return `Your turn. ${sequence.value.length - inputIndex.value} pads left.`;
+  if (phase.value === "between") return "Nice run. Next pattern is loading…";
   if (phase.value === "won") return `Level ${level.value} complete. Keep going.`;
   if (phase.value === "lost") return "Pattern missed. Start a new run.";
   return "Repeat the pattern from memory.";
@@ -65,7 +66,9 @@ function pressPad(index: number) {
   if (inputIndex.value < sequence.value.length) return;
   level.value += 1;
   sequence.value = [...sequence.value, Math.floor(Math.random() * pads.length)];
-  playSequence();
+  phase.value = "between";
+  activePad.value = null;
+  timers.push(setTimeout(playSequence, 720));
 }
 
 onBeforeUnmount(clearTimers);
@@ -108,7 +111,7 @@ onBeforeUnmount(clearTimers);
         </button>
       </div>
       <UButton
-        :label="phase === 'playing' || phase === 'showing' ? 'Restart pattern' : 'Start game'"
+        :label="phase === 'playing' || phase === 'showing' || phase === 'between' ? 'Restart pattern' : 'Start game'"
         icon="i-lucide-play"
         size="lg"
         class="justify-center"

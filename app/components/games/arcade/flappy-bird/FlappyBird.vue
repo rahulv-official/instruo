@@ -183,16 +183,18 @@ function updateState(nextState: Record<string, unknown>) {
 
 <style scoped>
 .flappy-stage {
+  --phaser-game-loading-bg: #b9e6f3;
+  --phaser-game-loading-fg: #17324c;
   position: relative;
   overflow: hidden;
-  border-radius: 1.25rem;
+  border-radius: 0;
   background: #b9e6f3;
   box-shadow: 0 20px 58px rgb(23 50 76 / 16%);
 }
 
 .flappy-stage :deep(.phaser-game-host) {
   border: 0;
-  border-radius: inherit;
+  border-radius: 0;
   box-shadow: none;
 }
 
@@ -223,7 +225,7 @@ function updateState(nextState: Record<string, unknown>) {
   width: min(100%, 20rem);
   padding: 2rem 1.5rem 1.5rem;
   border: 2px solid rgb(23 50 76 / 13%);
-  border-radius: 1.25rem;
+  border-radius: 0;
   background: #fff6dc;
   color: #17324c;
   text-align: center;

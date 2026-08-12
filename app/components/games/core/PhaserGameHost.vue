@@ -25,16 +25,22 @@ const emit = defineEmits<{
 const mount = ref<HTMLElement | null>(null);
 const loading = ref(true);
 const isFullscreen = ref(false);
+const isMuted = ref(false);
 const fullscreenTarget = ref<HTMLElement | null>(null);
 let game: Awaited<ReturnType<PhaserGameFactory>> | undefined;
 let disposed = false;
 
-function start() {
-  game?.startGame?.();
+function start(option?: unknown) {
+  game?.startGame?.(option);
 }
 
-function restart() {
-  game?.restartGame?.();
+function restart(option?: unknown) {
+  game?.restartGame?.(option);
+}
+
+function toggleMute() {
+  const next = game?.toggleMute?.();
+  isMuted.value = typeof next === "boolean" ? next : !isMuted.value;
 }
 
 function getFullscreenTarget() {
@@ -59,7 +65,7 @@ async function toggleFullscreen() {
   }
 }
 
-defineExpose({ isFullscreen, restart, start, toggleFullscreen });
+defineExpose({ isFullscreen, isMuted, restart, start, toggleFullscreen, toggleMute });
 
 onMounted(async () => {
   if (!mount.value) return;
@@ -109,6 +115,7 @@ onBeforeUnmount(() => {
   <div
     ref="mount"
     class="phaser-game-host"
+    :class="{ 'is-loading': loading }"
     :style="{ '--phaser-game-aspect': PHASER_GAME_ASPECT }"
     :aria-label="props.label"
     :aria-busy="loading"
@@ -120,8 +127,16 @@ onBeforeUnmount(() => {
       role="status"
       aria-live="polite"
     >
-      <div class="phaser-game-loading__sun" aria-hidden="true" />
-      <div class="phaser-game-loading__mark" aria-hidden="true">✦</div>
+      <div
+        class="phaser-game-loading__sun"
+        aria-hidden="true"
+      />
+      <div
+        class="phaser-game-loading__mark"
+        aria-hidden="true"
+      >
+        ✦
+      </div>
       <div class="phaser-game-loading__button">
         <NuxtImg
           src="/game-assets/kenney/ui/PNG/Green/Default/button_rectangle_depth_flat.png"
@@ -134,6 +149,8 @@ onBeforeUnmount(() => {
       </div>
       <span class="phaser-game-loading__copy">{{ props.loadingCopy }}</span>
     </div>
+
+    <slot />
   </div>
 </template>
 
@@ -146,7 +163,7 @@ onBeforeUnmount(() => {
   margin-inline: auto;
   overflow: hidden;
   border: 1px solid #17324c;
-  background: #b9e6f3;
+  background: var(--phaser-game-loading-bg, #17324c);
   box-shadow: 0 18px 50px rgb(23 50 76 / 18%);
   contain: layout paint;
   touch-action: none;
@@ -162,8 +179,8 @@ onBeforeUnmount(() => {
   gap: 0.8rem;
   overflow: hidden;
   padding: 1rem;
-  background: #17324c;
-  color: #fff;
+  background: var(--phaser-game-loading-bg, #17324c);
+  color: var(--phaser-game-loading-fg, #fff);
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
@@ -210,7 +227,7 @@ onBeforeUnmount(() => {
 
 .phaser-game-loading__copy {
   position: relative;
-  color: rgb(255 255 255 / 76%);
+  color: color-mix(in srgb, var(--phaser-game-loading-fg, #fff) 76%, transparent);
   font-size: 0.7rem;
 }
 
@@ -219,9 +236,13 @@ onBeforeUnmount(() => {
   width: 100% !important;
   height: auto !important;
   margin: auto;
-  background: #b9e6f3;
+  background: var(--phaser-game-loading-bg, #17324c);
   image-rendering: auto;
   touch-action: none;
+}
+
+.phaser-game-host.is-loading :deep(canvas) {
+  visibility: hidden;
 }
 
 .phaser-game-host:fullscreen {

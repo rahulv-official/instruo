@@ -1,7 +1,8 @@
 export interface PhaserGameHandle {
   destroy: (removeCanvas: boolean, noReturn?: boolean) => void;
-  startGame?: () => void;
-  restartGame?: () => void;
+  startGame?: (option?: unknown) => void;
+  restartGame?: (option?: unknown) => void;
+  toggleMute?: () => boolean;
 }
 
 export type PhaserGameState = Record<string, unknown>;
