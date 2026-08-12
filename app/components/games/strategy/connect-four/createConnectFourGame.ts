@@ -26,10 +26,15 @@ const BOARD_WIDTH = COLUMNS * CELL_SIZE;
 const BOARD_HEIGHT = ROWS * CELL_SIZE;
 const BOARD_X = (WIDTH - BOARD_WIDTH) / 2;
 const BOARD_Y = 218 * WORLD_SCALE;
-const PLAYER_COLORS = { red: 0xE56F68, yellow: 0xF4BD68 } as const;
+const PLAYER_COLORS = { red: 0xe56f68, yellow: 0xf4bd68 } as const;
 const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 
-const directions = [[0, 1], [1, 0], [1, 1], [1, -1]] as const;
+const directions = [
+  [0, 1],
+  [1, 0],
+  [1, 1],
+  [1, -1],
+] as const;
 
 function getWinningLine(state: (Player | null)[]) {
   for (let row = 0; row < ROWS; row += 1) {
@@ -50,7 +55,12 @@ function getWinningLine(state: (Player | null)[]) {
   return null;
 }
 
-export const createConnectFourGame: PhaserGameFactory = async (parent, onState, onReady, onError) => {
+export const createConnectFourGame: PhaserGameFactory = async (
+  parent,
+  onState,
+  onReady,
+  onError,
+) => {
   const Phaser = (await import("phaser")).default;
 
   class ConnectFourScene extends Phaser.Scene {
@@ -114,32 +124,74 @@ export const createConnectFourGame: PhaserGameFactory = async (parent, onState, 
     private createArt() {
       this.add.rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, 0x162336);
       this.add.text(26 * WORLD_SCALE, 28 * WORLD_SCALE, "CONNECT FOUR", {
-        color: "#f9f4e6", fontFamily: GAME_FONT, fontSize: `${19 * WORLD_SCALE}px`, fontStyle: "bold",
+        color: "#f9f4e6",
+        fontFamily: GAME_FONT,
+        fontSize: `${19 * WORLD_SCALE}px`,
+        fontStyle: "bold",
       });
-      this.add.text(WIDTH - 26 * WORLD_SCALE, 34 * WORLD_SCALE, "DROP ZONE", {
-        color: "#a8b5c8", fontFamily: GAME_FONT, fontSize: `${9 * WORLD_SCALE}px`,
-      }).setOrigin(1, 0);
+      this.add
+        .text(WIDTH - 26 * WORLD_SCALE, 34 * WORLD_SCALE, "DROP ZONE", {
+          color: "#a8b5c8",
+          fontFamily: GAME_FONT,
+          fontSize: `${9 * WORLD_SCALE}px`,
+        })
+        .setOrigin(1, 0);
 
-      this.add.rectangle(WIDTH / 2, BOARD_Y + BOARD_HEIGHT / 2, BOARD_WIDTH + 20 * WORLD_SCALE, BOARD_HEIGHT + 20 * WORLD_SCALE, 0x264766)
-        .setStrokeStyle(3 * WORLD_SCALE, 0x65B7D6, 0.7);
+      this.add
+        .rectangle(
+          WIDTH / 2,
+          BOARD_Y + BOARD_HEIGHT / 2,
+          BOARD_WIDTH + 20 * WORLD_SCALE,
+          BOARD_HEIGHT + 20 * WORLD_SCALE,
+          0x264766,
+        )
+        .setStrokeStyle(3 * WORLD_SCALE, 0x65b7d6, 0.7);
       this.boardArt = this.add.container(0, 0).setDepth(5);
       for (let row = 0; row < ROWS; row += 1) {
         for (let column = 0; column < COLUMNS; column += 1) {
-          const hole = this.add.circle(this.pointX(column), this.pointY(row), CELL_SIZE * 0.36, 0x132236)
-            .setStrokeStyle(2 * WORLD_SCALE, 0x89A9C6, 0.42);
+          const hole = this.add
+            .circle(this.pointX(column), this.pointY(row), CELL_SIZE * 0.36, 0x132236)
+            .setStrokeStyle(2 * WORLD_SCALE, 0x89a9c6, 0.42);
           this.boardArt.add(hole);
         }
       }
-      this.indicator = this.add.triangle(this.pointX(this.selectedColumn), BOARD_Y - 20 * WORLD_SCALE, 0, 22 * WORLD_SCALE, 18 * WORLD_SCALE, 0, 36 * WORLD_SCALE, 22 * WORLD_SCALE, PLAYER_COLORS.red).setOrigin(0.5).setAngle(180).setDepth(20);
-      this.statusText = this.add.text(WIDTH / 2, 112 * WORLD_SCALE, "RED TO DROP", {
-        color: "#f9f4e6", fontFamily: GAME_FONT, fontSize: `${12 * WORLD_SCALE}px`, fontStyle: "bold",
-      }).setOrigin(0.5);
-      this.movesText = this.add.text(WIDTH / 2, 145 * WORLD_SCALE, "0 / 42 MOVES", {
-        color: "#a8b5c8", fontFamily: GAME_FONT, fontSize: `${9 * WORLD_SCALE}px`,
-      }).setOrigin(0.5);
-      this.add.text(WIDTH / 2, HEIGHT - 76 * WORLD_SCALE, "TAP A COLUMN  ·  ARROWS + ENTER", {
-        color: "#a8b5c8", fontFamily: GAME_FONT, fontSize: `${9 * WORLD_SCALE}px`,
-      }).setOrigin(0.5);
+      this.indicator = this.add
+        .triangle(
+          this.pointX(this.selectedColumn),
+          BOARD_Y - 20 * WORLD_SCALE,
+          0,
+          22 * WORLD_SCALE,
+          18 * WORLD_SCALE,
+          0,
+          36 * WORLD_SCALE,
+          22 * WORLD_SCALE,
+          PLAYER_COLORS.red,
+        )
+        .setOrigin(0.5)
+        .setAngle(180)
+        .setDepth(20);
+      this.statusText = this.add
+        .text(WIDTH / 2, 112 * WORLD_SCALE, "RED TO DROP", {
+          color: "#f9f4e6",
+          fontFamily: GAME_FONT,
+          fontSize: `${12 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5);
+      this.movesText = this.add
+        .text(WIDTH / 2, 145 * WORLD_SCALE, "0 / 42 MOVES", {
+          color: "#a8b5c8",
+          fontFamily: GAME_FONT,
+          fontSize: `${9 * WORLD_SCALE}px`,
+        })
+        .setOrigin(0.5);
+      this.add
+        .text(WIDTH / 2, HEIGHT - 76 * WORLD_SCALE, "TAP A COLUMN  ·  ARROWS + ENTER", {
+          color: "#a8b5c8",
+          fontFamily: GAME_FONT,
+          fontSize: `${9 * WORLD_SCALE}px`,
+        })
+        .setOrigin(0.5);
     }
 
     private resetBoard() {
@@ -192,13 +244,30 @@ export const createConnectFourGame: PhaserGameFactory = async (parent, onState, 
       const player = this.currentPlayer;
       const index = row * COLUMNS + column;
       this.board[index] = player;
-      const disc = this.add.circle(this.pointX(column), BOARD_Y - CELL_SIZE * 0.8, CELL_SIZE * 0.36, PLAYER_COLORS[player])
-        .setStrokeStyle(3 * WORLD_SCALE, player === "red" ? 0x9C3F49 : 0xBD842F, 1)
+      const disc = this.add
+        .circle(
+          this.pointX(column),
+          BOARD_Y - CELL_SIZE * 0.8,
+          CELL_SIZE * 0.36,
+          PLAYER_COLORS[player],
+        )
+        .setStrokeStyle(3 * WORLD_SCALE, player === "red" ? 0x9c3f49 : 0xbd842f, 1)
         .setDepth(12);
       this.discViews.set(index, disc);
       this.playSound("drop", 0.14);
-      phaserEventBus.emit(PHASER_EVENTS.action, { game: "connect-four", action: "drop", column, player });
-      this.tweens.add({ targets: disc, y: this.pointY(row), duration: 430, ease: "Bounce.easeOut", onComplete: () => this.finishDrop(player) });
+      phaserEventBus.emit(PHASER_EVENTS.action, {
+        game: "connect-four",
+        action: "drop",
+        column,
+        player,
+      });
+      this.tweens.add({
+        targets: disc,
+        y: this.pointY(row),
+        duration: 430,
+        ease: "Bounce.easeOut",
+        onComplete: () => this.finishDrop(player),
+      });
       this.emitState();
     }
 
@@ -212,10 +281,16 @@ export const createConnectFourGame: PhaserGameFactory = async (parent, onState, 
         // plays. The result overlay arrives after the celebration completes.
         this.dropping = true;
         this.indicator.setFillStyle(PLAYER_COLORS[player]);
-        this.statusText.setText(`${player.toUpperCase()} WINS`).setColor(player === "red" ? "#e56f68" : "#f4bd68");
+        this.statusText
+          .setText(`${player.toUpperCase()} WINS`)
+          .setColor(player === "red" ? "#e56f68" : "#f4bd68");
         this.playSound("win", 0.18);
         this.celebrate(line);
-        phaserEventBus.emit(PHASER_EVENTS.hit, { game: "connect-four", player, line: line.join(",") });
+        phaserEventBus.emit(PHASER_EVENTS.hit, {
+          game: "connect-four",
+          player,
+          line: line.join(","),
+        });
         phaserEventBus.emit(PHASER_EVENTS.streak, { game: "connect-four", streak: 4 });
         this.celebrationTimer = this.time.delayedCall(1_650, () => {
           this.dropping = false;
@@ -239,8 +314,18 @@ export const createConnectFourGame: PhaserGameFactory = async (parent, onState, 
     }
 
     private celebrate(line: number[]) {
-      const views = line.map((index) => this.discViews.get(index)).filter((disc): disc is GameObjects.Arc => Boolean(disc));
-      this.tweens.add({ targets: views, scale: 1.18, alpha: 0.62, duration: 180, yoyo: true, repeat: 3, ease: "Sine.inOut" });
+      const views = line
+        .map((index) => this.discViews.get(index))
+        .filter((disc): disc is GameObjects.Arc => Boolean(disc));
+      this.tweens.add({
+        targets: views,
+        scale: 1.18,
+        alpha: 0.62,
+        duration: 180,
+        yoyo: true,
+        repeat: 3,
+        ease: "Sine.inOut",
+      });
       const first = line[0]!;
       const last = line.at(-1)!;
       const firstRow = Math.floor(first / COLUMNS);
@@ -249,16 +334,24 @@ export const createConnectFourGame: PhaserGameFactory = async (parent, onState, 
       const lastColumn = last % COLUMNS;
       const lineGraphic = this.add.graphics().setDepth(14);
       this.winGraphic = lineGraphic;
-      lineGraphic.lineStyle(8 * WORLD_SCALE, 0xF9F4E6, 0.95);
-      lineGraphic.lineBetween(this.pointX(firstColumn), this.pointY(firstRow), this.pointX(lastColumn), this.pointY(lastRow));
+      lineGraphic.lineStyle(8 * WORLD_SCALE, 0xf9f4e6, 0.95);
+      lineGraphic.lineBetween(
+        this.pointX(firstColumn),
+        this.pointY(firstRow),
+        this.pointX(lastColumn),
+        this.pointY(lastRow),
+      );
       lineGraphic.setScale(0.2);
       this.tweens.add({ targets: lineGraphic, scale: 1, duration: 300, ease: "Back.out" });
     }
 
     private handleKeydown(event: KeyboardEvent) {
-      if (["ArrowLeft", "ArrowRight", "Enter", "Space", "KeyA", "KeyD"].includes(event.code)) event.preventDefault();
-      if (event.code === "ArrowLeft" || event.code === "KeyA") this.selectColumn(this.selectedColumn - 1);
-      else if (event.code === "ArrowRight" || event.code === "KeyD") this.selectColumn(this.selectedColumn + 1);
+      if (["ArrowLeft", "ArrowRight", "Enter", "Space", "KeyA", "KeyD"].includes(event.code))
+        event.preventDefault();
+      if (event.code === "ArrowLeft" || event.code === "KeyA")
+        this.selectColumn(this.selectedColumn - 1);
+      else if (event.code === "ArrowRight" || event.code === "KeyD")
+        this.selectColumn(this.selectedColumn + 1);
       else if (event.code === "Enter" || event.code === "Space") this.drop(this.selectedColumn);
     }
 
@@ -267,7 +360,11 @@ export const createConnectFourGame: PhaserGameFactory = async (parent, onState, 
       this.indicator?.setX(this.pointX(this.selectedColumn));
       this.indicator?.setFillStyle(PLAYER_COLORS[this.currentPlayer]);
       this.playSound("move", 0.04);
-      phaserEventBus.emit(PHASER_EVENTS.action, { game: "connect-four", action: "select-column", column: this.selectedColumn });
+      phaserEventBus.emit(PHASER_EVENTS.action, {
+        game: "connect-four",
+        action: "select-column",
+        column: this.selectedColumn,
+      });
     }
 
     private handlePointerDown(pointer: { x: number }) {
@@ -327,6 +424,7 @@ export const createConnectFourGame: PhaserGameFactory = async (parent, onState, 
 
   return Object.assign(game, {
     startGame: () => (game.scene.getScene("connect-four") as ConnectFourScene).startFromOverlay(),
-    restartGame: () => (game.scene.getScene("connect-four") as ConnectFourScene).restartFromOverlay(),
+    restartGame: () =>
+      (game.scene.getScene("connect-four") as ConnectFourScene).restartFromOverlay(),
   }) as PhaserGameHandle;
 };

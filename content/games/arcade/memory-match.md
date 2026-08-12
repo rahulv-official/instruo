@@ -3,7 +3,7 @@ title: Memory Match
 description: Turn over cards, remember their positions, and clear every matching pair.
 category: Arcade
 tags: [memory-match, concentration, card-game, browser-game, puzzle]
-icon: i-lucide-grid-2x2
+icon: i-tabler-cards
 ---
 
 ::MemoryMatch
@@ -18,7 +18,7 @@ icon: i-lucide-grid-2x2
 
 ## Controls
 
-Select any card with a pointer or touch. The timer starts with your first card and stops when every pair is found.
+Select cards with pointer or touch. On desktop, move the selection with arrow keys and reveal with Enter or Space.
 
 ## A brief history
 

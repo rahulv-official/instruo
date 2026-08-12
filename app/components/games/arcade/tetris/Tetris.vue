@@ -6,7 +6,13 @@ import { createTetrisGame } from "./createTetrisGame";
 const gameHost = useTemplateRef<typeof PhaserGameHost>("gameHost");
 const loaded = ref(false);
 const gameError = ref(false);
-const state = shallowRef<TetrisGameState>({ status: "ready", score: 0, lines: 0, level: 1, best: 0 });
+const state = shallowRef<TetrisGameState>({
+  status: "ready",
+  score: 0,
+  lines: 0,
+  level: 1,
+  best: 0,
+});
 
 function updateState(next: Record<string, unknown>) {
   if (
@@ -28,7 +34,9 @@ function updateState(next: Record<string, unknown>) {
 </script>
 
 <template>
-  <ToolWorkbench description="Stack falling pieces, clear lines, and climb levels. Keyboard and touch controls work locally in your browser.">
+  <ToolWorkbench
+    description="Stack falling pieces, clear lines, and climb levels. Keyboard and touch controls work locally in your browser."
+  >
     <div class="mx-auto grid max-w-xl gap-5">
       <header class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
         <div>
@@ -36,13 +44,17 @@ function updateState(next: Record<string, unknown>) {
           <p class="text-muted mt-1 font-mono text-xs">Stack Lab · local run</p>
         </div>
         <div class="text-muted flex gap-3 font-mono text-xs">
-          <span>Score <strong class="text-highlighted">{{ state.score }}</strong></span>
-          <span>Level <strong class="text-highlighted">{{ state.level }}</strong></span>
+          <span
+            >Score <strong class="text-highlighted">{{ state.score }}</strong></span
+          >
+          <span
+            >Level <strong class="text-highlighted">{{ state.level }}</strong></span
+          >
         </div>
       </header>
 
       <div
-        class="relative overflow-hidden border border-default"
+        class="border-default relative overflow-hidden border"
         data-phaser-game-shell
         style="--phaser-game-loading-bg: #151d2b"
       >
@@ -66,56 +78,121 @@ function updateState(next: Record<string, unknown>) {
 
         <div
           v-if="loaded && state.status === 'ready'"
-          class="absolute inset-0 z-10 grid place-items-center bg-default/70 p-5"
+          class="bg-default/70 absolute inset-0 z-10 grid place-items-center p-5"
         >
-          <div class="grid w-full max-w-sm gap-4 border border-default bg-elevated p-6 text-center shadow-xl">
-            <div class="mx-auto grid size-14 place-items-center bg-primary text-2xl font-bold text-inverted" aria-hidden="true">
+          <div
+            class="border-default bg-elevated grid w-full max-w-sm gap-4 border p-6 text-center shadow-xl"
+          >
+            <div
+              class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl font-bold"
+              aria-hidden="true"
+            >
               <Icon name="tabler:blocks" />
             </div>
-            <h2 class="text-xl font-semibold text-highlighted">Build your stack</h2>
-            <p class="text-sm leading-6 text-muted">Fit pieces, clear lines, and keep the well open. Every drop speeds up the next level.</p>
+            <h2 class="text-highlighted text-xl font-semibold">Build your stack</h2>
+            <p class="text-muted text-sm leading-6">
+              Fit pieces, clear lines, and keep the well open. Every drop speeds up the next level.
+            </p>
             <button
               type="button"
-              class="relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold text-inverted transition-transform active:translate-y-px focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+              class="text-inverted focus-visible:ring-primary relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold transition-transform focus-visible:ring-2 focus-visible:outline-none active:translate-y-px"
               @click.stop="gameHost?.start()"
             >
-              <NuxtImg src="/game-assets/kenney/ui/PNG/Green/Default/button_rectangle_depth_gloss.png" alt="" aria-hidden="true" class="absolute inset-0 size-full" width="232" height="70" />
-              <span class="relative inline-flex items-center gap-2"><Icon name="tabler:player-play-filled" aria-hidden="true" /> Start game</span>
+              <NuxtImg
+                src="/game-assets/kenney/ui/PNG/Green/Default/button_rectangle_depth_gloss.png"
+                alt=""
+                aria-hidden="true"
+                class="absolute inset-0 size-full"
+                width="232"
+                height="70"
+              />
+              <span class="relative inline-flex items-center gap-2"
+                ><Icon
+                  name="tabler:player-play-filled"
+                  aria-hidden="true"
+                />
+                Start game</span
+              >
             </button>
-            <p class="font-mono text-xs text-muted">Arrows / WASD · Space hard drop · Swipe or tap</p>
+            <p class="text-muted font-mono text-xs">
+              Arrows / WASD · Space hard drop · Swipe or tap
+            </p>
           </div>
         </div>
 
         <div
           v-if="loaded && state.status === 'over'"
-          class="absolute inset-0 z-10 grid place-items-center bg-default/70 p-5"
+          class="bg-default/70 absolute inset-0 z-10 grid place-items-center p-5"
           role="dialog"
           aria-modal="true"
           aria-labelledby="tetris-over-title"
         >
-          <div class="grid w-full max-w-sm gap-3 border border-default bg-elevated p-6 text-center shadow-xl">
-            <div class="mx-auto grid size-14 place-items-center bg-error text-2xl text-inverted" aria-hidden="true"><Icon name="tabler:alert-triangle" /></div>
-            <h2 id="tetris-over-title" class="text-xl font-semibold text-highlighted">Stack topped out</h2>
-            <p class="font-mono text-5xl font-bold tabular-nums text-highlighted">{{ state.score }}</p>
-            <p class="font-mono text-xs uppercase tracking-[0.18em] text-muted">Final score · {{ state.lines }} lines cleared</p>
-            <p class="text-sm text-muted">Level {{ state.level }} reached. Best score: {{ state.best }}.</p>
+          <div
+            class="border-default bg-elevated grid w-full max-w-sm gap-3 border p-6 text-center shadow-xl"
+          >
+            <div
+              class="bg-error text-inverted mx-auto grid size-14 place-items-center text-2xl"
+              aria-hidden="true"
+            >
+              <Icon name="tabler:alert-triangle" />
+            </div>
+            <h2
+              id="tetris-over-title"
+              class="text-highlighted text-xl font-semibold"
+            >
+              Stack topped out
+            </h2>
+            <p class="text-highlighted font-mono text-5xl font-bold tabular-nums">
+              {{ state.score }}
+            </p>
+            <p class="text-muted font-mono text-xs tracking-[0.18em] uppercase">
+              Final score · {{ state.lines }} lines cleared
+            </p>
+            <p class="text-muted text-sm">
+              Level {{ state.level }} reached. Best score: {{ state.best }}.
+            </p>
             <button
               type="button"
-              class="relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold text-inverted transition-transform active:translate-y-px focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+              class="text-inverted focus-visible:ring-primary relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold transition-transform focus-visible:ring-2 focus-visible:outline-none active:translate-y-px"
               @click.stop="gameHost?.restart()"
             >
-              <NuxtImg src="/game-assets/kenney/ui/PNG/Green/Default/button_rectangle_depth_gloss.png" alt="" aria-hidden="true" class="absolute inset-0 size-full" width="232" height="70" />
-              <span class="relative inline-flex items-center gap-2"><Icon name="tabler:refresh" aria-hidden="true" /> Try again</span>
+              <NuxtImg
+                src="/game-assets/kenney/ui/PNG/Green/Default/button_rectangle_depth_gloss.png"
+                alt=""
+                aria-hidden="true"
+                class="absolute inset-0 size-full"
+                width="232"
+                height="70"
+              />
+              <span class="relative inline-flex items-center gap-2"
+                ><Icon
+                  name="tabler:refresh"
+                  aria-hidden="true"
+                />
+                Try again</span
+              >
             </button>
           </div>
         </div>
 
-        <div v-if="gameError" class="absolute inset-0 z-20 grid place-items-center bg-default p-5" role="alert">
-          <UAlert color="error" variant="subtle" title="Game unavailable" description="Reload the page and try once more." icon="i-lucide-circle-alert" />
+        <div
+          v-if="gameError"
+          class="bg-default absolute inset-0 z-20 grid place-items-center p-5"
+          role="alert"
+        >
+          <UAlert
+            color="error"
+            variant="subtle"
+            title="Game unavailable"
+            description="Reload the page and try once more."
+            icon="i-lucide-circle-alert"
+          />
         </div>
       </div>
 
-      <p class="text-center font-mono text-xs text-muted">{{ state.lines }} lines cleared · no account needed</p>
+      <p class="text-muted text-center font-mono text-xs">
+        {{ state.lines }} lines cleared · no account needed
+      </p>
     </div>
   </ToolWorkbench>
 </template>

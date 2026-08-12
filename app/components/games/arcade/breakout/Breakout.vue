@@ -1,41 +1,38 @@
 <script setup lang="ts">
-import type { MemoryMatchGameState } from "./createMemoryMatchGame";
+import type { BreakoutGameState } from "./createBreakoutGame";
 import type PhaserGameHost from "~/components/games/core/PhaserGameHost.vue";
-import { createMemoryMatchGame } from "./createMemoryMatchGame";
+import { createBreakoutGame } from "./createBreakoutGame";
 
 const gameHost = useTemplateRef<typeof PhaserGameHost>("gameHost");
 const loaded = ref(false);
 const gameError = ref(false);
-const state = shallowRef<MemoryMatchGameState>({
+const state = shallowRef<BreakoutGameState>({
   status: "ready",
-  moves: 0,
-  pairs: 0,
-  totalPairs: 8,
-  elapsedSeconds: 0,
+  score: 0,
+  lives: 3,
+  bricks: 48,
+  totalBricks: 48,
   won: false,
 });
 
-const formattedTime = computed(() => {
-  const minutes = Math.floor(state.value.elapsedSeconds / 60);
-  const seconds = state.value.elapsedSeconds % 60;
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-});
+const resultTitle = computed(() => state.value.won ? "Brick yard cleared" : "Ball lost");
+const resultCopy = computed(() => state.value.won ? "Every brick is down. Clean run." : "Keep the paddle under the ball and try another angle.");
 
 function updateState(next: Record<string, unknown>) {
   if (
     (next.status === "ready" || next.status === "playing" || next.status === "over") &&
-    typeof next.moves === "number" &&
-    typeof next.pairs === "number" &&
-    typeof next.totalPairs === "number" &&
-    typeof next.elapsedSeconds === "number" &&
+    typeof next.score === "number" &&
+    typeof next.lives === "number" &&
+    typeof next.bricks === "number" &&
+    typeof next.totalBricks === "number" &&
     typeof next.won === "boolean"
   ) {
     state.value = {
       status: next.status,
-      moves: next.moves,
-      pairs: next.pairs,
-      totalPairs: next.totalPairs,
-      elapsedSeconds: next.elapsedSeconds,
+      score: next.score,
+      lives: next.lives,
+      bricks: next.bricks,
+      totalBricks: next.totalBricks,
       won: next.won,
     };
   }
@@ -43,31 +40,31 @@ function updateState(next: Record<string, unknown>) {
 </script>
 
 <template>
-  <ToolWorkbench description="Turn over cards, remember their positions, and clear every pair. Everything runs locally in your browser.">
+  <ToolWorkbench description="Keep the ball alive, break every brick, and chase a clean local high score.">
     <div class="mx-auto grid max-w-xl gap-5">
       <header class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
         <div>
-          <p class="text-highlighted text-sm font-semibold">Memory Match</p>
-          <p class="text-muted mt-1 font-mono text-xs">Constellation · local puzzle run</p>
+          <p class="text-highlighted text-sm font-semibold">Breakout</p>
+          <p class="text-muted mt-1 font-mono text-xs">Brick Yard · local arcade run</p>
         </div>
         <div class="text-muted flex gap-3 font-mono text-xs">
-          <span><strong class="text-highlighted">{{ state.pairs }}/{{ state.totalPairs }}</strong> pairs</span>
-          <span><strong class="text-highlighted">{{ formattedTime }}</strong></span>
+          <span>Score <strong class="text-highlighted">{{ state.score }}</strong></span>
+          <span><strong class="text-highlighted">{{ state.lives }}</strong> lives</span>
         </div>
       </header>
 
       <div
         class="relative overflow-hidden border border-default"
         data-phaser-game-shell
-        style="--phaser-game-loading-bg: #181528"
+        style="--phaser-game-loading-bg: #101b2d"
       >
         <PhaserGameHost
           ref="gameHost"
-          :create="createMemoryMatchGame"
-          label="Memory Match game stage"
-          loading-title="LOADING CONSTELLATION"
-          loading-copy="Shuffling the card faces…"
-          loading-background="#181528"
+          :create="createBreakoutGame"
+          label="Breakout game stage"
+          loading-title="LOADING BRICK YARD"
+          loading-copy="Charging the paddle and ball…"
+          loading-background="#101b2d"
           :class="{ 'blur-sm': loaded && state.status === 'over' }"
           @state="updateState"
           @ready="loaded = true"
@@ -81,9 +78,9 @@ function updateState(next: Record<string, unknown>) {
 
         <div v-if="loaded && state.status === 'ready'" class="absolute inset-0 z-10 grid place-items-center bg-default/70 p-5">
           <div class="grid w-full max-w-sm gap-4 border border-default bg-elevated p-6 text-center shadow-xl">
-            <div class="mx-auto grid size-14 place-items-center bg-primary text-2xl text-inverted" aria-hidden="true"><Icon name="tabler:cards" /></div>
-            <h2 class="text-xl font-semibold text-highlighted">Find your pairs</h2>
-            <p class="text-sm leading-6 text-muted">Flip two cards at a time. Matching faces stay open; mismatches turn back after a short pause.</p>
+            <div class="mx-auto grid size-14 place-items-center bg-primary text-2xl text-inverted" aria-hidden="true"><Icon name="tabler:ball-basketball" /></div>
+            <h2 class="text-xl font-semibold text-highlighted">Clear the wall</h2>
+            <p class="text-sm leading-6 text-muted">Move the paddle with touch, arrows, or A/D. Every collision changes the angle, so aim for the gaps.</p>
             <button
               type="button"
               class="relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold text-inverted transition-transform active:translate-y-px focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
@@ -92,23 +89,24 @@ function updateState(next: Record<string, unknown>) {
               <NuxtImg src="/game-assets/kenney/ui/PNG/Green/Default/button_rectangle_depth_gloss.png" alt="" aria-hidden="true" class="absolute inset-0 size-full" width="232" height="70" />
               <span class="relative inline-flex items-center gap-2"><Icon name="tabler:player-play-filled" aria-hidden="true" /> Start game</span>
             </button>
-            <p class="font-mono text-xs text-muted">Tap cards · arrows + Enter</p>
+            <p class="font-mono text-xs text-muted">Touch / arrows / A D</p>
           </div>
         </div>
 
-        <div v-if="loaded && state.status === 'over'" class="absolute inset-0 z-10 grid place-items-center bg-default/70 p-5" role="dialog" aria-modal="true" aria-labelledby="memory-match-over-title">
+        <div v-if="loaded && state.status === 'over'" class="absolute inset-0 z-10 grid place-items-center bg-default/70 p-5" role="dialog" aria-modal="true" aria-labelledby="breakout-over-title">
           <div class="grid w-full max-w-sm gap-4 border border-default bg-elevated p-6 text-center shadow-xl">
-            <div class="mx-auto grid size-14 place-items-center bg-success text-2xl text-inverted" aria-hidden="true"><Icon name="tabler:confetti" /></div>
-            <h2 id="memory-match-over-title" class="text-xl font-semibold text-highlighted">Constellation complete</h2>
-            <p class="font-mono text-5xl font-bold tabular-nums text-highlighted">{{ formattedTime }}</p>
-            <p class="font-mono text-xs uppercase tracking-[0.18em] text-muted">{{ state.moves }} moves · {{ state.pairs }} pairs</p>
+            <div class="mx-auto grid size-14 place-items-center text-2xl text-inverted" :class="state.won ? 'bg-success' : 'bg-error'" aria-hidden="true"><Icon :name="state.won ? 'tabler:trophy' : 'tabler:alert-triangle'" /></div>
+            <h2 id="breakout-over-title" class="text-xl font-semibold text-highlighted">{{ resultTitle }}</h2>
+            <p class="text-sm leading-6 text-muted">{{ resultCopy }}</p>
+            <p class="font-mono text-5xl font-bold tabular-nums text-highlighted">{{ state.score }}</p>
+            <p class="font-mono text-xs uppercase tracking-[0.18em] text-muted">Final score · {{ state.lives }} lives left</p>
             <button
               type="button"
               class="relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold text-inverted transition-transform active:translate-y-px focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
               @click.stop="gameHost?.restart()"
             >
               <NuxtImg src="/game-assets/kenney/ui/PNG/Green/Default/button_rectangle_depth_gloss.png" alt="" aria-hidden="true" class="absolute inset-0 size-full" width="232" height="70" />
-              <span class="relative inline-flex items-center gap-2"><Icon name="tabler:refresh" aria-hidden="true" /> Play again</span>
+              <span class="relative inline-flex items-center gap-2"><Icon name="tabler:refresh" aria-hidden="true" /> Try again</span>
             </button>
           </div>
         </div>
@@ -118,7 +116,7 @@ function updateState(next: Record<string, unknown>) {
         </div>
       </div>
 
-      <p class="text-center font-mono text-xs text-muted">Find all eight pairs · no account needed</p>
+      <p class="text-center font-mono text-xs text-muted">{{ state.bricks }} bricks remain · no account needed</p>
     </div>
   </ToolWorkbench>
 </template>

@@ -14,8 +14,9 @@ const padFrequencies = [293.66, 329.63, 392, 523.25];
 function getAudioContext() {
   if (!import.meta.client) return null;
   if (!audioContext) {
-    const AudioContextConstructor = window.AudioContext
-      ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    const AudioContextConstructor =
+      window.AudioContext ??
+      (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!AudioContextConstructor) return null;
     audioContext = new AudioContextConstructor();
   }
@@ -156,7 +157,7 @@ onBeforeUnmount(() => {
             : 'Start game'
         "
         icon="i-lucide-play"
-        size="lg"
+        size="xl"
         class="justify-center"
         @click="start"
       />

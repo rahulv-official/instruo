@@ -25,9 +25,7 @@ const emit = defineEmits<{
 
 const hostStyle = computed(() => ({
   "--phaser-game-aspect": PHASER_GAME_ASPECT,
-  ...(props.loadingBackground
-    ? { "--phaser-game-loading-bg": props.loadingBackground }
-    : {}),
+  ...(props.loadingBackground ? { "--phaser-game-loading-bg": props.loadingBackground } : {}),
 }));
 
 const mount = ref<HTMLElement | null>(null);
