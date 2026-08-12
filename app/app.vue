@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const colorMode = useColorMode();
 const title = "Instruo | Free browser tools for everyday tasks";
 const description =
   "Use fast, private utilities for text, encoding, data, and quick browser games. No account or installation required.";
@@ -36,7 +37,10 @@ useHead({
     { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
   ],
   meta: [
-    { name: "theme-color", content: "#18181b" },
+    {
+      name: "theme-color",
+      content: computed(() => (colorMode.value === "dark" ? "#18181b" : "#f1f1f1")),
+    },
     { name: "color-scheme", content: "light dark" },
   ],
 });

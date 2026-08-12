@@ -1,0 +1,136 @@
+<script setup lang="ts">
+type Phase = "idle" | "showing" | "playing" | "won" | "lost";
+const pads = ["primary", "success", "warning", "error"] as const;
+const sequence = ref<number[]>([]);
+const activePad = ref<number | null>(null);
+const inputIndex = ref(0);
+const level = ref(0);
+const phase = ref<Phase>("idle");
+let timers: ReturnType<typeof setTimeout>[] = [];
+
+const statusText = computed(() => {
+  if (phase.value === "showing") return "Watch the pattern.";
+  if (phase.value === "playing")
+    return `Your turn. ${sequence.value.length - inputIndex.value} pads left.`;
+  if (phase.value === "won") return `Level ${level.value} complete. Keep going.`;
+  if (phase.value === "lost") return "Pattern missed. Start a new run.";
+  return "Repeat the pattern from memory.";
+});
+
+function clearTimers() {
+  timers.forEach((timer) => clearTimeout(timer));
+  timers = [];
+}
+
+function playSequence() {
+  clearTimers();
+  phase.value = "showing";
+  inputIndex.value = 0;
+  let index = 0;
+  const showNext = () => {
+    if (index >= sequence.value.length) {
+      activePad.value = null;
+      phase.value = "playing";
+      return;
+    }
+    activePad.value = sequence.value[index]!;
+    timers.push(
+      setTimeout(() => {
+        activePad.value = null;
+        timers.push(
+          setTimeout(() => {
+            index += 1;
+            showNext();
+          }, 120),
+        );
+      }, 420),
+    );
+  };
+  showNext();
+}
+
+function start() {
+  level.value = 1;
+  sequence.value = [Math.floor(Math.random() * pads.length)];
+  playSequence();
+}
+
+function pressPad(index: number) {
+  if (phase.value !== "playing") return;
+  if (sequence.value[inputIndex.value] !== index) {
+    phase.value = "lost";
+    return;
+  }
+  inputIndex.value += 1;
+  if (inputIndex.value < sequence.value.length) return;
+  level.value += 1;
+  sequence.value = [...sequence.value, Math.floor(Math.random() * pads.length)];
+  playSequence();
+}
+
+onBeforeUnmount(clearTimers);
+</script>
+
+<template>
+  <ToolWorkbench description="Watch each color, then repeat the pattern in the same order.">
+    <div class="mx-auto grid max-w-xl gap-6">
+      <div class="border-default/70 flex items-center justify-between border-b pb-4">
+        <p
+          class="text-toned text-sm"
+          role="status"
+          aria-live="polite"
+        >
+          {{ statusText }}
+        </p>
+        <span class="text-toned font-mono text-sm">Level {{ level }}</span>
+      </div>
+      <div class="grid grid-cols-2 gap-3 sm:gap-4">
+        <button
+          v-for="(color, index) in pads"
+          :key="color"
+          type="button"
+          class="simon-pad focus-visible:ring-primary grid aspect-square place-items-center border-2 text-sm font-semibold tracking-[0.16em] uppercase transition-transform duration-200 focus-visible:ring-2 focus-visible:outline-none active:scale-95"
+          :class="{
+            'border-primary bg-primary/70 text-inverted': color === 'primary',
+            'border-success bg-success/70 text-inverted': color === 'success',
+            'border-warning bg-warning/70 text-highlighted': color === 'warning',
+            'border-error bg-error/70 text-inverted': color === 'error',
+          }"
+          :data-active="activePad === index"
+          :disabled="phase !== 'playing'"
+          @click="pressPad(index)"
+        >
+          <UIcon
+            :name="`i-tabler-circle-number-${index + 1}`"
+            class="size-7"
+            aria-hidden="true"
+          />
+        </button>
+      </div>
+      <UButton
+        :label="phase === 'playing' || phase === 'showing' ? 'Restart pattern' : 'Start game'"
+        icon="i-lucide-play"
+        size="lg"
+        class="justify-center"
+        @click="start"
+      />
+    </div>
+  </ToolWorkbench>
+</template>
+
+<style scoped>
+.simon-pad[data-active="true"] {
+  animation: simon-flash 320ms ease-out;
+}
+@keyframes simon-flash {
+  50% {
+    transform: scale(1.06);
+    filter: brightness(1.35);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .simon-pad[data-active="true"] {
+    animation: none;
+  }
+}
+</style>

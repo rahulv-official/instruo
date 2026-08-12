@@ -24,10 +24,6 @@ export default defineNuxtConfig({
     preset: "cloudflare-pages",
   },
 
-  routeRules: {
-    "/games/encoder-decoder/wordle": { redirect: "/games/word/wordle" },
-  },
-
   css: ["~/assets/css/main.css"],
 
   vite: {
@@ -35,7 +31,7 @@ export default defineNuxtConfig({
   },
 
   colorMode: {
-    preference: "system",
+    preference: "light",
     fallback: "light",
   },
 

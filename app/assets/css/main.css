@@ -9,7 +9,20 @@
 }
 
 :root {
-  --ui-bg: var(--color-white);
+  --ui-bg: #f1f1f1;
+  --ui-bg-muted: #e4e4e7;
+  --ui-bg-elevated: #ffffff;
+  --ui-bg-accented: #d4d4d8;
+  --ui-text-dimmed: #626262;
+  --ui-text-muted: #52525b;
+  --ui-text-toned: #3f3f46;
+  --ui-text: #27272a;
+  --ui-text-highlighted: #18181b;
+  --ui-text-inverted: #ffffff;
+  --ui-border: #d4d4d8;
+  --ui-border-muted: #e4e4e7;
+  --ui-border-accented: #a1a1aa;
+  --ui-border-inverted: #18181b;
   --ui-primary: var(--ui-color-primary-700);
   --ui-radius: 0;
   --ui-container: 96rem;
@@ -17,7 +30,20 @@
 }
 
 .dark {
-  --ui-bg: var(--color-zinc-950);
+  --ui-bg: #151515;
+  --ui-bg-muted: #27272a;
+  --ui-bg-elevated: #27272a;
+  --ui-bg-accented: #3f3f46;
+  --ui-text-dimmed: #a1a1aa;
+  --ui-text-muted: #b4b4bb;
+  --ui-text-toned: #d4d4d8;
+  --ui-text: #e4e4e7;
+  --ui-text-highlighted: #ffffff;
+  --ui-text-inverted: #18181b;
+  --ui-border: #3f3f46;
+  --ui-border-muted: #27272a;
+  --ui-border-accented: #52525b;
+  --ui-border-inverted: #ffffff;
   --ui-primary: var(--ui-color-primary-400);
 }
 
@@ -26,6 +52,7 @@ html {
 }
 
 body {
+  background: var(--ui-bg);
   min-width: 20rem;
   overflow-x: hidden;
 }
