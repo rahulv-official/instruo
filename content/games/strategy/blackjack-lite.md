@@ -1,6 +1,6 @@
 ---
-title: Blackjack Lite
-description: Hit or stand against a simple dealer and try to get closest to 21.
+title: Blackjack
+description: Play a tactile local hand against a dealer and get closest to 21.
 category: Strategy
 tags: [blackjack, cards, twenty-one, strategy, card-game]
 icon: i-tabler-cards

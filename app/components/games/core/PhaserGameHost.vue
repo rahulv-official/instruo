@@ -86,6 +86,8 @@ onMounted(async () => {
     await Promise.all([
       document.fonts.load('400 16px "Manrope"'),
       document.fonts.load('700 16px "Manrope"'),
+      document.fonts.load('400 16px "Kenney Future"'),
+      document.fonts.load('700 16px "Kenney Future"'),
     ]);
     game = await props.create(
       mount.value,
