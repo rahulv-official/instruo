@@ -27,7 +27,7 @@ function updateState(nextState: Record<string, unknown>) {
 
 <template>
   <ToolWorkbench
-    description="A bright, local flight game. Thread the pipes, chase your best score, and play again instantly."
+    description="A bright, local flight game. Guide the bird through rocky gates, chase your best score, and play again instantly."
   >
     <div class="mx-auto grid max-w-xl gap-5">
       <div class="border-default/70 flex items-center justify-between border-b pb-4">
@@ -79,7 +79,7 @@ function updateState(nextState: Record<string, unknown>) {
                 ✦
               </div>
               <h2>Ready for takeoff?</h2>
-              <p>Keep the little flyer in the clear sky. One tap keeps the journey going.</p>
+              <p>Keep the bird in the clear sky. One tap keeps the journey going.</p>
               <button
                 type="button"
                 class="flappy-asset-button"

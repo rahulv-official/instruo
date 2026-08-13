@@ -15,8 +15,8 @@ export interface FlappyBirdState extends PhaserGameState {
 }
 
 interface PipePair {
-  top: GameObjects.Rectangle;
-  bottom: GameObjects.Rectangle;
+  top: GameObjects.Image;
+  bottom: GameObjects.Image;
   x: number;
   gapTop: number;
   gapBottom: number;
@@ -26,28 +26,23 @@ interface PipePair {
 const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 const GROUND_Y = HEIGHT - 54 * WORLD_SCALE;
 const BIRD_X = 112 * WORLD_SCALE;
-const BIRD_RADIUS = 16 * WORLD_SCALE;
-const PIPE_WIDTH = 64 * WORLD_SCALE;
+const BIRD_RADIUS = 18 * WORLD_SCALE;
+const PIPE_WIDTH = 108 * WORLD_SCALE;
+const PIPE_TIP_WIDTH_RATIO = 0.1;
 const PIPE_GAP = 176 * WORLD_SCALE;
 const PIPE_SPEED = 188 * WORLD_SCALE;
 const GRAVITY = 980 * WORLD_SCALE;
 const FLAP_VELOCITY = -350 * WORLD_SCALE;
 const BEST_KEY = "instruo:flappy-bird-best";
 const HUD_DEPTH = 100;
+const ASSET_ROOT = "/game-assets/kenney/tappy-plane/PNG";
+const PARTICLE_ROOT = "/game-assets/kenney/particle-pack/PNG%20(Transparent)";
 
 /* eslint-disable unicorn/number-literal-case */
 const COLORS = {
-  sky: 0xb9e6f3,
   skyDeep: 0x66b8d7,
-  cloud: 0xffffff,
   ink: 0x17324c,
-  mutedInk: 0x32627b,
-  bird: 0xf5a83d,
-  birdDark: 0xd35e2b,
-  pipe: 0x4fbd77,
-  pipeDark: 0x28734d,
   ground: 0x385a65,
-  groundAccent: 0xf4bd68,
   panel: 0xfff6dc,
 };
 /* eslint-enable unicorn/number-literal-case */
@@ -77,11 +72,10 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
   const Phaser = (await import("phaser")).default;
 
   class FlappyScene extends Phaser.Scene {
-    private bird!: GameObjects.Arc;
-    private wing!: GameObjects.Ellipse;
-    private eye!: GameObjects.Arc;
+    private bird!: GameObjects.Image;
     private scoreText!: GameObjects.Text;
     private bestText!: GameObjects.Text;
+    private ground!: GameObjects.TileSprite;
     private pipes: PipePair[] = [];
     private status: FlappyBirdState["status"] = "ready";
     private score = 0;
@@ -95,6 +89,17 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
     }
 
     preload() {
+      this.load.image("flappy-background", `${ASSET_ROOT}/background.png`);
+      this.load.image("flappy-ground", `${ASSET_ROOT}/groundGrass.png`);
+      this.load.image("flappy-rock-up", `${ASSET_ROOT}/rockGrassDown.png`);
+      this.load.image("flappy-rock-down", `${ASSET_ROOT}/rockGrass.png`);
+      this.load.image("flappy-star", `${ASSET_ROOT}/starGold.png`);
+      this.load.image(
+        "flappy-bird",
+        "/game-assets/kenney/animal-pack/PNG/Round%20(outline)/parrot.png",
+      );
+      this.load.image("flappy-particle-spark", `${PARTICLE_ROOT}/spark_01.png`);
+      this.load.image("flappy-particle-circle", `${PARTICLE_ROOT}/circle_01.png`);
       this.load.audio("flap", "/game-assets/kenney/interface-sounds/Audio/select_004.ogg");
       this.load.audio("score", "/game-assets/kenney/interface-sounds/Audio/toggle_001.ogg");
       this.load.audio("hit", "/game-assets/kenney/impact-sounds/Audio/impactWood_heavy_001.ogg");
@@ -144,8 +149,8 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       const step = Math.min(delta, 40) / 1000;
       this.velocity += GRAVITY * step;
       this.setBirdY(this.birdY + this.velocity * step);
-      this.bird.angle = Math.max(-22, Math.min(82, this.velocity / 8));
-      this.wing.angle = this.bird.angle;
+      this.bird.angle = Math.max(-16, Math.min(28, this.velocity / 10));
+      this.ground.tilePositionX += PIPE_SPEED * step;
 
       this.pipeTimer -= delta;
       if (this.pipeTimer <= 0) {
@@ -167,13 +172,7 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
           this.emitState();
         }
 
-        const overlapsX =
-          pipe.x - PIPE_WIDTH / 2 < BIRD_X + BIRD_RADIUS &&
-          pipe.x + PIPE_WIDTH / 2 > BIRD_X - BIRD_RADIUS;
-        const hitsPipe =
-          this.birdY - BIRD_RADIUS < pipe.gapTop || this.birdY + BIRD_RADIUS > pipe.gapBottom;
-
-        if (overlapsX && hitsPipe) {
+        if (this.hitsRock(pipe)) {
           this.endRound();
           return;
         }
@@ -204,23 +203,10 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
 
     private createSceneArt() {
       this.addToWorld(
-        this.add.rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, COLORS.sky),
+        this.add
+          .image(WIDTH / 2, HEIGHT / 2, "flappy-background")
+          .setDisplaySize((HEIGHT * 800) / 480, HEIGHT),
       ).setDepth(0);
-      this.addToWorld(
-        this.add.circle(64 * WORLD_SCALE, 116 * WORLD_SCALE, 56 * WORLD_SCALE, COLORS.cloud, 0.78),
-      ).setDepth(1);
-      this.addToWorld(
-        this.add.circle(103 * WORLD_SCALE, 106 * WORLD_SCALE, 38 * WORLD_SCALE, COLORS.cloud, 0.78),
-      ).setDepth(1);
-      this.addToWorld(
-        this.add.circle(143 * WORLD_SCALE, 126 * WORLD_SCALE, 54 * WORLD_SCALE, COLORS.cloud, 0.78),
-      ).setDepth(1);
-      this.addToWorld(
-        this.add.circle(329 * WORLD_SCALE, 142 * WORLD_SCALE, 52 * WORLD_SCALE, COLORS.cloud, 0.64),
-      ).setDepth(1);
-      this.addToWorld(
-        this.add.circle(369 * WORLD_SCALE, 156 * WORLD_SCALE, 70 * WORLD_SCALE, COLORS.cloud, 0.64),
-      ).setDepth(1);
       this.addToWorld(
         this.add.rectangle(
           WIDTH / 2,
@@ -234,15 +220,23 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       this.addToWorld(
         this.add.rectangle(
           WIDTH / 2,
-          GROUND_Y + 27 * WORLD_SCALE,
+          GROUND_Y + 48 * WORLD_SCALE,
           WIDTH,
-          54 * WORLD_SCALE,
+          96 * WORLD_SCALE,
           COLORS.ground,
         ),
       ).setDepth(5);
-      this.addToWorld(
-        this.add.rectangle(WIDTH / 2, GROUND_Y, WIDTH, 7 * WORLD_SCALE, COLORS.groundAccent),
-      ).setDepth(6);
+      this.ground = this.addToWorld(
+        this.add
+          .tileSprite(
+            WIDTH / 2,
+            GROUND_Y + 44 * WORLD_SCALE,
+            WIDTH,
+            88 * WORLD_SCALE,
+            "flappy-ground",
+          )
+          .setDepth(6),
+      );
 
       this.addToWorld(
         this.add
@@ -276,6 +270,12 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
         ),
       );
       scorePlate.setStrokeStyle(2 * WORLD_SCALE, COLORS.ink, 0.12).setDepth(HUD_DEPTH);
+      this.addToWorld(
+        this.add
+          .image(WIDTH / 2 - 48 * WORLD_SCALE, 98 * WORLD_SCALE, "flappy-star")
+          .setDisplaySize(22 * WORLD_SCALE, 22 * WORLD_SCALE)
+          .setDepth(HUD_DEPTH + 1),
+      );
       this.scoreText = this.addToWorld(
         this.add
           .text(WIDTH / 2, 68 * WORLD_SCALE, "0", {
@@ -324,27 +324,12 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
     }
 
     private createBird() {
-      this.bird = this.addToWorld(this.add.circle(BIRD_X, this.birdY, BIRD_RADIUS, COLORS.bird));
-      this.bird.setStrokeStyle(3 * WORLD_SCALE, COLORS.birdDark).setDepth(20);
-      this.wing = this.addToWorld(
-        this.add.ellipse(
-          BIRD_X - 7 * WORLD_SCALE,
-          this.birdY + 5 * WORLD_SCALE,
-          14 * WORLD_SCALE,
-          8 * WORLD_SCALE,
-          COLORS.birdDark,
-        ),
+      this.bird = this.addToWorld(
+        this.add
+          .image(BIRD_X, this.birdY, "flappy-bird")
+          .setDisplaySize(36 * WORLD_SCALE, 36 * WORLD_SCALE)
+          .setDepth(20),
       );
-      this.wing.setDepth(20);
-      this.eye = this.addToWorld(
-        this.add.circle(
-          BIRD_X + 7 * WORLD_SCALE,
-          this.birdY - 5 * WORLD_SCALE,
-          3 * WORLD_SCALE,
-          COLORS.ink,
-        ),
-      );
-      this.eye.setDepth(21);
     }
 
     private addToWorld<T extends GameObjects.GameObject>(object: T) {
@@ -364,7 +349,6 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       this.pipeTimer = 950;
       this.setBirdY(this.birdY);
       this.bird.angle = 0;
-      this.wing.angle = 0;
       this.scoreText.setText("0");
       this.bestText.setText(`BEST  ${this.best}`);
       this.emitState();
@@ -374,6 +358,12 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       this.status = "playing";
       this.velocity = FLAP_VELOCITY;
       this.playSound("flap", 0.16);
+      this.burstAt(
+        BIRD_X - 28 * WORLD_SCALE,
+        this.birdY + 6 * WORLD_SCALE,
+        "flappy-particle-spark",
+        4,
+      );
       phaserEventBus.emit(PHASER_EVENTS.action, { game: "flappy-bird", action: "start" });
       this.emitState();
     }
@@ -390,6 +380,12 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       if (this.status !== "playing") return;
       this.velocity = FLAP_VELOCITY;
       this.playSound("flap", 0.16);
+      this.burstAt(
+        BIRD_X - 28 * WORLD_SCALE,
+        this.birdY + 6 * WORLD_SCALE,
+        "flappy-particle-spark",
+        3,
+      );
     }
 
     private handleTap() {
@@ -404,8 +400,6 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
     private setBirdY(value: number) {
       this.birdY = value;
       this.bird.y = value;
-      this.wing.y = value + 5 * WORLD_SCALE;
-      this.eye.y = value - 5 * WORLD_SCALE;
     }
 
     private spawnPipe() {
@@ -415,22 +409,51 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       const topHeight = gapTop;
       const bottomHeight = GROUND_Y - gapBottom;
       const top = this.addToWorld(
-        this.add.rectangle(x, topHeight / 2, PIPE_WIDTH, topHeight, COLORS.pipe),
+        this.add
+          .image(x, topHeight / 2, "flappy-rock-up")
+          .setDisplaySize(PIPE_WIDTH, Math.max(topHeight, 1))
+          .setOrigin(0.5),
       );
       const bottom = this.addToWorld(
-        this.add.rectangle(x, gapBottom + bottomHeight / 2, PIPE_WIDTH, bottomHeight, COLORS.pipe),
+        this.add
+          .image(x, gapBottom + bottomHeight / 2, "flappy-rock-down")
+          .setDisplaySize(PIPE_WIDTH, Math.max(bottomHeight, 1))
+          .setOrigin(0.5),
       );
-      top.setStrokeStyle(3 * WORLD_SCALE, COLORS.pipeDark);
-      bottom.setStrokeStyle(3 * WORLD_SCALE, COLORS.pipeDark);
       top.setDepth(10);
       bottom.setDepth(10);
       this.pipes.push({ top, bottom, x, gapTop, gapBottom, scored: false });
+    }
+
+    private hitsRock(pipe: PipePair) {
+      const samples = [this.birdY - BIRD_RADIUS, this.birdY, this.birdY + BIRD_RADIUS];
+      return samples.some((sampleY) => {
+        if (sampleY < pipe.gapTop) {
+          const progress = Phaser.Math.Clamp(sampleY / pipe.gapTop, 0, 1);
+          const widthRatio = 1 - (1 - PIPE_TIP_WIDTH_RATIO) * progress;
+          return this.overlapsRockWidth(pipe, PIPE_WIDTH * widthRatio);
+        }
+
+        if (sampleY > pipe.gapBottom) {
+          const height = GROUND_Y - pipe.gapBottom;
+          const progress = Phaser.Math.Clamp((sampleY - pipe.gapBottom) / height, 0, 1);
+          const widthRatio = PIPE_TIP_WIDTH_RATIO + (1 - PIPE_TIP_WIDTH_RATIO) * progress;
+          return this.overlapsRockWidth(pipe, PIPE_WIDTH * widthRatio);
+        }
+
+        return false;
+      });
+    }
+
+    private overlapsRockWidth(pipe: PipePair, width: number) {
+      return Math.abs(BIRD_X - pipe.x) < width / 2 + BIRD_RADIUS;
     }
 
     private endRound() {
       if (this.status !== "playing") return;
       this.status = "over";
       this.playSound("hit", 0.22);
+      this.burstAt(BIRD_X, this.birdY, "flappy-particle-circle", 9);
       if (this.score > this.best) {
         this.best = this.score;
         writeBest(this.best);
@@ -458,6 +481,29 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       }
     }
 
+    private burstAt(x: number, y: number, texture: string, count: number) {
+      for (let index = 0; index < count; index += 1) {
+        const angle = (Math.PI * 2 * index) / count;
+        const distance = Phaser.Math.Between(22, 48) * WORLD_SCALE;
+        const particle = this.add
+          .image(x, y, texture)
+          .setDisplaySize(18 * WORLD_SCALE, 18 * WORLD_SCALE)
+          .setDepth(24)
+          .setAlpha(0.9);
+        this.tweens.add({
+          targets: particle,
+          x: x + Math.cos(angle) * distance,
+          y: y + Math.sin(angle) * distance,
+          angle: Phaser.Math.Between(-90, 90),
+          alpha: 0,
+          scale: 0.35,
+          duration: 360,
+          ease: "Cubic.easeOut",
+          onComplete: () => particle.destroy(),
+        });
+      }
+    }
+
     private removeInput() {
       this.input.off("pointerdown", this.handleTap, this);
       this.input.keyboard?.off("keydown-SPACE", this.flap, this);
@@ -480,6 +526,7 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
     },
+    resolution: Math.min(window.devicePixelRatio || 1, 2),
     render: {
       antialias: true,
       roundPixels: false,
