@@ -115,6 +115,7 @@ const CELL_SIZE = BOARD_WIDTH / SNAKE_COLUMNS;
 const SWIPE_THRESHOLD = 24 * SCALE;
 const START_ROW = 9;
 const START_COLUMN = 5;
+const PARTICLE_ROOT = "/game-assets/kenney/particle-pack/PNG%20(Transparent)";
 
 function openingForStage(id: SnakeStageId) {
   if (id === "circuit") {
@@ -188,7 +189,7 @@ export const createSnakeGame: PhaserGameFactory = async (parent, onState, onRead
     private snakeLayer!: GameObjects.Graphics;
     private hudLayer!: GameObjects.Graphics;
     private foodGlow!: GameObjects.Arc;
-    private foodCore!: GameObjects.Arc;
+    private foodCore!: GameObjects.Image;
     private stageText!: GameObjects.Text;
     private scoreText!: GameObjects.Text;
     private bestText!: GameObjects.Text;
@@ -199,6 +200,12 @@ export const createSnakeGame: PhaserGameFactory = async (parent, onState, onRead
     }
 
     preload() {
+      this.load.image(
+        "snake-coin",
+        "/game-assets/kenney/shape-characters/PNG/Default/tile_coin.png",
+      );
+      this.load.image("snake-spark", `${PARTICLE_ROOT}/spark_01.png`);
+      this.load.image("snake-star", `${PARTICLE_ROOT}/star_01.png`);
       this.load.audio("eat", "/game-assets/kenney/interface-sounds/Audio/select_004.ogg");
       this.load.audio("crash", "/game-assets/kenney/impact-sounds/Audio/impactWood_heavy_001.ogg");
       this.load.audio("win", "/game-assets/kenney/interface-sounds/Audio/confirmation_002.ogg");
@@ -219,17 +226,11 @@ export const createSnakeGame: PhaserGameFactory = async (parent, onState, onRead
           .setDepth(4)
           .setVisible(false);
         this.foodCore = this.add
-          .circle(0, 0, 7 * SCALE, this.stage.food, 1)
+          .image(0, 0, "snake-coin")
+          .setDisplaySize(16 * SCALE, 16 * SCALE)
           .setDepth(6)
           .setVisible(false);
-        this.tweens.add({
-          targets: this.ambientLayer,
-          alpha: 0.72,
-          duration: 2600,
-          ease: "Sine.inOut",
-          yoyo: true,
-          repeat: -1,
-        });
+        this.ambientLayer.setAlpha(0.84);
         this.input.on("pointerdown", this.handlePointerDown, this);
         this.input.on("pointerup", this.handlePointerUp, this);
         this.input.keyboard?.on("keydown", this.handleKeydown, this);
@@ -547,12 +548,21 @@ export const createSnakeGame: PhaserGameFactory = async (parent, onState, onRead
           .lineStyle(2, this.stage.edge, 0.4)
           .strokeRoundedRect(point.x + 3, point.y + 3, CELL_SIZE - 6, CELL_SIZE - 6, head ? 10 : 7);
         if (head) {
+          const [forwardRow, forwardColumn] = vectors[this.direction];
+          const sideRow = forwardColumn === 0 ? 0 : 1;
+          const sideColumn = forwardColumn === 0 ? 1 : 0;
+          const centerX = point.x + CELL_SIZE / 2 + forwardColumn * CELL_SIZE * 0.14;
+          const centerY = point.y + CELL_SIZE / 2 + forwardRow * CELL_SIZE * 0.14;
           this.snakeLayer
             .fillStyle(0x10202a, 1)
-            .fillCircle(point.x + CELL_SIZE * 0.38, point.y + CELL_SIZE * 0.39, 2.5 * SCALE);
+            .fillCircle(
+              centerX + sideColumn * CELL_SIZE * 0.18,
+              centerY + sideRow * CELL_SIZE * 0.18,
+              2.5 * SCALE,
+            );
           this.snakeLayer.fillCircle(
-            point.x + CELL_SIZE * 0.67,
-            point.y + CELL_SIZE * 0.39,
+            centerX - sideColumn * CELL_SIZE * 0.18,
+            centerY - sideRow * CELL_SIZE * 0.18,
             2.5 * SCALE,
           );
         }
@@ -583,7 +593,7 @@ export const createSnakeGame: PhaserGameFactory = async (parent, onState, onRead
         .setVisible(true);
       this.foodCore
         .setPosition(point.x + CELL_SIZE / 2, point.y + CELL_SIZE / 2)
-        .setFillStyle(this.stage.food, 1)
+        .setTint(this.stage.food)
         .setVisible(true);
       this.tweens.killTweensOf([this.foodGlow, this.foodCore]);
       this.foodGlow.setScale(0.8);
@@ -640,6 +650,7 @@ export const createSnakeGame: PhaserGameFactory = async (parent, onState, onRead
         ease: "Cubic.out",
         onComplete: () => gain.destroy(),
       });
+      this.burstAt(point.x + CELL_SIZE / 2, point.y + CELL_SIZE / 2, "snake-spark", 5);
     }
 
     private animateCrash(won: boolean) {
@@ -660,6 +671,35 @@ export const createSnakeGame: PhaserGameFactory = async (parent, onState, onRead
         duration: 420,
         onComplete: () => ring.destroy(),
       });
+      this.burstAt(
+        point.x + CELL_SIZE / 2,
+        point.y + CELL_SIZE / 2,
+        won ? "snake-star" : "snake-spark",
+        won ? 8 : 5,
+      );
+    }
+
+    private burstAt(x: number, y: number, texture: string, count: number) {
+      for (let index = 0; index < count; index += 1) {
+        const angle = (Math.PI * 2 * index) / count;
+        const distance = Phaser.Math.Between(10, 24) * SCALE;
+        const particle = this.add
+          .image(x, y, texture)
+          .setDisplaySize(10 * SCALE, 10 * SCALE)
+          .setTint(this.stage.accent)
+          .setAlpha(0.9)
+          .setDepth(12);
+        this.tweens.add({
+          targets: particle,
+          x: x + Math.cos(angle) * distance,
+          y: y + Math.sin(angle) * distance,
+          alpha: 0,
+          scale: 0.35,
+          duration: 300,
+          ease: "Cubic.out",
+          onComplete: () => particle.destroy(),
+        });
+      }
     }
 
     private playSound(key: string, volume: number) {

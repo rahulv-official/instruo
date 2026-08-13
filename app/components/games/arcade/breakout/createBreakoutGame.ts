@@ -21,7 +21,7 @@ export interface BreakoutGameState extends PhaserGameState {
 }
 
 interface BrickView {
-  body: GameObjects.Rectangle;
+  body: GameObjects.Image;
   color: number;
 }
 
@@ -34,9 +34,9 @@ const BRICK_BOARD_WIDTH = BRICK_COLUMNS * BRICK_WIDTH + (BRICK_COLUMNS - 1) * BR
 const BRICK_X = (WIDTH - BRICK_BOARD_WIDTH) / 2;
 const BRICK_Y = 154 * WORLD_SCALE;
 const PADDLE_Y = 520 * WORLD_SCALE;
-const PADDLE_WIDTH = 86 * WORLD_SCALE;
-const PADDLE_HEIGHT = 13 * WORLD_SCALE;
-const BALL_RADIUS = 8 * WORLD_SCALE;
+const PADDLE_WIDTH = 104 * WORLD_SCALE;
+const PADDLE_HEIGHT = 18 * WORLD_SCALE;
+const BALL_RADIUS = 10 * WORLD_SCALE;
 const PADDLE_SPEED = 420 * WORLD_SCALE;
 const BALL_SPEED = 255 * WORLD_SCALE;
 const LEVEL_SPEED_STEP = 0.045;
@@ -51,6 +51,7 @@ const ARENA_BOTTOM = ARENA_CENTER_Y + ARENA_HEIGHT / 2;
 const BEST_KEY = "instruo:breakout-best";
 const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 const TOTAL_BRICKS = BRICK_COLUMNS * BRICK_ROWS;
+const ASSET_ROOT = "/game-assets/kenney/puzzle-pack-1/PNG/Default";
 
 /* eslint-disable unicorn/number-literal-case */
 const COLORS = {
@@ -127,8 +128,8 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
     private best = readBest();
     private won = false;
     private bricks: BrickView[] = [];
-    private paddle!: GameObjects.Rectangle;
-    private ball!: GameObjects.Arc;
+    private paddle!: GameObjects.Container;
+    private ball!: GameObjects.Image;
     private scoreText!: GameObjects.Text;
     private livesText!: GameObjects.Text;
     private levelText!: GameObjects.Text;
@@ -152,7 +153,17 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
     }
 
     preload() {
-      this.load.audio("paddle", "/game-assets/kenney/impact-sounds/Audio/impactSoft_medium_001.ogg");
+      this.load.image("breakout-brick-blue", `${ASSET_ROOT}/element_blue_rectangle_glossy.png`);
+      this.load.image("breakout-brick-green", `${ASSET_ROOT}/element_green_rectangle_glossy.png`);
+      this.load.image("breakout-brick-red", `${ASSET_ROOT}/element_red_rectangle_glossy.png`);
+      this.load.image("breakout-brick-yellow", `${ASSET_ROOT}/element_yellow_rectangle_glossy.png`);
+      this.load.image("breakout-brick-purple", `${ASSET_ROOT}/element_purple_rectangle_glossy.png`);
+      this.load.image("breakout-ball", `${ASSET_ROOT}/ballBlue.png`);
+      this.load.image("breakout-particle", `${ASSET_ROOT}/particleStar.png`);
+      this.load.audio(
+        "paddle",
+        "/game-assets/kenney/impact-sounds/Audio/impactSoft_medium_001.ogg",
+      );
       this.load.audio("brick", "/game-assets/kenney/impact-sounds/Audio/impactGlass_light_001.ogg");
       this.load.audio("wall", "/game-assets/kenney/interface-sounds/Audio/select_004.ogg");
       this.load.audio("miss", "/game-assets/kenney/interface-sounds/Audio/error_008.ogg");
@@ -184,7 +195,11 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
       const seconds = Math.min(delta, 40) / 1_000;
       const direction = (this.leftDown ? -1 : 0) + (this.rightDown ? 1 : 0);
       if (direction) this.targetPaddleX += direction * PADDLE_SPEED * seconds;
-      this.targetPaddleX = clamp(this.targetPaddleX, PADDLE_WIDTH / 2 + 28 * WORLD_SCALE, WIDTH - PADDLE_WIDTH / 2 - 28 * WORLD_SCALE);
+      this.targetPaddleX = clamp(
+        this.targetPaddleX,
+        PADDLE_WIDTH / 2 + 28 * WORLD_SCALE,
+        WIDTH - PADDLE_WIDTH / 2 - 28 * WORLD_SCALE,
+      );
       this.paddleX += (this.targetPaddleX - this.paddleX) * Math.min(1, seconds * 16);
       this.paddle.setX(this.paddleX);
 
@@ -216,10 +231,19 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
         this.ballVelocityX += (this.ballX - this.paddleX) * 2.3;
         this.ballVelocityX = clamp(this.ballVelocityX, -BALL_SPEED * 1.45, BALL_SPEED * 1.45);
         this.playSound("paddle", 0.1);
+        this.tweens.add({
+          targets: this.paddle,
+          scaleX: 1.055,
+          duration: 70,
+          yoyo: true,
+          ease: "Quad.out",
+        });
         phaserEventBus.emit(PHASER_EVENTS.action, { game: "breakout", action: "paddle-hit" });
       }
 
-      const hitBrick = this.bricks.find((brick) => brick.body.active && this.intersectsBrick(brick.body));
+      const hitBrick = this.bricks.find(
+        (brick) => brick.body.active && this.intersectsBrick(brick.body),
+      );
       if (hitBrick) {
         hitBrick.body.setActive(false).setVisible(false);
         this.score += 25;
@@ -238,6 +262,7 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
       if (this.status !== "ready") return;
       this.status = "playing";
       this.resetBall();
+      this.statusText?.setText("DRAG TO MOVE · KEEP BALL IN PLAY").setColor(COLORS.ink);
       phaserEventBus.emit(PHASER_EVENTS.action, { game: "breakout", action: "start" });
       this.emitState();
     }
@@ -260,71 +285,103 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
         fontSize: `${21 * WORLD_SCALE}px`,
         fontStyle: "bold",
       });
-      this.add.text(WIDTH - 26 * WORLD_SCALE, 34 * WORLD_SCALE, "BRICK YARD", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-      }).setOrigin(1, 0);
-      this.statusText = this.add.text(WIDTH / 2, 92 * WORLD_SCALE, "READY TO BREAK", {
+      this.add
+        .text(WIDTH - 26 * WORLD_SCALE, 34 * WORLD_SCALE, "BRICK YARD", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${8 * WORLD_SCALE}px`,
+        })
+        .setOrigin(1, 0);
+      this.scoreText = this.add.text(26 * WORLD_SCALE, 58 * WORLD_SCALE, "SCORE 0", {
         color: COLORS.ink,
         fontFamily: GAME_FONT,
-        fontSize: `${11 * WORLD_SCALE}px`,
+        fontSize: `${15 * WORLD_SCALE}px`,
         fontStyle: "bold",
-      }).setOrigin(0.5);
-      this.add.rectangle(WIDTH / 2, ARENA_CENTER_Y, ARENA_WIDTH, ARENA_HEIGHT, COLORS.arena)
+      });
+      this.livesText = this.add
+        .text(WIDTH - 26 * WORLD_SCALE, 64 * WORLD_SCALE, "3 LIVES", {
+          color: COLORS.accentText,
+          fontFamily: GAME_FONT,
+          fontSize: `${9 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(1, 0);
+      this.levelText = this.add
+        .text(WIDTH / 2, 64 * WORLD_SCALE, "LEVEL 1", {
+          color: COLORS.accentText,
+          fontFamily: GAME_FONT,
+          fontSize: `${9 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5, 0);
+      this.statusText = this.add
+        .text(WIDTH / 2, 92 * WORLD_SCALE, "READY TO BREAK", {
+          color: COLORS.ink,
+          fontFamily: GAME_FONT,
+          fontSize: `${11 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5);
+      this.add
+        .rectangle(WIDTH / 2, ARENA_CENTER_Y, ARENA_WIDTH, ARENA_HEIGHT, COLORS.arena)
         .setStrokeStyle(2 * WORLD_SCALE, COLORS.accent, 0.3);
       this.arenaMask = this.add.graphics().setVisible(false);
-      this.arenaMask.fillStyle(0xFFFFFF, 1);
+      /* eslint-disable unicorn/number-literal-case */
+      this.arenaMask.fillStyle(0xffffff, 1);
+      /* eslint-enable unicorn/number-literal-case */
       this.arenaMask.fillRect(ARENA_LEFT, ARENA_TOP, ARENA_WIDTH, ARENA_HEIGHT);
       const mask = this.arenaMask.createGeometryMask();
+      const brickTextures = [
+        "breakout-brick-blue",
+        "breakout-brick-green",
+        "breakout-brick-red",
+        "breakout-brick-yellow",
+        "breakout-brick-purple",
+      ];
       this.bricks = Array.from({ length: BRICK_COLUMNS * BRICK_ROWS }, (_, index) => {
         const column = index % BRICK_COLUMNS;
         const row = Math.floor(index / BRICK_COLUMNS);
         const color = COLORS.bricks[row % COLORS.bricks.length]!;
-        const body = this.add.rectangle(
-          BRICK_X + column * (BRICK_WIDTH + BRICK_GAP) + BRICK_WIDTH / 2,
-          BRICK_Y + row * (BRICK_HEIGHT + BRICK_GAP) + BRICK_HEIGHT / 2,
-          BRICK_WIDTH,
-          BRICK_HEIGHT,
-          color,
-          0.95,
-        ).setStrokeStyle(2 * WORLD_SCALE, 0xFFFFFF, 0.18).setDepth(4).setMask(mask);
+        const body = this.add
+          .image(
+            BRICK_X + column * (BRICK_WIDTH + BRICK_GAP) + BRICK_WIDTH / 2,
+            BRICK_Y + row * (BRICK_HEIGHT + BRICK_GAP) + BRICK_HEIGHT / 2,
+            brickTextures[row % brickTextures.length]!,
+          )
+          .setDisplaySize(BRICK_WIDTH, BRICK_HEIGHT)
+          .setDepth(4)
+          .setMask(mask);
         return { body, color };
       });
-      this.paddle = this.add.rectangle(this.paddleX, PADDLE_Y, PADDLE_WIDTH, PADDLE_HEIGHT, COLORS.paddle)
-        .setStrokeStyle(2 * WORLD_SCALE, 0xF9F4E6, 0.6).setDepth(8).setMask(mask);
-      this.ball = this.add.circle(this.ballX, this.ballY, BALL_RADIUS, COLORS.ball).setStrokeStyle(2 * WORLD_SCALE, COLORS.accent, 0.9).setDepth(9).setMask(mask);
-      this.scoreText = this.add.text(26 * WORLD_SCALE, HEIGHT - 70 * WORLD_SCALE, "0", {
-        color: COLORS.ink,
-        fontFamily: GAME_FONT,
-        fontSize: `${18 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      });
-      this.livesText = this.add.text(WIDTH - 26 * WORLD_SCALE, HEIGHT - 70 * WORLD_SCALE, "3 LIVES", {
-        color: COLORS.accentText,
-        fontFamily: GAME_FONT,
-        fontSize: `${10 * WORLD_SCALE}px`,
-      }).setOrigin(1, 0);
-      this.levelText = this.add.text(WIDTH / 2, HEIGHT - 70 * WORLD_SCALE, "LEVEL 1", {
-        color: COLORS.accentText,
-        fontFamily: GAME_FONT,
-        fontSize: `${10 * WORLD_SCALE}px`,
-      }).setOrigin(0.5, 0);
-      this.add.text(26 * WORLD_SCALE, HEIGHT - 38 * WORLD_SCALE, "SCORE", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-      });
-      this.add.text(WIDTH / 2, HEIGHT - 30 * WORLD_SCALE, "MOVE PADDLE · ARROWS / A D / TOUCH", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-      }).setOrigin(0.5, 0);
-      this.add.text(WIDTH - 26 * WORLD_SCALE, HEIGHT - 30 * WORLD_SCALE, `BEST ${this.best}`, {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-      }).setOrigin(1, 0);
+      this.paddle = this.add.container(this.paddleX, PADDLE_Y).setDepth(8).setMask(mask);
+      const paddleShadow = this.add
+        .rectangle(0, 3 * WORLD_SCALE, PADDLE_WIDTH + 12 * WORLD_SCALE, PADDLE_HEIGHT + 7 * WORLD_SCALE, 0x061222, 0.75)
+        .setOrigin(0.5);
+      const paddleFrame = this.add
+        .rectangle(0, 0, PADDLE_WIDTH, PADDLE_HEIGHT, 0x0B1D31, 1)
+        .setStrokeStyle(2 * WORLD_SCALE, 0x8BEAFF, 0.9);
+      const paddleFace = this.add.rectangle(0, 0, PADDLE_WIDTH - 8 * WORLD_SCALE, PADDLE_HEIGHT - 6 * WORLD_SCALE, COLORS.paddle, 1);
+      const paddleCenter = this.add.rectangle(0, 0, PADDLE_WIDTH * 0.48, PADDLE_HEIGHT - 8 * WORLD_SCALE, 0xF9F4E6, 1);
+      this.paddle.add([paddleShadow, paddleFrame, paddleFace, paddleCenter]);
+      this.ball = this.add
+        .image(this.ballX, this.ballY, "breakout-ball")
+        .setDisplaySize(BALL_RADIUS * 2, BALL_RADIUS * 2)
+        .setDepth(9)
+        .setMask(mask);
+      this.add
+        .text(WIDTH / 2, HEIGHT - 30 * WORLD_SCALE, "DRAG OR USE ← → / A D", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${8 * WORLD_SCALE}px`,
+        })
+        .setOrigin(0.5, 0);
+      this.add
+        .text(WIDTH - 26 * WORLD_SCALE, HEIGHT - 30 * WORLD_SCALE, `BEST ${this.best}`, {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${8 * WORLD_SCALE}px`,
+        })
+        .setOrigin(1, 0);
     }
 
     private resetBoard() {
@@ -365,7 +422,7 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
       this.ball?.setVisible(true).setPosition(this.ballX, this.ballY);
     }
 
-    private intersectsBrick(brick: GameObjects.Rectangle) {
+    private intersectsBrick(brick: GameObjects.Image) {
       return (
         this.ballX + BALL_RADIUS >= brick.x - BRICK_WIDTH / 2 &&
         this.ballX - BALL_RADIUS <= brick.x + BRICK_WIDTH / 2 &&
@@ -381,7 +438,7 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
         this.endRound();
         return;
       }
-      this.statusText.setText(`${this.lives} LIVES LEFT`).setColor(COLORS.accentText);
+      this.statusText.setText(`KEEP BALL IN PLAY · ${this.lives} LIVES`).setColor(COLORS.accentText);
       this.resetBall(true);
       this.emitState();
     }
@@ -412,7 +469,12 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
     private burstAt(x: number, y: number, color: number) {
       Array.from({ length: 10 }, (_, index) => {
         const angle = (Math.PI * 2 * index) / 10;
-        const particle = this.add.circle(x, y, 4 * WORLD_SCALE, color, 0.9).setDepth(20);
+        const particle = this.add
+          .image(x, y, "breakout-particle")
+          .setDisplaySize(12 * WORLD_SCALE, 12 * WORLD_SCALE)
+          .setTint(color)
+          .setAlpha(0.9)
+          .setDepth(20);
         this.tweens.add({
           targets: particle,
           x: x + Math.cos(angle) * 40 * WORLD_SCALE,
@@ -453,7 +515,7 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
     }
 
     private emitState() {
-      this.scoreText?.setText(String(this.score));
+      this.scoreText?.setText(`SCORE ${this.score}`);
       this.livesText?.setText(`${this.lives} LIVES`);
       this.levelText?.setText(`LEVEL ${this.level}`);
       onState({

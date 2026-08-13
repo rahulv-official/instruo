@@ -54,7 +54,7 @@ function updateState(next: Record<string, unknown>) {
       <div
         class="border-default relative overflow-hidden border"
         data-phaser-game-shell
-        style="--phaser-game-loading-bg: #292332"
+        style="--phaser-game-loading-bg: #151a21"
       >
         <PhaserGameHost
           ref="gameHost"
@@ -62,7 +62,7 @@ function updateState(next: Record<string, unknown>) {
           label="Fifteen Puzzle game stage"
           loading-title="LOADING SLIDING ATELIER"
           loading-copy="Laying out a solvable board…"
-          loading-background="#292332"
+          loading-background="#151a21"
           :class="{ 'blur-sm': loaded && state.status === 'won' }"
           @state="updateState"
           @ready="loaded = true"

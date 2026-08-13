@@ -27,15 +27,16 @@ interface Piece {
   y: number;
 }
 
-const COLUMNS = 12;
-const ROWS = 24;
-// A denser well keeps the board readable on mobile and gives pieces room to
-// breathe instead of letting the footer collide with the last row.
-const CELL_SIZE = 19 * WORLD_SCALE;
+const COLUMNS = 20;
+const ROWS = 30;
+// A wider well gives the board presence while the smaller seam keeps pieces
+// reading as one connected stack instead of a grid of floating squares.
+const CELL_SIZE = 12 * WORLD_SCALE;
 const BOARD_WIDTH = COLUMNS * CELL_SIZE;
 const BOARD_HEIGHT = ROWS * CELL_SIZE;
 const BOARD_X = (WIDTH - BOARD_WIDTH) / 2;
-const BOARD_Y = 74 * WORLD_SCALE;
+const BOARD_Y = 128 * WORLD_SCALE;
+const FOOTER_Y = BOARD_Y + BOARD_HEIGHT + 24 * WORLD_SCALE;
 const DROP_START = 680;
 const DROP_MIN = 120;
 const SWIPE_THRESHOLD = 24 * WORLD_SCALE;
@@ -50,6 +51,7 @@ const COLORS = {
   ink: "#f9f4e6",
   muted: "#a8b5c8",
   accent: 0xf4bd68,
+  accentText: "#f4bd68",
   line: 0x65d4a0,
   ghost: 0x8da4bd,
 };
@@ -219,6 +221,41 @@ export const createTetrisGame: PhaserGameFactory = async (parent, onState, onRea
         })
         .setOrigin(1, 0);
 
+      this.scoreText = this.add.text(26 * WORLD_SCALE, 60 * WORLD_SCALE, "SCORE 0", {
+        color: COLORS.ink,
+        fontFamily: GAME_FONT,
+        fontSize: `${10 * WORLD_SCALE}px`,
+        fontStyle: "bold",
+      });
+      this.linesText = this.add
+        .text(WIDTH / 2, 62 * WORLD_SCALE, "LINES 0", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${9 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5, 0);
+      this.levelText = this.add
+        .text(WIDTH - 26 * WORLD_SCALE, 62 * WORLD_SCALE, "LEVEL 1", {
+          color: COLORS.accentText,
+          fontFamily: GAME_FONT,
+          fontSize: `${9 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(1, 0);
+      this.add
+        .text(
+          WIDTH / 2,
+          106 * WORLD_SCALE,
+          "← → MOVE  ·  ↑ ROTATE  ·  ↓ SOFT DROP  ·  SPACE HARD DROP",
+          {
+            color: COLORS.muted,
+            fontFamily: GAME_FONT,
+            fontSize: `${6.5 * WORLD_SCALE}px`,
+          },
+        )
+        .setOrigin(0.5, 0);
+
       this.add
         .rectangle(
           BOARD_X + BOARD_WIDTH / 2,
@@ -241,8 +278,8 @@ export const createTetrisGame: PhaserGameFactory = async (parent, onState, onRea
           this.add.rectangle(
             BOARD_X + column * CELL_SIZE + CELL_SIZE / 2,
             BOARD_Y + row * CELL_SIZE + CELL_SIZE / 2,
-            CELL_SIZE - 3 * WORLD_SCALE,
-            CELL_SIZE - 3 * WORLD_SCALE,
+            CELL_SIZE - 1 * WORLD_SCALE,
+            CELL_SIZE - 1 * WORLD_SCALE,
             COLORS.grid,
             0.46,
           );
@@ -251,40 +288,15 @@ export const createTetrisGame: PhaserGameFactory = async (parent, onState, onRea
 
       this.boardVisual = this.add.container(0, 0).setDepth(5);
       this.activeVisual = this.add.container(0, 0).setDepth(10);
-      this.scoreText = this.add.text(26 * WORLD_SCALE, HEIGHT - 70 * WORLD_SCALE, "0", {
-        color: COLORS.ink,
-        fontFamily: GAME_FONT,
-        fontSize: `${18 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      });
-      this.linesText = this.add
-        .text(WIDTH / 2, HEIGHT - 70 * WORLD_SCALE, "0 LINES", {
-          color: COLORS.muted,
-          fontFamily: GAME_FONT,
-          fontSize: `${10 * WORLD_SCALE}px`,
-        })
-        .setOrigin(0.5, 0);
-      this.levelText = this.add
-        .text(WIDTH - 26 * WORLD_SCALE, HEIGHT - 70 * WORLD_SCALE, "LEVEL 1", {
-          color: "#f4bd68",
-          fontFamily: GAME_FONT,
-          fontSize: `${10 * WORLD_SCALE}px`,
-        })
-        .setOrigin(1, 0);
-      this.add.text(26 * WORLD_SCALE, HEIGHT - 38 * WORLD_SCALE, "SCORE", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-      });
       this.add
-        .text(WIDTH / 2, HEIGHT - 38 * WORLD_SCALE, "TAP / SWIPE / ARROWS", {
+        .text(WIDTH / 2, FOOTER_Y, "TAP SIDES  ·  SWIPE  ·  ARROWS / WASD", {
           color: COLORS.muted,
           fontFamily: GAME_FONT,
           fontSize: `${8 * WORLD_SCALE}px`,
         })
         .setOrigin(0.5, 0);
       this.add
-        .text(WIDTH - 26 * WORLD_SCALE, HEIGHT - 38 * WORLD_SCALE, `BEST ${this.best}`, {
+        .text(WIDTH - 26 * WORLD_SCALE, FOOTER_Y, `BEST ${this.best}`, {
           color: COLORS.muted,
           fontFamily: GAME_FONT,
           fontSize: `${8 * WORLD_SCALE}px`,
@@ -486,11 +498,11 @@ export const createTetrisGame: PhaserGameFactory = async (parent, onState, onRea
         .rectangle(
           BOARD_X + column * CELL_SIZE + CELL_SIZE / 2,
           BOARD_Y + row * CELL_SIZE + CELL_SIZE / 2,
-          CELL_SIZE - 4 * WORLD_SCALE,
-          CELL_SIZE - 4 * WORLD_SCALE,
+          CELL_SIZE - 1 * WORLD_SCALE,
+          CELL_SIZE - 1 * WORLD_SCALE,
           color,
         )
-        .setStrokeStyle(2 * WORLD_SCALE, COLORS.background, 0.22);
+        .setStrokeStyle(1 * WORLD_SCALE, COLORS.background, 0.5);
     }
 
     private handleKeydown(event: KeyboardEvent) {
@@ -545,8 +557,8 @@ export const createTetrisGame: PhaserGameFactory = async (parent, onState, onRea
     }
 
     private emitState() {
-      this.scoreText?.setText(String(this.score));
-      this.linesText?.setText(`${this.lines} LINES`);
+      this.scoreText?.setText(`SCORE ${this.score}`);
+      this.linesText?.setText(`LINES ${this.lines}`);
       this.levelText?.setText(`LEVEL ${this.level}`);
       onState({
         status: this.status,

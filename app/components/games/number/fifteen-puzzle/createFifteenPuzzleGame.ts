@@ -31,20 +31,20 @@ const BOARD_SIZE = SIZE * TILE_SIZE + (SIZE - 1) * TILE_GAP;
 const BOARD_X = (WIDTH - BOARD_SIZE) / 2;
 const BOARD_Y = 164 * WORLD_SCALE;
 const SHUFFLE_MOVES = 120;
-const TILE_TEXTURES = ["tile-green", "tile-blue", "tile-red", "tile-grey"] as const;
+const TILE_TEXTURE = "tile-grey";
 const BEST_KEY = "instruo:fifteen-puzzle-best";
-const GAME_FONT = '"Kenney Future", Manrope, system-ui, sans-serif';
+const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 
 /* eslint-disable unicorn/number-literal-case */
 const COLORS = {
-  background: 0x292332,
-  panel: 0x3d344b,
-  panelDark: 0x211c2a,
-  ink: "#fff7e5",
-  muted: "#c4b8c7",
+  background: 0x151a21,
+  panel: 0x27313b,
+  panelDark: 0x10161d,
+  ink: "#f5f7fa",
+  muted: "#9ba7b4",
   accent: 0xf4bd68,
   accentText: "#f4bd68",
-  success: 0x65d4a0,
+  number: "#19232d",
 };
 /* eslint-enable unicorn/number-literal-case */
 
@@ -104,16 +104,9 @@ export const createFifteenPuzzleGame: PhaserGameFactory = async (
     }
 
     preload() {
-      const root = "/game-assets/kenney/ui/PNG";
-      this.load.image("tile-green", `${root}/Green/Double/button_square_depth_gloss.png`);
-      this.load.image("tile-blue", `${root}/Blue/Double/button_square_depth_gloss.png`);
-      this.load.image("tile-red", `${root}/Red/Double/button_square_depth_gloss.png`);
-      this.load.image("tile-grey", `${root}/Grey/Double/button_square_depth_flat.png`);
-      this.load.image("empty-slot", `${root}/Grey/Double/button_square_depth_line.png`);
-      this.load.image(
-        "board-panel",
-        "/game-assets/kenney/ui-adventure/PNG/Double/panel_grey_bolts_dark.png",
-      );
+      const root = "/game-assets/kenney/ui/PNG/Grey/Double";
+      this.load.image("tile-grey", `${root}/button_square_depth_flat.png`);
+      this.load.image("empty-slot", `${root}/button_square_depth_line.png`);
       this.load.audio("slide", "/game-assets/kenney/casino-audio/Audio/card-slide-3.ogg");
       this.load.audio("move", "/game-assets/kenney/ui/Sounds/click-a.ogg");
       this.load.audio("win", "/game-assets/kenney/interface-sounds/Audio/confirmation_003.ogg");
@@ -121,7 +114,7 @@ export const createFifteenPuzzleGame: PhaserGameFactory = async (
 
     create() {
       try {
-        this.cameras.main.setZoom(1).setScroll(0, 0).setBackgroundColor("#292332");
+        this.cameras.main.setZoom(1).setScroll(0, 0).setBackgroundColor("#151a21");
         this.createArt();
         this.resetBoard(false);
         this.input.keyboard?.on("keydown", this.handleKeydown, this);
@@ -171,20 +164,6 @@ export const createFifteenPuzzleGame: PhaserGameFactory = async (
 
     private createArt() {
       this.add.rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, COLORS.background);
-      this.add.circle(
-        WIDTH - 22 * WORLD_SCALE,
-        56 * WORLD_SCALE,
-        70 * WORLD_SCALE,
-        COLORS.accent,
-        0.12,
-      );
-      this.add.circle(
-        24 * WORLD_SCALE,
-        HEIGHT - 100 * WORLD_SCALE,
-        96 * WORLD_SCALE,
-        COLORS.success,
-        0.08,
-      );
 
       this.add.text(24 * WORLD_SCALE, 22 * WORLD_SCALE, "FIFTEEN", {
         color: COLORS.ink,
@@ -209,19 +188,15 @@ export const createFifteenPuzzleGame: PhaserGameFactory = async (
         .setOrigin(0.5);
 
       this.add
-        .image(WIDTH / 2, BOARD_Y + BOARD_SIZE / 2, "board-panel")
-        .setDisplaySize(BOARD_SIZE + 22 * WORLD_SCALE, BOARD_SIZE + 22 * WORLD_SCALE)
-        .setAlpha(0.92)
-        .setDepth(0);
-      this.add
         .rectangle(
           WIDTH / 2,
           BOARD_Y + BOARD_SIZE / 2,
           BOARD_SIZE + 12 * WORLD_SCALE,
           BOARD_SIZE + 12 * WORLD_SCALE,
           COLORS.panelDark,
-          0.36,
+          1,
         )
+        .setStrokeStyle(2 * WORLD_SCALE, COLORS.muted, 0.35)
         .setDepth(1);
       this.emptySlot = this.add
         .image(0, 0, "empty-slot")
@@ -272,18 +247,16 @@ export const createFifteenPuzzleGame: PhaserGameFactory = async (
         const value = index + 1;
         const { x, y } = this.slotPosition(index);
         const body = this.add
-          .image(x, y, TILE_TEXTURES[(value - 1) % TILE_TEXTURES.length]!)
+          .image(x, y, TILE_TEXTURE)
           .setDisplaySize(TILE_SIZE, TILE_SIZE)
           .setDepth(4)
           .setInteractive({ useHandCursor: true });
         const label = this.add
           .text(x, y, String(value), {
-            color: COLORS.ink,
+            color: COLORS.number,
             fontFamily: GAME_FONT,
-            fontSize: `${25 * WORLD_SCALE}px`,
+            fontSize: `${27 * WORLD_SCALE}px`,
             fontStyle: "bold",
-            stroke: "#241d29",
-            strokeThickness: 3 * WORLD_SCALE,
           })
           .setOrigin(0.5)
           .setDepth(5);
@@ -440,21 +413,10 @@ export const createFifteenPuzzleGame: PhaserGameFactory = async (
           targets: [view.body, view.label],
           scale: 1.1,
           angle: index % 2 ? 2 : -2,
-          duration: 220,
+          duration: 180,
           delay: index * 32,
           yoyo: true,
           ease: "Back.out",
-        });
-        const sparkle = this.add
-          .circle(view.body.x, view.body.y, 5 * WORLD_SCALE, COLORS.accent, 0.9)
-          .setDepth(8);
-        this.tweens.add({
-          targets: sparkle,
-          scale: 4,
-          alpha: 0,
-          duration: 420,
-          delay: index * 32,
-          onComplete: () => sparkle.destroy(),
         });
       });
       this.finishTimer = this.time.delayedCall(1_000, () => {
@@ -501,8 +463,8 @@ export const createFifteenPuzzleGame: PhaserGameFactory = async (
     width: WIDTH,
     height: HEIGHT,
     parent,
-    canvasStyle: "display:block;background:#292332;",
-    backgroundColor: "#292332",
+    canvasStyle: "display:block;background:#151a21;",
+    backgroundColor: "#151a21",
     scene: FifteenPuzzleScene,
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
     render: { antialias: true, roundPixels: false },

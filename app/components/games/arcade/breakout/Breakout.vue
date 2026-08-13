@@ -81,9 +81,9 @@ function updateState(next: Record<string, unknown>) {
 
         <div v-if="loaded && state.status === 'ready'" class="absolute inset-0 z-10 grid place-items-center bg-default/70 p-5">
           <div class="grid w-full max-w-sm gap-4 border border-default bg-elevated p-6 text-center shadow-xl">
-            <div class="mx-auto grid size-14 place-items-center bg-primary text-2xl text-inverted" aria-hidden="true"><Icon name="tabler:ball-basketball" /></div>
-            <h2 class="text-xl font-semibold text-highlighted">Clear the wall</h2>
-            <p class="text-sm leading-6 text-muted">Move the paddle with touch, arrows, or A/D. Clear each seeded pattern to unlock a faster, different level.</p>
+            <div class="mx-auto grid size-14 place-items-center bg-primary text-2xl text-inverted" aria-hidden="true"><Icon name="tabler:arrows-horizontal" /></div>
+            <h2 class="text-xl font-semibold text-highlighted">Keep the ball alive</h2>
+            <p class="text-sm leading-6 text-muted">Drag the paddle under the ball. Keyboard players can use ← → or A / D. Break every brick to unlock a faster pattern.</p>
             <button
               type="button"
               class="relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold text-inverted transition-transform active:translate-y-px focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
@@ -92,7 +92,7 @@ function updateState(next: Record<string, unknown>) {
               <NuxtImg src="/game-assets/kenney/ui/PNG/Green/Default/button_rectangle_depth_gloss.png" alt="" aria-hidden="true" class="absolute inset-0 size-full" width="232" height="70" />
               <span class="relative inline-flex items-center gap-2"><Icon name="tabler:player-play-filled" aria-hidden="true" /> Start game</span>
             </button>
-            <p class="font-mono text-xs text-muted">Touch / arrows / A D</p>
+            <p class="font-mono text-xs text-muted">Drag · ← → · A D</p>
           </div>
         </div>
 

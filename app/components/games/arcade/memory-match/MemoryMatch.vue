@@ -48,7 +48,7 @@ function updateState(next: Record<string, unknown>) {
       <header class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
         <div>
           <p class="text-highlighted text-sm font-semibold">Memory Match</p>
-          <p class="text-muted mt-1 font-mono text-xs">Constellation · local puzzle run</p>
+          <p class="text-muted mt-1 font-mono text-xs">Shape Vault · local puzzle run</p>
         </div>
         <div class="text-muted flex gap-3 font-mono text-xs">
           <span><strong class="text-highlighted">{{ state.pairs }}/{{ state.totalPairs }}</strong> pairs</span>
@@ -82,8 +82,8 @@ function updateState(next: Record<string, unknown>) {
         <div v-if="loaded && state.status === 'ready'" class="absolute inset-0 z-10 grid place-items-center bg-default/70 p-5">
           <div class="grid w-full max-w-sm gap-4 border border-default bg-elevated p-6 text-center shadow-xl">
             <div class="mx-auto grid size-14 place-items-center bg-primary text-2xl text-inverted" aria-hidden="true"><Icon name="tabler:cards" /></div>
-            <h2 class="text-xl font-semibold text-highlighted">Find your pairs</h2>
-            <p class="text-sm leading-6 text-muted">Flip two cards at a time. Matching faces stay open; mismatches turn back after a short pause.</p>
+            <h2 class="text-xl font-semibold text-highlighted">Match the shapes</h2>
+            <p class="text-sm leading-6 text-muted">Reveal two cards at a time. Matching shapes lock in with a burst; mismatches turn back after a short pause.</p>
             <button
               type="button"
               class="relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold text-inverted transition-transform active:translate-y-px focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
@@ -99,7 +99,7 @@ function updateState(next: Record<string, unknown>) {
         <div v-if="loaded && state.status === 'over'" class="absolute inset-0 z-10 grid place-items-center bg-default/70 p-5" role="dialog" aria-modal="true" aria-labelledby="memory-match-over-title">
           <div class="grid w-full max-w-sm gap-4 border border-default bg-elevated p-6 text-center shadow-xl">
             <div class="mx-auto grid size-14 place-items-center bg-success text-2xl text-inverted" aria-hidden="true"><Icon name="tabler:confetti" /></div>
-            <h2 id="memory-match-over-title" class="text-xl font-semibold text-highlighted">Constellation complete</h2>
+            <h2 id="memory-match-over-title" class="text-xl font-semibold text-highlighted">Shape vault complete</h2>
             <p class="font-mono text-5xl font-bold tabular-nums text-highlighted">{{ formattedTime }}</p>
             <p class="font-mono text-xs uppercase tracking-[0.18em] text-muted">{{ state.moves }} moves · {{ state.pairs }} pairs</p>
             <button

@@ -37,19 +37,15 @@ function updateState(next: Record<string, unknown>) {
   <ToolWorkbench
     description="Stack falling pieces, clear lines, and climb levels. Keyboard and touch controls work locally in your browser."
   >
-    <div class="mx-auto grid max-w-xl gap-5">
+    <div class="mx-auto grid max-w-[45rem] gap-5">
       <header class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
         <div>
           <p class="text-highlighted text-sm font-semibold">Tetris</p>
           <p class="text-muted mt-1 font-mono text-xs">Stack Lab · local run</p>
         </div>
         <div class="text-muted flex gap-3 font-mono text-xs">
-          <span
-            >Score <strong class="text-highlighted">{{ state.score }}</strong></span
-          >
-          <span
-            >Level <strong class="text-highlighted">{{ state.level }}</strong></span
-          >
+          <span>Score <strong class="text-highlighted">{{ state.score }}</strong></span>
+          <span>Level <strong class="text-highlighted">{{ state.level }}</strong></span>
         </div>
       </header>
 
@@ -87,11 +83,11 @@ function updateState(next: Record<string, unknown>) {
               class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl font-bold"
               aria-hidden="true"
             >
-              <Icon name="tabler:blocks" />
+              <Icon name="tabler:arrows-move" />
             </div>
-            <h2 class="text-highlighted text-xl font-semibold">Build your stack</h2>
+            <h2 class="text-highlighted text-xl font-semibold">Keep the well clear</h2>
             <p class="text-muted text-sm leading-6">
-              Fit pieces, clear lines, and keep the well open. Every drop speeds up the next level.
+              Move and rotate each piece, then clear complete rows. The board gets faster every ten lines.
             </p>
             <button
               type="button"
@@ -106,16 +102,14 @@ function updateState(next: Record<string, unknown>) {
                 width="232"
                 height="70"
               />
-              <span class="relative inline-flex items-center gap-2"
-                ><Icon
-                  name="tabler:player-play-filled"
-                  aria-hidden="true"
-                />
-                Start game</span
-              >
+              <span class="relative inline-flex items-center gap-2"><Icon
+                name="tabler:player-play-filled"
+                aria-hidden="true"
+              />
+                Start game</span>
             </button>
             <p class="text-muted font-mono text-xs">
-              Arrows / WASD · Space hard drop · Swipe or tap
+              ← → / A D move · ↑ / W rotate · Space hard drop · swipe or tap
             </p>
           </div>
         </div>
@@ -164,13 +158,11 @@ function updateState(next: Record<string, unknown>) {
                 width="232"
                 height="70"
               />
-              <span class="relative inline-flex items-center gap-2"
-                ><Icon
-                  name="tabler:refresh"
-                  aria-hidden="true"
-                />
-                Try again</span
-              >
+              <span class="relative inline-flex items-center gap-2"><Icon
+                name="tabler:refresh"
+                aria-hidden="true"
+              />
+                Try again</span>
             </button>
           </div>
         </div>
@@ -191,7 +183,7 @@ function updateState(next: Record<string, unknown>) {
       </div>
 
       <p class="text-muted text-center font-mono text-xs">
-        {{ state.lines }} lines cleared · no account needed
+        {{ state.lines }} lines cleared · level {{ state.level }} · no account needed
       </p>
     </div>
   </ToolWorkbench>

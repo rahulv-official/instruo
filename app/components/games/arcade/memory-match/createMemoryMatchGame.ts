@@ -30,7 +30,8 @@ interface CardView {
   back: GameObjects.Rectangle;
   backMark: GameObjects.Text;
   face: GameObjects.Rectangle;
-  glyph: GameObjects.Text;
+  glyph: GameObjects.Graphics;
+  selection: GameObjects.Rectangle;
 }
 
 const COLUMNS = 4;
@@ -51,7 +52,6 @@ const CARD_FACE = [
   0xF3A86D,
   0xE7A6D8,
 ] as const;
-const SYMBOLS = ["🌙", "⭐", "🚀", "🪐", "🌈", "🦊", "🍀", "🎈"] as const;
 const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 
 /* eslint-disable unicorn/number-literal-case */
@@ -66,6 +66,7 @@ const COLORS = {
   accent: 0xf4bd68,
   accentText: "#f4bd68",
   matched: 0x65d4a0,
+  selection: 0x65d4e8,
 };
 /* eslint-enable unicorn/number-literal-case */
 
@@ -117,7 +118,7 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
 
     preload() {
       this.load.audio("flip", "/game-assets/kenney/casino-audio/Audio/card-slide-3.ogg");
-      this.load.audio("match", "/game-assets/kenney/interface-sounds/Audio/confirmation_004.ogg");
+      this.load.audio("match", "/game-assets/kenney/casino-audio/Audio/chips-stack-1.ogg");
       this.load.audio("miss", "/game-assets/kenney/interface-sounds/Audio/error_008.ogg");
       this.load.audio("win", "/game-assets/kenney/interface-sounds/Audio/confirmation_003.ogg");
     }
@@ -229,30 +230,88 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
       const x = BOARD_X + column * (CARD_SIZE + CARD_GAP) + CARD_SIZE / 2;
       const y = BOARD_Y + row * (CARD_SIZE + CARD_GAP) + CARD_SIZE / 2;
       const root = this.add.container(x, y).setDepth(5);
-      const face = this.add.rectangle(0, 0, CARD_SIZE, CARD_SIZE, CARD_FACE[0], 1).setStrokeStyle(2 * WORLD_SCALE, 0xFFFFFF, 0.22);
-      const glyph = this.add.text(0, 0, SYMBOLS[0], {
-        color: COLORS.ink,
-        fontFamily: "Arial, sans-serif",
-        fontSize: `${28 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      }).setOrigin(0.5);
+      const face = this.add
+        .rectangle(0, 0, CARD_SIZE, CARD_SIZE, 0x243249, 1)
+        .setStrokeStyle(2 * WORLD_SCALE, CARD_FACE[0], 0.9);
+      const glyph = this.add.graphics();
+      this.drawGlyph(glyph, 0, CARD_FACE[0]);
       const back = this.add.rectangle(0, 0, CARD_SIZE, CARD_SIZE, COLORS.cardBack, 1).setStrokeStyle(2 * WORLD_SCALE, COLORS.cardBackInk, 0.72);
       const backMark = this.add.text(0, 0, "✦", {
         color: COLORS.cardBackInkText,
         fontFamily: GAME_FONT,
         fontSize: `${22 * WORLD_SCALE}px`,
       }).setOrigin(0.5);
+      const selection = this.add
+        .rectangle(0, 0, CARD_SIZE - 5 * WORLD_SCALE, CARD_SIZE - 5 * WORLD_SCALE)
+        .setStrokeStyle(2 * WORLD_SCALE, COLORS.selection, 0.95)
+        .setVisible(false);
       face.setVisible(false);
       glyph.setVisible(false);
-      root.add([face, glyph, back, backMark]);
+      root.add([face, glyph, back, backMark, selection]);
       root.setSize(CARD_SIZE, CARD_SIZE).setInteractive({ useHandCursor: true });
       root.on("pointerup", () => this.selectCard(index));
-      return { root, back, backMark, face, glyph };
+      return { root, back, backMark, face, glyph, selection };
+    }
+
+    private drawGlyph(glyph: GameObjects.Graphics, pair: number, color: number) {
+      const radius = 20 * WORLD_SCALE;
+      const point = (x: number, y: number) => new Phaser.Math.Vector2(x, y);
+      const polygon = (sides: number, rotation = -Math.PI / 2, innerRadius = radius) =>
+        Array.from({ length: sides }, (_, index) => {
+          const angle = rotation + (Math.PI * 2 * index) / sides;
+          return point(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius);
+        });
+
+      glyph.clear();
+      glyph.fillStyle(color, 1);
+      glyph.lineStyle(2 * WORLD_SCALE, 0xFBF7EA, 0.92);
+      if (pair === 0) {
+        glyph.fillCircle(0, 0, radius);
+        glyph.strokeCircle(0, 0, radius);
+      } else if (pair === 1) {
+        const points = [point(0, -radius), point(radius, 0), point(0, radius), point(-radius, 0)];
+        glyph.fillPoints(points, true);
+        glyph.strokePoints(points, true);
+      } else if (pair === 2) {
+        glyph.fillTriangle(0, -radius, radius, radius, -radius, radius);
+        glyph.strokeTriangle(0, -radius, radius, radius, -radius, radius);
+      } else if (pair === 3) {
+        const points = polygon(6);
+        glyph.fillPoints(points, true);
+        glyph.strokePoints(points, true);
+      } else if (pair === 4) {
+        const points = Array.from({ length: 10 }, (_, index) => {
+          const angle = -Math.PI / 2 + (Math.PI * 2 * index) / 10;
+          const pointRadius = index % 2 === 0 ? radius : radius * 0.44;
+          return point(Math.cos(angle) * pointRadius, Math.sin(angle) * pointRadius);
+        });
+        glyph.fillPoints(points, true);
+        glyph.strokePoints(points, true);
+      } else if (pair === 5) {
+        const arm = radius * 0.42;
+        glyph.fillRect(-arm, -radius, arm * 2, radius * 2);
+        glyph.fillRect(-radius, -arm, radius * 2, arm * 2);
+      } else if (pair === 6) {
+        glyph.strokeCircle(0, 0, radius * 0.8);
+        glyph.fillCircle(0, 0, radius * 0.24);
+      } else {
+        const points = [
+          point(-radius * 0.16, -radius),
+          point(radius * 0.72, -radius * 0.1),
+          point(radius * 0.18, -radius * 0.05),
+          point(radius * 0.44, radius),
+          point(-radius * 0.72, radius * 0.05),
+          point(-radius * 0.12, radius * 0.02),
+        ];
+        glyph.fillPoints(points, true);
+        glyph.strokePoints(points, true);
+      }
     }
 
     private resetBoard() {
       this.resolveTimer?.remove();
       this.finishTimer?.remove();
+      this.tweens.killAll();
       this.resolveTimer = undefined;
       this.finishTimer = undefined;
       this.status = "ready";
@@ -265,7 +324,11 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
       this.lastElapsed = -1;
       this.selectedIndex = 0;
       this.resolving = false;
-      this.views.forEach((_, index) => this.setCardVisual(index, false));
+      this.views.forEach((view, index) => {
+        view.root.setScale(1);
+        this.setCardVisual(index, false);
+      });
+      this.updateSelection();
       this.statusText?.setText("READY TO REVEAL").setColor(COLORS.ink);
       this.emitState();
     }
@@ -275,6 +338,7 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
       const card = this.cards[index];
       if (!card || card.flipped || card.matched) return;
       this.selectedIndex = index;
+      this.updateSelection();
       card.flipped = true;
       this.openIndexes.push(index);
       this.flipCard(index, true);
@@ -301,6 +365,13 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
         this.pairs += 1;
         this.setCardVisual(firstIndex!, true);
         this.setCardVisual(secondIndex!, true);
+        this.tweens.add({
+          targets: [this.views[firstIndex!]?.root, this.views[secondIndex!]?.root],
+          scale: 1.06,
+          duration: 120,
+          yoyo: true,
+          ease: "Back.out",
+        });
         this.playSound("match", 0.24);
         this.burstAt(firstIndex!, CARD_FACE[first.pair]!);
         this.burstAt(secondIndex!, CARD_FACE[second.pair]!);
@@ -338,6 +409,13 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
       const view = this.views[index];
       const card = this.cards[index];
       if (!view || !card) return;
+      if (flipped) {
+        view.back.setVisible(false);
+        view.backMark.setVisible(false);
+      } else {
+        view.face.setVisible(false);
+        view.glyph.setVisible(false);
+      }
       this.tweens.add({
         targets: view.root,
         scaleX: 0.08,
@@ -355,13 +433,25 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
       const view = this.views[index];
       if (!card || !view) return;
       const faceColor = CARD_FACE[card.pair] ?? CARD_FACE[0];
-      view.face.setFillStyle(card.matched ? COLORS.matched : faceColor, 1);
-      view.face.setStrokeStyle(2 * WORLD_SCALE, card.matched ? COLORS.matched : 0xFFFFFF, card.matched ? 0.95 : 0.22);
-      view.glyph.setText(SYMBOLS[card.pair] ?? SYMBOLS[0]);
+      view.face.setFillStyle(card.matched ? 0x1F4D45 : 0x243249, 1);
+      view.face.setStrokeStyle(2 * WORLD_SCALE, card.matched ? COLORS.matched : faceColor, 0.95);
+      this.drawGlyph(view.glyph, card.pair, faceColor);
       view.back.setVisible(!flipped && !card.matched);
       view.backMark.setVisible(!flipped && !card.matched);
       view.face.setVisible(flipped || card.matched);
       view.glyph.setVisible(flipped || card.matched);
+      view.selection.setVisible(
+        this.status === "playing" && index === this.selectedIndex && !card.matched,
+      );
+    }
+
+    private updateSelection() {
+      this.views.forEach((view, index) => {
+        const card = this.cards[index];
+        view.selection.setVisible(
+          this.status === "playing" && index === this.selectedIndex && !card?.matched,
+        );
+      });
     }
 
     private burstAt(index: number, color: number) {
@@ -398,6 +488,7 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
       if (event.code === "ArrowRight") this.selectedIndex = row * COLUMNS + Math.min(COLUMNS - 1, column + 1);
       if (event.code === "ArrowUp") this.selectedIndex = Math.max(0, this.selectedIndex - COLUMNS);
       if (event.code === "ArrowDown") this.selectedIndex = Math.min(COLUMNS * ROWS - 1, this.selectedIndex + COLUMNS);
+      this.updateSelection();
     }
 
     private emitState() {
