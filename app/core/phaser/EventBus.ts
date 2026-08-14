@@ -2,6 +2,7 @@ export const PHASER_EVENTS = {
   action: "spectacle:action",
   entrance: "spectacle:entrance",
   hit: "spectacle:hit",
+  nearMiss: "spectacle:near_miss",
   streak: "spectacle:streak",
 } as const;
 
