@@ -74,18 +74,18 @@ onBeforeUnmount(() => {
         <UButton
           v-if="!running"
           label="Start"
-          icon="tabler:player-play-filled"
+          icon="i-tabler-player-play-filled"
           @click="start"
         /><UButton
           v-else
           label="Pause"
-          icon="tabler:player-pause"
+          icon="i-tabler-player-pause"
           @click="pause"
         /><UButton
-          label="Reset"
           color="neutral"
-          variant="outline"
-          icon="tabler:refresh"
+          variant="ghost"
+          label="Reset"
+          icon="i-tabler-refresh"
           @click="reset"
         />
       </div>

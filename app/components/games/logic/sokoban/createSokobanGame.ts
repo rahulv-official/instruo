@@ -48,7 +48,7 @@ const BOARD_X = (WIDTH - BOARD_WIDTH) / 2;
 const BOARD_Y = 154 * WORLD_SCALE;
 const FOOTER_Y = BOARD_Y + BOARD_HEIGHT + 30 * WORLD_SCALE;
 const SWIPE_THRESHOLD = 22 * WORLD_SCALE;
-const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GAME_FONT = "Geist, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 const LEVEL_SEED = 0x534f4b4f;
 const LEVEL_NAMES = [
   "First delivery",
@@ -109,7 +109,6 @@ const DIRECTIONS = [
   { x: 0, y: -1 },
 ] as const;
 
-/* eslint-disable unicorn/number-literal-case */
 const COLORS = {
   background: 0x14211f,
   board: 0x1d312d,
@@ -127,7 +126,6 @@ const COLORS = {
   success: 0x65d4a0,
   danger: 0xe87373,
 };
-/* eslint-enable unicorn/number-literal-case */
 
 function keyOf(position: Position) {
   return `${position.x}:${position.y}`;

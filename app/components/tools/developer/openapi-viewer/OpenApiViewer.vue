@@ -165,7 +165,7 @@ inspect();
       <div class="flex flex-wrap gap-2">
         <UButton
           label="Inspect document"
-          icon="tabler:scan"
+          icon="i-tabler-scan"
           @click="inspect"
         />
         <UButton
@@ -175,10 +175,10 @@ inspect();
           @click="loadExample"
         />
         <UButton
-          label="Copy source"
-          icon="tabler:copy"
           color="neutral"
-          variant="outline"
+          variant="soft"
+          label="Copy source"
+          icon="i-tabler-copy"
           @click="copyText(input)"
         />
       </div>
@@ -186,7 +186,7 @@ inspect();
         v-if="error"
         color="error"
         variant="subtle"
-        icon="tabler:alert-circle"
+        icon="i-tabler-alert-circle"
         title="Invalid OpenAPI document"
         :description="error"
       />
@@ -444,7 +444,7 @@ inspect();
             v-else
             color="neutral"
             variant="subtle"
-            icon="tabler:route"
+            icon="i-tabler-route"
             title="No operations found"
             description="This document does not contain an HTTP paths object."
           />

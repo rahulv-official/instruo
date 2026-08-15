@@ -3,7 +3,7 @@ title: "UUID Generator"
 description: Generate one or more random UUID v4 identifiers.
 category: Developer
 tags: [uuid, guid, uuid-v4, random-id, developer]
-icon: i-lucide-fingerprint
+icon: i-tabler-fingerprint
 ---
 
 ::UuidGenerator

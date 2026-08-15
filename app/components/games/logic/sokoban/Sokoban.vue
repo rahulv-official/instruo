@@ -47,7 +47,9 @@ function updateState(next: Record<string, unknown>) {
 </script>
 
 <template>
-  <ToolWorkbench description="Push every crate onto a goal using the fewest moves. Seeded warehouse layouts stay solvable and run entirely in your browser.">
+  <ToolWorkbench
+    description="Push every crate onto a goal using the fewest moves. Seeded warehouse layouts stay solvable and run entirely in your browser."
+  >
     <div class="mx-auto grid max-w-xl gap-5">
       <header class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
         <div>
@@ -55,8 +57,15 @@ function updateState(next: Record<string, unknown>) {
           <p class="text-muted mt-1 font-mono text-xs">Warehouse Run · local puzzle</p>
         </div>
         <div class="text-muted flex gap-3 font-mono text-xs">
-          <span>Level <strong class="text-highlighted">{{ state.level }}/{{ state.totalLevels }}</strong></span>
-          <span><strong class="text-highlighted">{{ state.pushes }}</strong> pushes</span>
+          <span
+            >Level
+            <strong class="text-highlighted"
+              >{{ state.level }}/{{ state.totalLevels }}</strong
+            ></span
+          >
+          <span
+            ><strong class="text-highlighted">{{ state.pushes }}</strong> pushes</span
+          >
         </div>
       </header>
 
@@ -87,13 +96,19 @@ function updateState(next: Record<string, unknown>) {
           v-if="loaded && state.status === 'ready'"
           class="bg-default/70 absolute inset-0 z-10 grid place-items-center p-5"
         >
-          <div class="border-default bg-elevated grid w-full max-w-sm gap-4 border p-6 text-center shadow-xl">
-            <div class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl" aria-hidden="true">
-              <Icon name="tabler:box" />
+          <div
+            class="border-default bg-elevated grid w-full max-w-sm gap-4 border p-6 text-center shadow-xl"
+          >
+            <div
+              class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl"
+              aria-hidden="true"
+            >
+              <Icon name="i-tabler-box" />
             </div>
             <h2 class="text-highlighted text-xl font-semibold">Plan the route</h2>
             <p class="text-muted text-sm leading-6">
-              Level one is an open-room warm-up. New shelves and crates arrive as the route gets tougher. Use undo when a plan closes.
+              Level one is an open-room warm-up. New shelves and crates arrive as the route gets
+              tougher. Use undo when a plan closes.
             </p>
             <button
               type="button"
@@ -109,7 +124,10 @@ function updateState(next: Record<string, unknown>) {
                 height="70"
               />
               <span class="relative inline-flex items-center gap-2">
-                <Icon name="tabler:player-play-filled" aria-hidden="true" />
+                <Icon
+                  name="i-tabler-player-play-filled"
+                  aria-hidden="true"
+                />
                 Start route
               </span>
             </button>
@@ -124,19 +142,29 @@ function updateState(next: Record<string, unknown>) {
           aria-modal="true"
           aria-labelledby="sokoban-over-title"
         >
-          <div class="border-default bg-elevated grid w-full max-w-sm gap-4 border p-6 text-center shadow-xl">
+          <div
+            class="border-default bg-elevated grid w-full max-w-sm gap-4 border p-6 text-center shadow-xl"
+          >
             <div
-              class="mx-auto grid size-14 place-items-center text-2xl text-inverted"
+              class="text-inverted mx-auto grid size-14 place-items-center text-2xl"
               :class="state.won ? 'bg-success' : 'bg-error'"
               aria-hidden="true"
             >
-              <Icon :name="state.won ? 'tabler:trophy' : 'tabler:alert-triangle'" />
+              <Icon :name="state.won ? 'i-tabler-trophy' : 'i-tabler-alert-triangle'" />
             </div>
-            <h2 id="sokoban-over-title" class="text-highlighted text-xl font-semibold">{{ resultTitle }}</h2>
+            <h2
+              id="sokoban-over-title"
+              class="text-highlighted text-xl font-semibold"
+            >
+              {{ resultTitle }}
+            </h2>
             <p class="text-muted text-sm leading-6">{{ resultCopy }}</p>
-            <p class="text-highlighted font-mono text-4xl font-bold tabular-nums">{{ state.pushes }} pushes</p>
+            <p class="text-highlighted font-mono text-4xl font-bold tabular-nums">
+              {{ state.pushes }} pushes
+            </p>
             <p class="text-muted font-mono text-xs tracking-[0.18em] uppercase">
-              {{ state.completedLevels }}/{{ state.totalLevels }} levels complete · {{ state.moves }} moves
+              {{ state.completedLevels }}/{{ state.totalLevels }} levels complete ·
+              {{ state.moves }} moves
             </p>
             <button
               type="button"
@@ -152,20 +180,27 @@ function updateState(next: Record<string, unknown>) {
                 height="70"
               />
               <span class="relative inline-flex items-center gap-2">
-                <Icon name="tabler:refresh" aria-hidden="true" />
+                <Icon
+                  name="i-tabler-refresh"
+                  aria-hidden="true"
+                />
                 Try again
               </span>
             </button>
           </div>
         </div>
 
-        <div v-if="gameError" class="bg-default absolute inset-0 z-20 grid place-items-center p-5" role="alert">
+        <div
+          v-if="gameError"
+          class="bg-default absolute inset-0 z-20 grid place-items-center p-5"
+          role="alert"
+        >
           <UAlert
             color="error"
             variant="subtle"
             title="Game unavailable"
             description="Reload the page and try once more."
-            icon="tabler:alert-triangle"
+            icon="i-tabler-alert-triangle"
           />
         </div>
       </div>

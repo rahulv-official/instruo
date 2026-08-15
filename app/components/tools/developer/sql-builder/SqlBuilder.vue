@@ -11,24 +11,27 @@ const query = computed(
 const { copyText } = useCopyToClipboard();
 </script>
 <template>
-  <ToolWorkbench description="Compose a readable SELECT query with filters, ordering, and a limit."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Compose a readable SELECT query with filters, ordering, and a limit.">
+    <div class="grid gap-5">
       <div class="grid gap-4 sm:grid-cols-2">
         <UFormField label="Table"><UInput v-model="table" /></UFormField
         ><UFormField label="Columns"><UInput v-model="columns" /></UFormField
-        ><UFormField label="Where"
-          ><UInput
+        ><UFormField label="Where">
+          <UInput
             v-model="where"
-            placeholder="active = true" /></UFormField
-        ><UFormField label="Order by"
-          ><UInput
+            placeholder="active = true"
+          /> </UFormField
+        ><UFormField label="Order by">
+          <UInput
             v-model="order"
-            placeholder="created_at DESC" /></UFormField
-        ><UFormField label="Limit"
-          ><UInput
+            placeholder="created_at DESC"
+          /> </UFormField
+        ><UFormField label="Limit">
+          <UInput
             v-model="limit"
             type="number"
-        /></UFormField>
+          />
+        </UFormField>
       </div>
       <UTextarea
         :model-value="query"
@@ -38,10 +41,13 @@ const { copyText } = useCopyToClipboard();
       />
       <div class="flex justify-end">
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy SQL"
-          icon="i-lucide-copy"
+          icon="i-tabler-copy"
           @click="copyText(query)"
         />
-      </div></div
-  ></ToolWorkbench>
+      </div>
+    </div>
+  </ToolWorkbench>
 </template>

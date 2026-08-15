@@ -43,18 +43,10 @@ const BOARD_WIDTH = COLUMNS * CARD_SIZE + (COLUMNS - 1) * CARD_GAP;
 const BOARD_X = (WIDTH - BOARD_WIDTH) / 2;
 const BOARD_Y = 190 * WORLD_SCALE;
 const CARD_FACE = [
-  0x65D4E8,
-  0xF4BD68,
-  0xB88BE8,
-  0x65D4A0,
-  0xE87373,
-  0x6F9EE8,
-  0xF3A86D,
-  0xE7A6D8,
+  0x65d4e8, 0xf4bd68, 0xb88be8, 0x65d4a0, 0xe87373, 0x6f9ee8, 0xf3a86d, 0xe7a6d8,
 ] as const;
-const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GAME_FONT = "Geist, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 
-/* eslint-disable unicorn/number-literal-case */
 const COLORS = {
   background: 0x181528,
   panel: 0x25203b,
@@ -68,7 +60,6 @@ const COLORS = {
   matched: 0x65d4a0,
   selection: 0x65d4e8,
 };
-/* eslint-enable unicorn/number-literal-case */
 
 function shuffle<T>(items: T[]) {
   const result = [...items];
@@ -89,7 +80,12 @@ function createDeck(): CardData[] {
   );
 }
 
-export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, onReady, onError) => {
+export const createMemoryMatchGame: PhaserGameFactory = async (
+  parent,
+  onState,
+  onReady,
+  onError,
+) => {
   const Phaser = (await import("phaser")).default;
 
   class MemoryMatchScene extends Phaser.Scene {
@@ -176,18 +172,29 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
         fontSize: `${19 * WORLD_SCALE}px`,
         fontStyle: "bold",
       });
-      this.add.text(WIDTH - 26 * WORLD_SCALE, 34 * WORLD_SCALE, "CONSTELLATION", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-      }).setOrigin(1, 0);
-      this.statusText = this.add.text(WIDTH / 2, 112 * WORLD_SCALE, "READY TO REVEAL", {
-        color: COLORS.ink,
-        fontFamily: GAME_FONT,
-        fontSize: `${11 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      }).setOrigin(0.5);
-      this.add.rectangle(WIDTH / 2, BOARD_Y + (ROWS * CARD_SIZE + (ROWS - 1) * CARD_GAP) / 2, BOARD_WIDTH + 22 * WORLD_SCALE, ROWS * CARD_SIZE + (ROWS - 1) * CARD_GAP + 22 * WORLD_SCALE, COLORS.panel)
+      this.add
+        .text(WIDTH - 26 * WORLD_SCALE, 34 * WORLD_SCALE, "CONSTELLATION", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${8 * WORLD_SCALE}px`,
+        })
+        .setOrigin(1, 0);
+      this.statusText = this.add
+        .text(WIDTH / 2, 112 * WORLD_SCALE, "READY TO REVEAL", {
+          color: COLORS.ink,
+          fontFamily: GAME_FONT,
+          fontSize: `${11 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5);
+      this.add
+        .rectangle(
+          WIDTH / 2,
+          BOARD_Y + (ROWS * CARD_SIZE + (ROWS - 1) * CARD_GAP) / 2,
+          BOARD_WIDTH + 22 * WORLD_SCALE,
+          ROWS * CARD_SIZE + (ROWS - 1) * CARD_GAP + 22 * WORLD_SCALE,
+          COLORS.panel,
+        )
         .setStrokeStyle(2 * WORLD_SCALE, COLORS.accent, 0.42);
       this.movesText = this.add.text(26 * WORLD_SCALE, HEIGHT - 70 * WORLD_SCALE, "0", {
         color: COLORS.ink,
@@ -195,31 +202,39 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
         fontSize: `${18 * WORLD_SCALE}px`,
         fontStyle: "bold",
       });
-      this.pairsText = this.add.text(WIDTH / 2, HEIGHT - 70 * WORLD_SCALE, "0 / 8 PAIRS", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${10 * WORLD_SCALE}px`,
-      }).setOrigin(0.5, 0);
-      this.timeText = this.add.text(WIDTH - 26 * WORLD_SCALE, HEIGHT - 70 * WORLD_SCALE, "00:00", {
-        color: COLORS.accentText,
-        fontFamily: GAME_FONT,
-        fontSize: `${10 * WORLD_SCALE}px`,
-      }).setOrigin(1, 0);
+      this.pairsText = this.add
+        .text(WIDTH / 2, HEIGHT - 70 * WORLD_SCALE, "0 / 8 PAIRS", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${10 * WORLD_SCALE}px`,
+        })
+        .setOrigin(0.5, 0);
+      this.timeText = this.add
+        .text(WIDTH - 26 * WORLD_SCALE, HEIGHT - 70 * WORLD_SCALE, "00:00", {
+          color: COLORS.accentText,
+          fontFamily: GAME_FONT,
+          fontSize: `${10 * WORLD_SCALE}px`,
+        })
+        .setOrigin(1, 0);
       this.add.text(26 * WORLD_SCALE, HEIGHT - 38 * WORLD_SCALE, "MOVES", {
         color: COLORS.muted,
         fontFamily: GAME_FONT,
         fontSize: `${8 * WORLD_SCALE}px`,
       });
-      this.add.text(WIDTH / 2, HEIGHT - 38 * WORLD_SCALE, "TAP / ARROWS + ENTER", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-      }).setOrigin(0.5, 0);
-      this.add.text(WIDTH - 26 * WORLD_SCALE, HEIGHT - 38 * WORLD_SCALE, "FIND THE PAIRS", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-      }).setOrigin(1, 0);
+      this.add
+        .text(WIDTH / 2, HEIGHT - 38 * WORLD_SCALE, "TAP / ARROWS + ENTER", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${8 * WORLD_SCALE}px`,
+        })
+        .setOrigin(0.5, 0);
+      this.add
+        .text(WIDTH - 26 * WORLD_SCALE, HEIGHT - 38 * WORLD_SCALE, "FIND THE PAIRS", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${8 * WORLD_SCALE}px`,
+        })
+        .setOrigin(1, 0);
 
       this.views = Array.from({ length: COLUMNS * ROWS }, (_, index) => this.createCardView(index));
     }
@@ -235,12 +250,16 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
         .setStrokeStyle(2 * WORLD_SCALE, CARD_FACE[0], 0.9);
       const glyph = this.add.graphics();
       this.drawGlyph(glyph, 0, CARD_FACE[0]);
-      const back = this.add.rectangle(0, 0, CARD_SIZE, CARD_SIZE, COLORS.cardBack, 1).setStrokeStyle(2 * WORLD_SCALE, COLORS.cardBackInk, 0.72);
-      const backMark = this.add.text(0, 0, "✦", {
-        color: COLORS.cardBackInkText,
-        fontFamily: GAME_FONT,
-        fontSize: `${22 * WORLD_SCALE}px`,
-      }).setOrigin(0.5);
+      const back = this.add
+        .rectangle(0, 0, CARD_SIZE, CARD_SIZE, COLORS.cardBack, 1)
+        .setStrokeStyle(2 * WORLD_SCALE, COLORS.cardBackInk, 0.72);
+      const backMark = this.add
+        .text(0, 0, "✦", {
+          color: COLORS.cardBackInkText,
+          fontFamily: GAME_FONT,
+          fontSize: `${22 * WORLD_SCALE}px`,
+        })
+        .setOrigin(0.5);
       const selection = this.add
         .rectangle(0, 0, CARD_SIZE - 5 * WORLD_SCALE, CARD_SIZE - 5 * WORLD_SCALE)
         .setStrokeStyle(2 * WORLD_SCALE, COLORS.selection, 0.95)
@@ -264,7 +283,7 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
 
       glyph.clear();
       glyph.fillStyle(color, 1);
-      glyph.lineStyle(2 * WORLD_SCALE, 0xFBF7EA, 0.92);
+      glyph.lineStyle(2 * WORLD_SCALE, 0xfbf7ea, 0.92);
       if (pair === 0) {
         glyph.fillCircle(0, 0, radius);
         glyph.strokeCircle(0, 0, radius);
@@ -433,7 +452,7 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
       const view = this.views[index];
       if (!card || !view) return;
       const faceColor = CARD_FACE[card.pair] ?? CARD_FACE[0];
-      view.face.setFillStyle(card.matched ? 0x1F4D45 : 0x243249, 1);
+      view.face.setFillStyle(card.matched ? 0x1f4d45 : 0x243249, 1);
       view.face.setStrokeStyle(2 * WORLD_SCALE, card.matched ? COLORS.matched : faceColor, 0.95);
       this.drawGlyph(view.glyph, card.pair, faceColor);
       view.back.setVisible(!flipped && !card.matched);
@@ -459,7 +478,9 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
       if (!view) return;
       const particles = Array.from({ length: 8 }, (_, particleIndex) => {
         const angle = (Math.PI * 2 * particleIndex) / 8;
-        const circle = this.add.circle(view.root.x, view.root.y, 5 * WORLD_SCALE, color, 0.95).setDepth(20);
+        const circle = this.add
+          .circle(view.root.x, view.root.y, 5 * WORLD_SCALE, color, 0.95)
+          .setDepth(20);
         this.tweens.add({
           targets: circle,
           x: view.root.x + Math.cos(angle) * 34 * WORLD_SCALE,
@@ -476,7 +497,10 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
     }
 
     private handleKeydown(event: KeyboardEvent) {
-      if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Enter", "Space"].includes(event.code)) return;
+      if (
+        !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Enter", "Space"].includes(event.code)
+      )
+        return;
       event.preventDefault();
       if (event.code === "Enter" || event.code === "Space") {
         this.selectCard(this.selectedIndex);
@@ -485,9 +509,11 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
       const column = this.selectedIndex % COLUMNS;
       const row = Math.floor(this.selectedIndex / COLUMNS);
       if (event.code === "ArrowLeft") this.selectedIndex = row * COLUMNS + Math.max(0, column - 1);
-      if (event.code === "ArrowRight") this.selectedIndex = row * COLUMNS + Math.min(COLUMNS - 1, column + 1);
+      if (event.code === "ArrowRight")
+        this.selectedIndex = row * COLUMNS + Math.min(COLUMNS - 1, column + 1);
       if (event.code === "ArrowUp") this.selectedIndex = Math.max(0, this.selectedIndex - COLUMNS);
-      if (event.code === "ArrowDown") this.selectedIndex = Math.min(COLUMNS * ROWS - 1, this.selectedIndex + COLUMNS);
+      if (event.code === "ArrowDown")
+        this.selectedIndex = Math.min(COLUMNS * ROWS - 1, this.selectedIndex + COLUMNS);
       this.updateSelection();
     }
 
@@ -496,7 +522,8 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
       this.movesText?.setText(String(this.moves));
       this.pairsText?.setText(`${this.pairs} / ${TOTAL_PAIRS} PAIRS`);
       this.timeText?.setText(formatted);
-      if (this.status === "playing" && !this.resolving) this.statusText?.setText("FIND THE NEXT PAIR").setColor(COLORS.ink);
+      if (this.status === "playing" && !this.resolving)
+        this.statusText?.setText("FIND THE NEXT PAIR").setColor(COLORS.ink);
       onState({
         status: this.status,
         moves: this.moves,
@@ -538,7 +565,8 @@ export const createMemoryMatchGame: PhaserGameFactory = async (parent, onState, 
 
   return Object.assign(game, {
     startGame: () => (game.scene.getScene("memory-match") as MemoryMatchScene).startFromOverlay(),
-    restartGame: () => (game.scene.getScene("memory-match") as MemoryMatchScene).restartFromOverlay(),
+    restartGame: () =>
+      (game.scene.getScene("memory-match") as MemoryMatchScene).restartFromOverlay(),
     toggleMute: () => (game.scene.getScene("memory-match") as MemoryMatchScene).toggleMute(),
   }) as PhaserGameHandle;
 };

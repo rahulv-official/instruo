@@ -1,12 +1,12 @@
 <script setup lang="ts">
 type Choice = "rock" | "paper" | "scissors";
 type Outcome = "draw" | "lost" | "won";
-type ChoiceIcon = "tabler:circle" | "tabler:note" | "tabler:scissors";
+type ChoiceIcon = "i-tabler-circle" | "i-tabler-note" | "i-tabler-scissors";
 
 const choices: { label: string; value: Choice; icon: ChoiceIcon }[] = [
-  { label: "Rock", value: "rock", icon: "tabler:circle" },
-  { label: "Paper", value: "paper", icon: "tabler:note" },
-  { label: "Scissors", value: "scissors", icon: "tabler:scissors" },
+  { label: "Rock", value: "rock", icon: "i-tabler-circle" },
+  { label: "Paper", value: "paper", icon: "i-tabler-note" },
+  { label: "Scissors", value: "scissors", icon: "i-tabler-scissors" },
 ];
 const winningChoice: Record<Choice, Choice> = {
   rock: "scissors",
@@ -89,13 +89,13 @@ if (import.meta.dev && Object.values(winningChoice).length !== choices.length) {
         >
           <UIcon
             v-if="outcome === 'lost' || (isComplete && computerScore > playerScore)"
-            name="i-lucide-circle-x"
+            name="i-tabler-circle-x"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
           <UIcon
             v-else-if="outcome === 'won' || (isComplete && playerScore > computerScore)"
-            name="i-lucide-circle-check"
+            name="i-tabler-circle-check"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
@@ -157,7 +157,7 @@ if (import.meta.dev && Object.values(winningChoice).length !== choices.length) {
           label="New match"
           color="neutral"
           variant="outline"
-          icon="i-lucide-refresh-cw"
+          icon="i-tabler-refresh"
           @click="reset"
         />
       </div>

@@ -103,7 +103,7 @@ function updateState(next: Record<string, unknown>) {
               class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl"
               aria-hidden="true"
             >
-              <Icon name="tabler:cards" />
+              <Icon name="i-tabler-cards" />
             </div>
             <h2 class="text-highlighted text-xl font-semibold">Take a seat</h2>
             <p class="text-muted text-sm leading-6">
@@ -124,7 +124,7 @@ function updateState(next: Record<string, unknown>) {
               />
               <span class="relative inline-flex items-center gap-2">
                 <Icon
-                  name="tabler:player-play-filled"
+                  name="i-tabler-player-play-filled"
                   aria-hidden="true"
                 />
                 Deal hand
@@ -156,8 +156,8 @@ function updateState(next: Record<string, unknown>) {
               <Icon
                 :name="
                   state.result === 'You win.' || state.result === 'Blackjack!'
-                    ? 'tabler:trophy'
-                    : 'tabler:cards'
+                    ? 'i-tabler-trophy'
+                    : 'i-tabler-cards'
                 "
               />
             </div>
@@ -190,7 +190,7 @@ function updateState(next: Record<string, unknown>) {
               />
               <span class="relative inline-flex items-center gap-2">
                 <Icon
-                  name="tabler:refresh"
+                  name="i-tabler-refresh"
                   aria-hidden="true"
                 />
                 Deal again

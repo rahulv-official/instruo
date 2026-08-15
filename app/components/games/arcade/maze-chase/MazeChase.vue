@@ -64,7 +64,9 @@ function toggleSound() {
 </script>
 
 <template>
-  <ToolWorkbench description="Clear seeded neon mazes, eat power pellets, and outrun the ghosts. No account needed.">
+  <ToolWorkbench
+    description="Clear seeded neon mazes, eat power pellets, and outrun the ghosts. No account needed."
+  >
     <div class="mx-auto grid max-w-xl gap-5">
       <header class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
         <div>
@@ -75,14 +77,19 @@ function toggleSound() {
           <button
             v-if="loaded"
             type="button"
-            class="text-muted hover:text-highlighted focus-visible:ring-primary grid size-9 place-items-center border border-default transition-colors focus-visible:ring-2 focus-visible:outline-none"
+            class="text-muted hover:text-highlighted focus-visible:ring-primary border-default grid size-9 place-items-center border transition-colors focus-visible:ring-2 focus-visible:outline-none"
             :aria-pressed="soundMuted"
             :aria-label="soundMuted ? 'Turn sound on' : 'Mute sound'"
             @click="toggleSound"
           >
-            <Icon :name="soundMuted ? 'tabler:volume-off' : 'tabler:volume'" aria-hidden="true" />
+            <Icon
+              :name="soundMuted ? 'i-tabler-volume-off' : 'i-tabler-volume'"
+              aria-hidden="true"
+            />
           </button>
-          <span>Level <strong class="text-highlighted">{{ state.level }}/10</strong></span>
+          <span
+            >Level <strong class="text-highlighted">{{ state.level }}/10</strong></span
+          >
         </div>
       </header>
 
@@ -109,14 +116,23 @@ function toggleSound() {
           @toggle="gameHost?.toggleFullscreen()"
         />
 
-        <div v-if="loaded && state.status === 'ready'" class="bg-default/70 absolute inset-0 z-10 grid place-items-center p-5">
-          <div class="border-default bg-elevated grid w-full max-w-sm gap-4 border p-6 text-center shadow-xl">
-            <div class="mx-auto grid size-14 place-items-center bg-primary text-2xl text-inverted" aria-hidden="true">
-              <Icon name="tabler:ghost-2" />
+        <div
+          v-if="loaded && state.status === 'ready'"
+          class="bg-default/70 absolute inset-0 z-10 grid place-items-center p-5"
+        >
+          <div
+            class="border-default bg-elevated grid w-full max-w-sm gap-4 border p-6 text-center shadow-xl"
+          >
+            <div
+              class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl"
+              aria-hidden="true"
+            >
+              <Icon name="i-tabler-ghost-2" />
             </div>
             <h2 class="text-highlighted text-xl font-semibold">Enter the maze</h2>
             <p class="text-muted text-sm leading-6">
-              Clear every pellet, grab a power pellet, and turn the chase around while the ghosts are blue.
+              Clear every pellet, grab a power pellet, and turn the chase around while the ghosts
+              are blue.
             </p>
             <button
               type="button"
@@ -132,7 +148,10 @@ function toggleSound() {
                 height="70"
               />
               <span class="relative inline-flex items-center gap-2">
-                <Icon name="tabler:player-play-filled" aria-hidden="true" />
+                <Icon
+                  name="i-tabler-player-play-filled"
+                  aria-hidden="true"
+                />
                 Start chase
               </span>
             </button>
@@ -147,18 +166,29 @@ function toggleSound() {
           aria-modal="true"
           aria-labelledby="maze-chase-over-title"
         >
-          <div class="border-default bg-elevated grid w-full max-w-sm gap-4 border p-6 text-center shadow-xl">
+          <div
+            class="border-default bg-elevated grid w-full max-w-sm gap-4 border p-6 text-center shadow-xl"
+          >
             <div
-              class="mx-auto grid size-14 place-items-center text-2xl text-inverted"
+              class="text-inverted mx-auto grid size-14 place-items-center text-2xl"
               :class="state.won ? 'bg-success' : 'bg-error'"
               aria-hidden="true"
             >
-              <Icon :name="state.won ? 'tabler:trophy' : 'tabler:ghost-2'" />
+              <Icon :name="state.won ? 'i-tabler-trophy' : 'i-tabler-ghost-2'" />
             </div>
-            <h2 id="maze-chase-over-title" class="text-highlighted text-xl font-semibold">{{ resultTitle }}</h2>
+            <h2
+              id="maze-chase-over-title"
+              class="text-highlighted text-xl font-semibold"
+            >
+              {{ resultTitle }}
+            </h2>
             <p class="text-muted text-sm leading-6">{{ resultCopy }}</p>
-            <p class="text-highlighted font-mono text-5xl font-bold tabular-nums">{{ state.score }}</p>
-            <p class="text-muted font-mono text-xs tracking-[0.18em] uppercase">Best {{ state.best }} · Level {{ state.level }}</p>
+            <p class="text-highlighted font-mono text-5xl font-bold tabular-nums">
+              {{ state.score }}
+            </p>
+            <p class="text-muted font-mono text-xs tracking-[0.18em] uppercase">
+              Best {{ state.best }} · Level {{ state.level }}
+            </p>
             <button
               type="button"
               class="text-inverted focus-visible:ring-primary relative mx-auto grid h-16 w-56 place-items-center text-sm font-semibold transition-transform focus-visible:ring-2 focus-visible:outline-none active:translate-y-px"
@@ -173,19 +203,34 @@ function toggleSound() {
                 height="70"
               />
               <span class="relative inline-flex items-center gap-2">
-                <Icon name="tabler:refresh" aria-hidden="true" />
+                <Icon
+                  name="i-tabler-refresh"
+                  aria-hidden="true"
+                />
                 Run it back
               </span>
             </button>
           </div>
         </div>
 
-        <div v-if="gameError" class="bg-default absolute inset-0 z-20 grid place-items-center p-5" role="alert">
-          <UAlert color="error" variant="subtle" title="Game unavailable" description="Reload the page and try once more." icon="tabler:alert-triangle" />
+        <div
+          v-if="gameError"
+          class="bg-default absolute inset-0 z-20 grid place-items-center p-5"
+          role="alert"
+        >
+          <UAlert
+            color="error"
+            variant="subtle"
+            title="Game unavailable"
+            description="Reload the page and try once more."
+            icon="i-tabler-alert-triangle"
+          />
         </div>
       </div>
 
-      <p class="text-muted text-center font-mono text-xs">{{ progressCopy }} · score {{ state.score }} · no account needed</p>
+      <p class="text-muted text-center font-mono text-xs">
+        {{ progressCopy }} · score {{ state.score }} · no account needed
+      </p>
     </div>
   </ToolWorkbench>
 </template>

@@ -27,7 +27,7 @@ const BOARD_HEIGHT = ROWS * CELL_SIZE;
 const BOARD_X = (WIDTH - BOARD_WIDTH) / 2;
 const BOARD_Y = 218 * WORLD_SCALE;
 const PLAYER_COLORS = { red: 0xe56f68, yellow: 0xf4bd68 } as const;
-const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GAME_FONT = "Geist, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 
 const directions = [
   [0, 1],
@@ -201,12 +201,12 @@ export const createConnectFourGame: PhaserGameFactory = async (
       this.winningLine = [];
       this.selectedColumn = 3;
       this.dropping = false;
-      this.board = new Array<Player | null>(ROWS * COLUMNS).fill(null);
+      this.board = Array.from<Player | null>({ length: ROWS * COLUMNS }).fill(null);
       this.discViews.forEach((disc) => disc.destroy());
       this.discViews.clear();
       this.celebrationTimer?.remove();
       this.celebrationTimer = undefined;
-      this.winGraphic && this.tweens.killTweensOf(this.winGraphic);
+      if (this.winGraphic) this.tweens.killTweensOf(this.winGraphic);
       this.winGraphic?.destroy();
       this.winGraphic = undefined;
       this.indicator?.setX(this.pointX(this.selectedColumn));

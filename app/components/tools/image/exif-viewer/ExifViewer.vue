@@ -59,9 +59,15 @@ function readExif(buffer: ArrayBuffer) {
   return {};
 }
 
-async function select(event: Event) {
-  const next = (event.target as HTMLInputElement).files?.[0];
-  if (!next) return;
+async function select(next: File | null | undefined) {
+  if (!next) {
+    if (previewUrl.value) URL.revokeObjectURL(previewUrl.value);
+    file.value = null;
+    previewUrl.value = "";
+    metadata.value = {};
+    error.value = "";
+    return;
+  }
   if (previewUrl.value) URL.revokeObjectURL(previewUrl.value);
   file.value = next;
   previewUrl.value = URL.createObjectURL(next);
@@ -112,16 +118,18 @@ onBeforeUnmount(() => {
     description="Inspect common JPEG EXIF fields locally. Images stay in your browser."
   >
     <div class="grid gap-5">
-      <UInput
-        type="file"
+      <UFileUpload
+        :model-value="file"
         accept="image/*"
-        @change="select"
+        label="Choose a photo"
+        description="Drop a JPEG here or browse this device. Metadata is inspected locally."
+        @update:model-value="select"
       />
       <UAlert
         v-if="error"
         color="warning"
         variant="subtle"
-        icon="tabler:alert-triangle"
+        icon="i-tabler-alert-triangle"
         title="Limited metadata"
         :description="error"
       />
@@ -146,10 +154,10 @@ onBeforeUnmount(() => {
         </dl>
       </div>
       <UButton
-        label="Download without metadata"
-        icon="tabler:download"
         color="neutral"
-        variant="outline"
+        variant="soft"
+        label="Download without metadata"
+        icon="i-tabler-download"
         class="w-fit"
         :disabled="!file"
         @click="downloadClean"

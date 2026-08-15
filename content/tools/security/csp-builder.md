@@ -3,7 +3,7 @@ title: CSP Header Builder
 description: Build a readable Content-Security-Policy header from directive fields.
 category: Security
 tags: [csp, headers, web-security, security]
-icon: tabler:shield-check
+icon: i-tabler-shield-check
 ---
 
 ::CspBuilder

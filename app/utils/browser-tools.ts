@@ -34,7 +34,7 @@ export function formatMarkup(value: string, minify = false) {
     .split("\n")
     .filter(Boolean)
     .map((line) => {
-      if (/^<\//.test(line)) depth = Math.max(0, depth - 1);
+      if (line.startsWith("</")) depth = Math.max(0, depth - 1);
       const output = `${"  ".repeat(depth)}${line.trim()}`;
       if (/^<[^!/][^>]*[^/]>/.test(line) && !/<\/(?:div|p|section|main|body|html)>/.test(line))
         depth += 1;

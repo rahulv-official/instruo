@@ -8,8 +8,6 @@ import {
 } from "~/core/phaser/constants";
 import { PHASER_EVENTS, phaserEventBus } from "~/core/phaser/EventBus";
 
-/* eslint-disable unicorn/number-literal-case */
-
 export const SNAKE_COLUMNS = 15;
 export const SNAKE_ROWS = 18;
 export const SNAKE_CELL_COUNT = SNAKE_COLUMNS * SNAKE_ROWS;
@@ -106,7 +104,7 @@ export interface SnakeGameState extends PhaserGameState {
 
 type Direction = "down" | "left" | "right" | "up";
 
-const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GAME_FONT = "Geist, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 const BOARD_WIDTH = SNAKE_COLUMNS * 22 * SCALE;
 const BOARD_HEIGHT = SNAKE_ROWS * 22 * SCALE;
 const BOARD_X = (WIDTH - BOARD_WIDTH) / 2;
@@ -756,5 +754,3 @@ export const createSnakeGame: PhaserGameFactory = async (parent, onState, onRead
     toggleMute: () => (game.scene.getScene("snake-game") as SnakeScene).toggleMute(),
   }) as PhaserGameHandle;
 };
-
-/* eslint-enable unicorn/number-literal-case */

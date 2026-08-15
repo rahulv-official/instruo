@@ -10,8 +10,8 @@ const palette = computed(() => [mix(0.8), mix(0.4), color.value, mix(-0.35), mix
 const { copyText } = useCopyToClipboard();
 </script>
 <template>
-  <ToolWorkbench description="Create a five-step light-to-dark palette from one hex color."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Create a five-step light-to-dark palette from one hex color.">
+    <div class="grid gap-5">
       <UInput
         v-model="color"
         placeholder="#3b82f6"
@@ -29,10 +29,13 @@ const { copyText } = useCopyToClipboard();
         </button>
       </div>
       <UButton
+        color="neutral"
+        variant="soft"
         label="Copy palette"
-        icon="i-lucide-copy"
+        icon="i-tabler-copy"
         class="w-fit"
         @click="copyText(palette.join('\n'))"
-      /></div
-  ></ToolWorkbench>
+      />
+    </div>
+  </ToolWorkbench>
 </template>

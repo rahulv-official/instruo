@@ -3,10 +3,10 @@ title: "Duplicate Line Remover"
 description: Remove duplicate lines from your text quickly and efficiently.
 category: Text
 tags: [text, duplicate-line-remover]
-icon: i-lucide-list-x
+icon: i-tabler-playlist-x
 ---
 
-::TextTransformer{mode="dedupe"}
+::DuplicateLineRemover
 ::
 
 ## Remove repeated lines

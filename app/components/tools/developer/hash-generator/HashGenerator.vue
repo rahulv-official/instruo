@@ -80,7 +80,7 @@ function clear() {
           label-key="label"
           size="lg"
           class="w-full sm:max-w-xs"
-          :ui="{ base: 'rounded-none', content: 'rounded-none', item: 'before:rounded-none' }"
+          :ui="{ base: 'rounded-md', content: 'rounded-md', item: 'before:rounded-md' }"
           @update:model-value="setAlgorithm"
         />
       </UFormField>
@@ -96,7 +96,7 @@ function clear() {
             placeholder="Enter text to hash…"
             :rows="10"
             class="w-full"
-            :ui="{ base: 'min-h-56 rounded-none font-mono text-sm leading-6 sm:min-h-72' }"
+            :ui="{ base: 'min-h-56 font-mono text-sm leading-6 sm:min-h-72' }"
             @update:model-value="setInput"
           />
         </UFormField>
@@ -114,7 +114,7 @@ function clear() {
             :rows="10"
             class="w-full"
             :ui="{
-              base: 'min-h-56 rounded-none break-all font-mono text-sm leading-6 sm:min-h-72',
+              base: 'min-h-56 break-all font-mono text-sm leading-6 sm:min-h-72',
             }"
           />
         </UFormField>
@@ -122,18 +122,18 @@ function clear() {
 
       <div class="border-default/70 flex flex-wrap justify-end gap-2 border-t pt-4">
         <UButton
-          label="Clear"
           color="neutral"
           variant="ghost"
-          icon="i-lucide-rotate-ccw"
+          label="Clear"
+          icon="i-tabler-rotate"
           :disabled="!input"
           @click="clear"
         />
         <UButton
-          label="Copy digest"
           color="neutral"
-          variant="outline"
-          icon="i-lucide-copy"
+          variant="soft"
+          label="Copy digest"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />

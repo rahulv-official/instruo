@@ -3,10 +3,10 @@ title: "URL"
 description: Encode or decode URL.
 category: Encoder Decoder
 tags: [encoder, decoder, url-encode, url-decode, url]
-icon: i-lucide-link-2
+icon: i-tabler-link
 ---
 
-::EncoderDecoder{kind="url"}
+::UrlEncodeDecode
 ::
 
 ## Encode or decode URL text

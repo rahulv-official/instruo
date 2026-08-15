@@ -34,8 +34,10 @@ const { copyText } = useCopyToClipboard();
       />
       <div class="flex justify-end lg:col-span-2">
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy slugs"
-          icon="i-lucide-copy"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />

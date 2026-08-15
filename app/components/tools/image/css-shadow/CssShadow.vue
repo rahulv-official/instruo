@@ -10,25 +10,29 @@ const output = computed(
 const { copyText } = useCopyToClipboard();
 </script>
 <template>
-  <ToolWorkbench description="Build a copy-ready box-shadow declaration with a live preview."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Build a copy-ready box-shadow declaration with a live preview.">
+    <div class="grid gap-5">
       <div class="grid gap-4 sm:grid-cols-3">
-        <UFormField label="X"
-          ><UInput
+        <UFormField label="X">
+          <UInput
             v-model.number="x"
-            type="number" /></UFormField
-        ><UFormField label="Y"
-          ><UInput
+            type="number"
+          /> </UFormField
+        ><UFormField label="Y">
+          <UInput
             v-model.number="y"
-            type="number" /></UFormField
-        ><UFormField label="Blur"
-          ><UInput
+            type="number"
+          /> </UFormField
+        ><UFormField label="Blur">
+          <UInput
             v-model.number="blur"
-            type="number" /></UFormField
-        ><UFormField label="Spread"
-          ><UInput
+            type="number"
+          /> </UFormField
+        ><UFormField label="Spread">
+          <UInput
             v-model.number="spread"
-            type="number" /></UFormField
+            type="number"
+          /> </UFormField
         ><UFormField label="Color"><UInput v-model="color" /></UFormField>
       </div>
       <div class="border-default bg-elevated grid min-h-32 place-items-center border">
@@ -42,10 +46,13 @@ const { copyText } = useCopyToClipboard();
         readonly
         class="font-mono"
       /><UButton
+        color="neutral"
+        variant="soft"
         label="Copy CSS"
-        icon="i-lucide-copy"
+        icon="i-tabler-copy"
         class="w-fit"
         @click="copyText(output)"
-      /></div
-  ></ToolWorkbench>
+      />
+    </div>
+  </ToolWorkbench>
 </template>

@@ -3,7 +3,7 @@ title: World Clock
 description: Compare the current time in four important time zones at a glance.
 category: Everyday
 tags: [clock, timezone, time, productivity]
-icon: tabler:world
+icon: i-tabler-world
 ---
 
 ::WorldClock

@@ -3,7 +3,7 @@ title: JSON to YAML Converter
 description: Convert JSON to YAML or simple YAML back to formatted JSON in your browser.
 category: Developer
 tags: [json, yaml, converter, config, developer]
-icon: i-tabler:braces
+icon: i-tabler-braces
 ---
 
 ::JsonYamlConverter

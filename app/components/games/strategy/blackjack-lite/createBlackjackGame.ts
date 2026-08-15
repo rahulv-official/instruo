@@ -59,9 +59,8 @@ const DEALER_Y = 190 * WORLD_SCALE;
 const PLAYER_Y = 430 * WORLD_SCALE;
 const DECK_X = WIDTH - 42 * WORLD_SCALE;
 const DECK_Y = 82 * WORLD_SCALE;
-const GAME_FONT = '"Kenney Future", Manrope, system-ui, sans-serif';
+const GAME_FONT = "Geist, system-ui, sans-serif";
 
-/* eslint-disable unicorn/number-literal-case */
 const COLORS = {
   felt: 0x12433b,
   feltLight: 0x1d5c4e,
@@ -78,7 +77,6 @@ const COLORS = {
   win: 0x65d4a0,
   winText: "#65d4a0",
 };
-/* eslint-enable unicorn/number-literal-case */
 
 function shuffle<T>(items: T[]) {
   const result = [...items];
@@ -311,7 +309,6 @@ export const createBlackjackGame: PhaserGameFactory = async (parent, onState, on
         .setOrigin(0.5);
     }
 
-    /* eslint-disable unicorn/number-literal-case */
     private createChipStack() {
       const x = 44 * WORLD_SCALE;
       const y = HEIGHT - 92 * WORLD_SCALE;
@@ -333,7 +330,6 @@ export const createBlackjackGame: PhaserGameFactory = async (parent, onState, on
         fontSize: `${7 * WORLD_SCALE}px`,
       });
     }
-    /* eslint-enable unicorn/number-literal-case */
 
     private resetRound() {
       this.timers.forEach((timer) => timer.remove());
@@ -364,7 +360,6 @@ export const createBlackjackGame: PhaserGameFactory = async (parent, onState, on
       this.emitState();
     }
 
-    /* eslint-disable unicorn/number-literal-case */
     private createCardView(card: Card, hidden: boolean) {
       const root = this.add.container(DECK_X, DECK_Y).setDepth(5).setScale(0.86).setAlpha(0);
       const shadow = this.add.rectangle(
@@ -414,7 +409,6 @@ export const createBlackjackGame: PhaserGameFactory = async (parent, onState, on
       backMark.setVisible(hidden);
       return { root, face, back, rank, suit, backMark, card, hidden } satisfies CardVisual;
     }
-    /* eslint-enable unicorn/number-literal-case */
 
     private layoutHand(views: CardVisual[], y: number) {
       const available = WIDTH - 72 * WORLD_SCALE;

@@ -4,13 +4,16 @@ const account = ref("");
 const issuer = ref("");
 const code = ref("");
 const error = ref("");
-const tick = ref(0);
+const algorithm = ref<"SHA-1" | "SHA-256" | "SHA-512">("SHA-1");
+const digits = ref(6);
+const period = ref(30);
+const now = ref(0);
 let timer: ReturnType<typeof setInterval> | undefined;
 const remaining = computed(() => {
-  void tick.value;
-  return 30 - (Math.floor(Date.now() / 1000) % 30);
+  if (!now.value) return period.value;
+  return period.value - (now.value % period.value);
 });
-const progress = computed(() => (remaining.value / 30) * 100);
+const progress = computed(() => (remaining.value / period.value) * 100);
 const { copyText } = useCopyToClipboard();
 
 function decodeBase32(value: string) {
@@ -31,14 +34,15 @@ function decodeBase32(value: string) {
 async function generate() {
   error.value = "";
   try {
+    if (!now.value) now.value = Math.floor(Date.now() / 1000);
     const key = await crypto.subtle.importKey(
       "raw",
       decodeBase32(secret.value),
-      { name: "HMAC", hash: "SHA-1" },
+      { name: "HMAC", hash: algorithm.value },
       false,
       ["sign"],
     );
-    const counter = Math.floor(Date.now() / 1000 / 30);
+    const counter = Math.floor(now.value / period.value);
     const bytes = new ArrayBuffer(8);
     const view = new DataView(bytes);
     view.setUint32(4, counter);
@@ -49,7 +53,7 @@ async function generate() {
       ((digest[offset + 1] ?? 0) << 16) |
       ((digest[offset + 2] ?? 0) << 8) |
       (digest[offset + 3] ?? 0);
-    code.value = String(number % 1_000_000).padStart(6, "0");
+    code.value = String(number % 10 ** digits.value).padStart(digits.value, "0");
   } catch (cause) {
     code.value = "";
     error.value = cause instanceof Error ? cause.message : "Could not generate a code.";
@@ -62,7 +66,18 @@ function importUri() {
     if (uri.protocol !== "otpauth:") throw new Error("Paste an otpauth:// URI or a Base32 secret.");
     secret.value = uri.searchParams.get("secret") ?? "";
     issuer.value = uri.searchParams.get("issuer") ?? "";
-    account.value = decodeURIComponent(uri.pathname.replace(/^\/\//, ""));
+    account.value = decodeURIComponent(uri.pathname.replace(/^\//, ""));
+    const uriAlgorithm = (uri.searchParams.get("algorithm") ?? "SHA1")
+      .toUpperCase()
+      .replace("SHA", "SHA-");
+    if (uriAlgorithm === "SHA-1" || uriAlgorithm === "SHA-256" || uriAlgorithm === "SHA-512") {
+      algorithm.value = uriAlgorithm;
+    }
+    const uriDigits = Number(uri.searchParams.get("digits"));
+    if (uriDigits === 6 || uriDigits === 8) digits.value = uriDigits;
+    const uriPeriod = Number(uri.searchParams.get("period"));
+    if (Number.isInteger(uriPeriod) && uriPeriod >= 5 && uriPeriod <= 300) period.value = uriPeriod;
+    void generate();
   } catch {
     error.value = "That does not look like a valid otpauth:// URI.";
   }
@@ -70,8 +85,8 @@ function importUri() {
 
 onMounted(() => {
   timer = setInterval(() => {
-    tick.value += 1;
-    if (secret.value && remaining.value === 30) void generate();
+    now.value = Math.floor(Date.now() / 1000);
+    if (secret.value && remaining.value === period.value) void generate();
   }, 1000);
 });
 onBeforeUnmount(() => {
@@ -95,7 +110,7 @@ onBeforeUnmount(() => {
       <div class="flex flex-wrap gap-2">
         <UButton
           label="Generate code"
-          icon="tabler:key"
+          icon="i-tabler-key"
           @click="generate"
         />
         <UButton
@@ -109,7 +124,7 @@ onBeforeUnmount(() => {
         v-if="error"
         color="error"
         variant="subtle"
-        icon="tabler:alert-circle"
+        icon="i-tabler-alert-circle"
         title="Could not generate code"
         :description="error"
       />
@@ -118,17 +133,21 @@ onBeforeUnmount(() => {
         <output
           class="text-highlighted font-mono text-5xl font-semibold tracking-[0.25em] tabular-nums"
           aria-live="polite"
-          >{{ code || "------" }}</output
+          >{{ code || "-".repeat(digits) }}</output
         >
         <UProgress
           :model-value="progress"
           color="primary"
           aria-label="Code lifetime"
         />
-        <span class="text-muted text-sm">Refreshes in {{ remaining }}s</span>
+        <span class="text-muted text-sm"
+          >Refreshes in {{ remaining }}s · {{ algorithm }} · {{ digits }} digits</span
+        >
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy code"
-          icon="tabler:copy"
+          icon="i-tabler-copy"
           class="mx-auto"
           :disabled="!code"
           @click="copyText(code)"

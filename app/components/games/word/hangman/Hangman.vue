@@ -79,13 +79,13 @@ onMounted(reset);
         >
           <UIcon
             v-if="isLost"
-            name="i-lucide-circle-x"
+            name="i-tabler-circle-x"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
           <UIcon
             v-else-if="isWon"
-            name="i-lucide-circle-check"
+            name="i-tabler-circle-check"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
@@ -197,7 +197,7 @@ onMounted(reset);
           label="New word"
           color="neutral"
           variant="outline"
-          icon="i-lucide-refresh-cw"
+          icon="i-tabler-refresh"
           @click="reset"
         />
       </div>

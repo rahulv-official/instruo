@@ -104,7 +104,7 @@ run();
       </div>
       <UButton
         label="Run query"
-        icon="tabler:player-play-filled"
+        icon="i-tabler-player-play-filled"
         class="w-fit"
         @click="run"
       />
@@ -112,7 +112,7 @@ run();
         v-if="error"
         color="error"
         variant="subtle"
-        icon="tabler:alert-circle"
+        icon="i-tabler-alert-circle"
         title="Invalid query"
         :description="error"
       />
@@ -127,10 +127,10 @@ run();
       </UFormField>
       <div class="flex justify-end">
         <UButton
-          label="Copy result"
-          icon="tabler:copy"
           color="neutral"
-          variant="outline"
+          variant="soft"
+          label="Copy result"
+          icon="i-tabler-copy"
           :disabled="!result"
           @click="copyText(result)"
         />

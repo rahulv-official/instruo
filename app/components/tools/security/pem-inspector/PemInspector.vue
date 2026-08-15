@@ -23,16 +23,18 @@ async function inspect() {
 }
 </script>
 <template>
-  <ToolWorkbench description="Inspect a PEM block and calculate a local SHA-256 fingerprint."
-    ><div class="grid gap-5">
+  <ToolWorkbench
+    description="Read a PEM envelope and calculate a local SHA-256 fingerprint. This tool does not parse certificate fields."
+  >
+    <div class="grid gap-5">
       <UTextarea
         v-model="input"
         :rows="14"
         class="font-mono text-xs"
-        placeholder="-----BEGIN PUBLIC KEY-----"
+        placeholder="-----BEGIN CERTIFICATE-----"
       /><UButton
         label="Inspect PEM"
-        icon="i-lucide-search"
+        icon="i-tabler-search"
         class="w-fit"
         @click="inspect"
       /><UTextarea
@@ -40,7 +42,8 @@ async function inspect() {
         :rows="6"
         readonly
         class="font-mono"
-        placeholder="Inspection result appears here."
-      /></div
-  ></ToolWorkbench>
+        placeholder="PEM type, byte length, and SHA-256 fingerprint appear here."
+      />
+    </div>
+  </ToolWorkbench>
 </template>

@@ -3,7 +3,7 @@ title: Quick Trivia
 description: Answer five clean, timeless questions across familiar topics.
 category: Quiz
 tags: [trivia, quiz, general-knowledge, browser-game, learning]
-icon: i-lucide-circle-help
+icon: i-tabler-help-circle
 ---
 
 ::QuickTrivia

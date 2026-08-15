@@ -36,13 +36,21 @@ const encoded = computed(() => {
 const { copyText } = useCopyToClipboard();
 </script>
 <template>
-  <ToolWorkbench description="Inspect JWT claims or create an unsigned token-shaped value locally."
-    ><div class="grid gap-5">
-      <UFormField label="JWT to inspect"
-        ><UTextarea
+  <ToolWorkbench description="Inspect JWT claims or create an unsigned token-shaped value locally.">
+    <div class="grid gap-5">
+      <UAlert
+        color="warning"
+        variant="subtle"
+        icon="i-tabler-alert-triangle"
+        title="Unsigned output"
+        description="The generated value has an empty signature and is not authenticated. Never use it for access control or production credentials."
+      />
+      <UFormField label="JWT to inspect">
+        <UTextarea
           v-model="token"
           :rows="5"
-          placeholder="eyJ..." /></UFormField
+          placeholder="eyJ..."
+        /> </UFormField
       ><UTextarea
         :model-value="inspected"
         :rows="6"
@@ -50,15 +58,17 @@ const { copyText } = useCopyToClipboard();
         placeholder="Decoded header and payload appear here."
       />
       <div class="grid gap-5 lg:grid-cols-2">
-        <UFormField label="Header JSON"
-          ><UTextarea
+        <UFormField label="Header JSON">
+          <UTextarea
             v-model="header"
-            :rows="4" /></UFormField
-        ><UFormField label="Payload JSON"
-          ><UTextarea
+            :rows="4"
+          /> </UFormField
+        ><UFormField label="Payload JSON">
+          <UTextarea
             v-model="payload"
             :rows="4"
-        /></UFormField>
+          />
+        </UFormField>
       </div>
       <UTextarea
         :model-value="encoded"
@@ -67,10 +77,13 @@ const { copyText } = useCopyToClipboard();
       />
       <div class="flex justify-end">
         <UButton
-          label="Copy unsigned token"
-          icon="i-lucide-copy"
+          color="neutral"
+          variant="soft"
+          label="Copy token-shaped value"
+          icon="i-tabler-copy"
           @click="copyText(encoded)"
         />
-      </div></div
-  ></ToolWorkbench>
+      </div>
+    </div>
+  </ToolWorkbench>
 </template>

@@ -3,7 +3,7 @@ title: Rock Paper Scissors
 description: Make a hand, beat the computer, and take a first-to-five match.
 category: Arcade
 tags: [rock-paper-scissors, roshambo, hand-game, browser-game, arcade]
-icon: i-lucide-hand
+icon: i-tabler-hand-click
 ---
 
 ::RockPaperScissors

@@ -3,10 +3,10 @@ title: "Whitespace Cleaner"
 description: Remove repeated spaces and excessive blank lines from text.
 category: Text
 tags: [whitespace, remove-spaces, blank-lines, clean-text, text]
-icon: i-lucide-between-horizontal-end
+icon: i-tabler-arrows-join
 ---
 
-::TextTransformer{mode="whitespace"}
+::WhitespaceCleaner
 ::
 
 ## Clean inconsistent spacing

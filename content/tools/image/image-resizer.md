@@ -3,7 +3,7 @@ title: Image Resizer & Compressor
 description: Resize JPEG, PNG, or WebP images and adjust their output format and quality.
 category: Image
 tags: [image, resize, compress, jpeg, png, webp, photo]
-icon: i-lucide-image-down
+icon: i-tabler-photo-down
 ---
 
 ::ImageResizer

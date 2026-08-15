@@ -101,13 +101,13 @@ onBeforeUnmount(clearTimer);
         >
           <UIcon
             v-if="gameState === 'false-start'"
-            name="i-lucide-circle-x"
+            name="i-tabler-circle-x"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
           <UIcon
             v-else-if="gameState === 'result'"
-            name="i-lucide-circle-check"
+            name="i-tabler-circle-check"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
@@ -150,7 +150,7 @@ onBeforeUnmount(clearTimer);
           label="New round"
           color="neutral"
           variant="outline"
-          icon="i-lucide-refresh-cw"
+          icon="i-tabler-refresh"
           @click="startRound"
         />
       </div>

@@ -3,10 +3,10 @@ title: "Text Sorter"
 description: Sort your text alphabetically, by length, or numerically.
 category: Text
 tags: [text, sorter, text-sort]
-icon: i-lucide-arrow-down-a-z
+icon: i-tabler-sort-ascending-letters
 ---
 
-::TextTransformer{mode="sort"}
+::TextSorter
 ::
 
 ## Sort lines of text

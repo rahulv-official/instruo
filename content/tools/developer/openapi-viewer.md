@@ -3,7 +3,7 @@ title: OpenAPI Viewer
 description: Explore complete OpenAPI JSON or YAML documents, including operations, schemas, and responses.
 category: Developer
 tags: [openapi, swagger, api, developer]
-icon: tabler:api
+icon: i-tabler-api
 ---
 
 ::OpenApiViewer

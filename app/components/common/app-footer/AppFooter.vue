@@ -6,10 +6,7 @@ interface FooterLink {
 }
 
 const { footer } = useAppConfig();
-
-function getLinkTarget(link: FooterLink) {
-  return link.target;
-}
+const route = useRoute();
 
 function isExternal(link: FooterLink) {
   return link.target === "_blank";
@@ -18,33 +15,46 @@ function isExternal(link: FooterLink) {
 
 <template>
   <UFooter
-    class="bg-default mt-20"
+    class="border-t transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+    :class="
+      route.path === '/'
+        ? 'instruo-home border-muted bg-muted/55 mt-0'
+        : 'border-muted bg-muted/55 mt-20'
+    "
     :ui="{
-      top: 'border-default/70 border-y py-0',
-      container: 'py-6 lg:py-6',
+      top: 'border-muted border-b py-0',
+      container: 'py-5 lg:py-5',
       center: 'text-dimmed text-sm',
     }"
   >
     <template #top>
-      <UContainer class="grid gap-12 py-14 lg:grid-cols-12 lg:gap-8 lg:py-16">
+      <UContainer class="grid gap-10 py-12 lg:grid-cols-12 lg:gap-12 lg:py-14">
         <div class="lg:col-span-5">
           <NuxtLink
             to="/"
-            class="text-highlighted inline-flex items-center gap-3"
+            class="text-highlighted focus-visible:outline-primary inline-flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-2"
             aria-label="Instruo home"
           >
             <img
               src="/logo.svg"
               alt=""
-              width="32"
-              height="32"
-              class="size-8 shrink-0"
+              width="28"
+              height="28"
+              class="size-7 shrink-0"
             />
-            <span class="text-base font-semibold tracking-tight">Instruo</span>
+            <span class="text-base font-semibold tracking-[-0.025em]">Instruo</span>
           </NuxtLink>
 
-          <p class="text-muted mt-6 max-w-sm text-sm leading-6">
+          <p class="text-muted mt-5 max-w-sm text-sm leading-6">
             {{ footer.description }}
+          </p>
+          <p class="text-toned mt-5 flex items-center gap-2 text-sm">
+            <UIcon
+              name="i-tabler-lock"
+              class="size-4"
+              aria-hidden="true"
+            />
+            No account required.
           </p>
         </div>
 
@@ -60,22 +70,21 @@ function isExternal(link: FooterLink) {
               {{ column.label }}
             </h2>
 
-            <ul class="border-default/70 mt-5 border-t">
+            <ul class="mt-4 grid gap-1">
               <li
                 v-for="link in column.children"
                 :key="link.label"
-                class="border-default/70 border-b"
               >
                 <ULink
                   :to="link.to"
-                  :target="getLinkTarget(link)"
+                  :target="link.target"
                   :rel="isExternal(link) ? 'noopener noreferrer' : undefined"
-                  class="group text-muted hover:text-highlighted focus-visible:outline-primary flex min-h-11 items-center justify-between gap-3 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+                  class="group text-muted hover:bg-elevated hover:text-highlighted focus-visible:outline-primary flex min-h-10 items-center justify-between gap-3 rounded-md px-2 text-sm transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   <span>{{ link.label }}</span>
                   <UIcon
-                    :name="isExternal(link) ? 'i-lucide-arrow-up-right' : 'i-lucide-arrow-right'"
-                    class="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5"
+                    :name="isExternal(link) ? 'i-tabler-arrow-up-right' : 'i-tabler-arrow-right'"
+                    class="size-4 shrink-0 transition-transform duration-150 group-hover:translate-x-0.5"
                     :class="{ 'group-hover:-translate-y-0.5': isExternal(link) }"
                     aria-hidden="true"
                   />
@@ -95,7 +104,6 @@ function isExternal(link: FooterLink) {
 
     <template #right>
       <UColorModeButton v-if="footer.colorMode" />
-
       <UButton
         v-for="(link, index) in footer.links"
         :key="index"

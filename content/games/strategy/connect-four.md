@@ -3,7 +3,7 @@ title: Connect Four
 description: Drop discs into a classic seven-column board and make four in a row.
 category: Strategy
 tags: [connect-four, four-in-a-row, strategy, two-player, browser-game]
-icon: i-lucide-circle-dot
+icon: i-tabler-circle-dot
 ---
 
 ::ConnectFour

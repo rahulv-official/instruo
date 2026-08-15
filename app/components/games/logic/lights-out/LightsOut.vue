@@ -84,7 +84,7 @@ onMounted(reset);
         >
           <UIcon
             v-if="isWon"
-            name="i-lucide-circle-check"
+            name="i-tabler-circle-check"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
@@ -133,7 +133,7 @@ onMounted(reset);
           label="New puzzle"
           color="neutral"
           variant="outline"
-          icon="i-lucide-refresh-cw"
+          icon="i-tabler-refresh"
           @click="reset"
         />
       </div>

@@ -154,19 +154,19 @@ function changeMode(value: string | undefined) {
         >
           <UIcon
             v-if="playerLost"
-            name="i-lucide-circle-x"
+            name="i-tabler-circle-x"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
           <UIcon
             v-else-if="playerWon || (mode === 'local' && winner)"
-            name="i-lucide-circle-check"
+            name="i-tabler-circle-check"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
           <UIcon
             v-else-if="isDraw"
-            name="i-lucide-circle-minus"
+            name="i-tabler-circle-minus"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
@@ -229,7 +229,7 @@ function changeMode(value: string | undefined) {
           label="New round"
           color="neutral"
           variant="outline"
-          icon="i-lucide-refresh-cw"
+          icon="i-tabler-refresh"
           @click="reset()"
         />
       </div>

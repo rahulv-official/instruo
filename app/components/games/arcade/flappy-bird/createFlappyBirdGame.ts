@@ -23,7 +23,7 @@ interface PipePair {
   scored: boolean;
 }
 
-const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GAME_FONT = "Geist, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 const GROUND_Y = HEIGHT - 54 * WORLD_SCALE;
 const BIRD_X = 112 * WORLD_SCALE;
 const BIRD_RADIUS = 18 * WORLD_SCALE;
@@ -38,14 +38,12 @@ const HUD_DEPTH = 100;
 const ASSET_ROOT = "/game-assets/kenney/tappy-plane/PNG";
 const PARTICLE_ROOT = "/game-assets/kenney/particle-pack/PNG%20(Transparent)";
 
-/* eslint-disable unicorn/number-literal-case */
 const COLORS = {
   skyDeep: 0x66b8d7,
   ink: 0x17324c,
   ground: 0x385a65,
   panel: 0xfff6dc,
 };
-/* eslint-enable unicorn/number-literal-case */
 
 function readBest() {
   try {
@@ -526,9 +524,9 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    resolution: Math.min(window.devicePixelRatio || 1, 2),
     render: {
       antialias: true,
+      smoothPixelArt: true,
       roundPixels: false,
     },
   });

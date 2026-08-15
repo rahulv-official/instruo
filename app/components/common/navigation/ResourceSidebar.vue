@@ -13,10 +13,20 @@ const props = defineProps<{
   kind: "game" | "tool";
 }>();
 
+const search = ref("");
+
+const visibleItems = computed(() => {
+  const query = search.value.trim().toLowerCase();
+  if (!query) return props.items;
+  return props.items.filter((item) =>
+    [item.title, item.category].join(" ").toLowerCase().includes(query),
+  );
+});
+
 const groupedItems = computed(() => {
   const groups = new Map<string, ResourceItem[]>();
 
-  for (const item of props.items.toSorted((a, b) => a.title.localeCompare(b.title))) {
+  for (const item of visibleItems.value.toSorted((a, b) => a.title.localeCompare(b.title))) {
     const group = groups.get(item.category) ?? [];
     group.push(item);
     groups.set(item.category, group);
@@ -37,14 +47,15 @@ function openResource(path: string | undefined) {
 </script>
 
 <template>
-  <div class="border-default/70 mb-8 border-b pb-6 lg:hidden">
+  <div class="border-muted mb-8 border-b pb-6 lg:hidden">
     <UFormField :label="`Open another ${kind}`">
-      <USelect
+      <USelectMenu
         :model-value="currentPath"
         :items="selectItems"
         value-key="value"
         label-key="label"
         size="lg"
+        :search-input="{ placeholder: `Search ${kind}s…` }"
         class="w-full"
         @update:model-value="openResource"
       />
@@ -58,36 +69,54 @@ function openResource(path: string | undefined) {
     >
       <NuxtLink
         :to="kind === 'tool' ? '/tools' : '/games'"
-        class="text-highlighted focus-visible:ring-primary mb-5 flex items-center gap-2 text-sm font-semibold focus-visible:ring-2 focus-visible:outline-none"
+        class="text-highlighted focus-visible:outline-primary hover:bg-elevated mb-4 flex min-h-9 items-center gap-2 rounded-md px-2 text-sm font-semibold focus-visible:outline-2"
       >
         <UIcon
-          name="i-lucide-arrow-left"
+          name="i-tabler-arrow-left"
           class="size-4"
         />
         All {{ kind === "tool" ? "tools" : "games" }}
       </NuxtLink>
 
+      <UInput
+        v-model="search"
+        icon="i-tabler-search"
+        :placeholder="`Filter ${kind}s…`"
+        :aria-label="`Filter ${kind} navigation`"
+        size="sm"
+        class="mb-5 w-full"
+      />
+
+      <p
+        v-if="!groupedItems.length"
+        class="text-muted border-muted bg-elevated rounded-md border p-3 text-sm"
+      >
+        No matching {{ kind }}s.
+      </p>
+
       <div
         v-for="[category, resources] in groupedItems"
         :key="category"
-        class="mb-4"
+        class="mb-5"
       >
-        <p class="text-toned mb-1.5 font-mono text-[0.7rem]">{{ category }}</p>
+        <p class="text-toned mb-1.5 px-2 text-xs font-medium">{{ category }}</p>
         <div class="grid gap-0.5">
           <NuxtLink
             v-for="resource in resources"
             :key="resource.id"
             :to="resource.path"
-            class="focus-visible:ring-primary flex min-h-9 items-center gap-2.5 border-l-2 px-3 py-1.5 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none"
+            class="focus-visible:outline-primary flex min-h-9 items-center gap-2.5 rounded-md border-l-2 px-2.5 py-1.5 text-sm transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2"
             :class="
               resource.path === currentPath
-                ? 'border-primary bg-elevated/50 text-highlighted font-medium'
-                : 'text-muted hover:border-default hover:bg-elevated/30 hover:text-highlighted border-transparent'
+                ? 'border-primary bg-elevated text-highlighted font-medium'
+                : 'text-muted hover:bg-elevated hover:text-highlighted border-transparent'
             "
             :aria-current="resource.path === currentPath ? 'page' : undefined"
           >
             <UIcon
-              :name="resource.icon || (kind === 'tool' ? 'i-lucide-wrench' : 'i-lucide-gamepad-2')"
+              :name="
+                resource.icon || (kind === 'tool' ? 'i-tabler-tools' : 'i-tabler-device-gamepad-2')
+              "
               class="size-4 shrink-0"
             />
             <span>{{ resource.title }}</span>

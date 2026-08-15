@@ -27,11 +27,11 @@ const filtered = computed(() =>
 );
 </script>
 <template>
-  <ToolWorkbench description="Search common HTTP response codes by number or meaning."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Search common HTTP response codes by number or meaning.">
+    <div class="grid gap-5">
       <UInput
         v-model="query"
-        icon="i-lucide-search"
+        icon="i-tabler-search"
         placeholder="Search 404, forbidden, timeout…"
       />
       <dl class="border-default grid border-t border-l">
@@ -44,6 +44,6 @@ const filtered = computed(() =>
           <dd>{{ label }}</dd>
         </div>
       </dl>
-    </div></ToolWorkbench
-  >
+    </div>
+  </ToolWorkbench>
 </template>

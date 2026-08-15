@@ -18,7 +18,7 @@ const emit = defineEmits<{
     @click.stop="emit('toggle')"
   >
     <Icon
-      :name="isFullscreen ? 'tabler:arrows-minimize' : 'tabler:arrows-maximize'"
+      :name="isFullscreen ? 'i-tabler-arrows-minimize' : 'i-tabler-arrows-maximize'"
       aria-hidden="true"
     />
     <span class="sr-only">{{ isFullscreen ? "Exit fullscreen" : "Enter fullscreen" }}</span>

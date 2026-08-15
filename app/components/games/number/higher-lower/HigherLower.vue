@@ -57,13 +57,13 @@ function reset() {
       <div class="grid grid-cols-2 gap-3">
         <UButton
           label="Higher"
-          icon="i-lucide-arrow-up"
+          icon="i-tabler-arrow-up"
           size="xl"
           :disabled="finished"
           @click="choose('higher')"
         /><UButton
           label="Lower"
-          icon="i-lucide-arrow-down"
+          icon="i-tabler-arrow-down"
           size="xl"
           :disabled="finished"
           @click="choose('lower')"
@@ -75,7 +75,7 @@ function reset() {
           label="New round"
           color="neutral"
           variant="outline"
-          icon="i-lucide-refresh-cw"
+          icon="i-tabler-refresh"
           @click="reset"
         />
       </div>

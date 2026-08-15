@@ -34,7 +34,7 @@ interface TileView {
 
 const BOARD_SIZE = 4;
 const CELL_COUNT = BOARD_SIZE * BOARD_SIZE;
-const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GAME_FONT = "Geist, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 const CELL_SIZE = 78 * WORLD_SCALE;
 const CELL_GAP = 10 * WORLD_SCALE;
 const BOARD_WIDTH = CELL_SIZE * BOARD_SIZE + CELL_GAP * (BOARD_SIZE + 1);
@@ -45,7 +45,6 @@ const MOVE_DURATION = 150;
 const SWIPE_THRESHOLD = 24 * WORLD_SCALE;
 const BEST_TILE = 2048;
 
-/* eslint-disable unicorn/number-literal-case */
 const COLORS = {
   background: 0x23232a,
   board: 0x34343d,
@@ -69,7 +68,6 @@ const TILE_COLORS: Record<number, { fill: number; text: string }> = {
   1024: { fill: 0x9f7cdb, text: "#ffffff" },
   2048: { fill: 0x54c28a, text: "#ffffff" },
 };
-/* eslint-enable unicorn/number-literal-case */
 
 const directionKeys: Record<string, Direction> = {
   ArrowDown: "down",
@@ -83,9 +81,7 @@ const directionKeys: Record<string, Direction> = {
 };
 
 function tileColor(value: number) {
-  /* eslint-disable unicorn/number-literal-case */
   return TILE_COLORS[value] ?? { fill: 0x6f62b8, text: "#ffffff" };
-  /* eslint-enable unicorn/number-literal-case */
 }
 
 function tileFontSize(value: number) {

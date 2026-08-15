@@ -32,7 +32,7 @@ function formatSql(value: string) {
           :maxrows="24"
           class="w-full"
           placeholder="select id, name from users where active = true order by name;"
-          :ui="{ base: 'rounded-none font-mono text-sm leading-6' }"
+          :ui="{ base: 'font-mono text-sm leading-6' }"
         />
       </UFormField>
       <UFormField label="Formatted SQL">
@@ -44,16 +44,16 @@ function formatSql(value: string) {
           :maxrows="24"
           class="w-full"
           placeholder="Formatted query appears here."
-          :ui="{ base: 'rounded-none font-mono text-sm leading-6' }"
+          :ui="{ base: 'font-mono text-sm leading-6' }"
         />
       </UFormField>
     </div>
     <div class="mt-5 flex justify-end">
       <UButton
-        label="Copy SQL"
         color="neutral"
-        variant="outline"
-        icon="i-lucide-copy"
+        variant="soft"
+        label="Copy SQL"
+        icon="i-tabler-copy"
         :disabled="!output"
         @click="copyText(output)"
       />

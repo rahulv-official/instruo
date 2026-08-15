@@ -9,8 +9,8 @@ const ratio = computed(() => {
 });
 </script>
 <template>
-  <ToolWorkbench description="Check foreground and background contrast against WCAG text guidance."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Check foreground and background contrast against WCAG text guidance.">
+    <div class="grid gap-5">
       <div class="grid gap-4 sm:grid-cols-2">
         <UFormField label="Foreground"><UInput v-model="foreground" /></UFormField
         ><UFormField label="Background"><UInput v-model="background" /></UFormField>
@@ -31,6 +31,7 @@ const ratio = computed(() => {
               ? 'AA for body text.'
               : 'Increase contrast for body text.'
         "
-      /></div
-  ></ToolWorkbench>
+      />
+    </div>
+  </ToolWorkbench>
 </template>

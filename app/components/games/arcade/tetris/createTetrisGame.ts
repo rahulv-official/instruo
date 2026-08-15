@@ -41,9 +41,8 @@ const DROP_START = 680;
 const DROP_MIN = 120;
 const SWIPE_THRESHOLD = 24 * WORLD_SCALE;
 const BEST_KEY = "instruo:tetris-best";
-const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GAME_FONT = "Geist, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 
-/* eslint-disable unicorn/number-literal-case */
 const COLORS = {
   background: 0x151d2b,
   board: 0x202c3f,
@@ -57,7 +56,6 @@ const COLORS = {
 };
 
 const PIECE_COLORS = [0x65d4e8, 0xf4bd68, 0xb88be8, 0x65d4a0, 0xe87373, 0x6f9ee8, 0xf3a86d];
-/* eslint-enable unicorn/number-literal-case */
 
 const SHAPES: Cell[][] = [
   [
@@ -312,7 +310,9 @@ export const createTetrisGame: PhaserGameFactory = async (parent, onState, onRea
       this.dropTimer = 0;
       this.resolving = false;
       this.piece = null;
-      this.board = Array.from({ length: ROWS }, () => new Array<number | null>(COLUMNS).fill(null));
+      this.board = Array.from({ length: ROWS }, () =>
+        Array.from<number | null>({ length: COLUMNS }).fill(null),
+      );
       this.boardVisual.removeAll(true);
       this.activeVisual.removeAll(true);
       this.activeBlocks = [];
@@ -439,7 +439,7 @@ export const createTetrisGame: PhaserGameFactory = async (parent, onState, onRea
           const remaining = this.board.filter((row, rowIndex) => !completed.includes(rowIndex));
           this.board = [
             ...Array.from({ length: completed.length }, () =>
-              new Array<number | null>(COLUMNS).fill(null),
+              Array.from<number | null>({ length: COLUMNS }).fill(null),
             ),
             ...remaining,
           ];

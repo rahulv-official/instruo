@@ -15,24 +15,45 @@ onMounted(() => {
     media.add("(prefers-reduced-motion: no-preference)", () => {
       gsap.from(".hero-reveal", {
         autoAlpha: 0,
-        y: 24,
-        duration: 0.75,
-        stagger: 0.08,
-        ease: "power3.out",
+        y: 20,
+        duration: 0.68,
+        stagger: 0.075,
+        ease: "power4.out",
       });
 
       gsap.utils.toArray<HTMLElement>(".home-reveal").forEach((element) => {
-        gsap.from(element, {
-          autoAlpha: 0,
-          y: 28,
-          duration: 0.7,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: element,
-            start: "clamp(top 88%)",
-            once: true,
+        gsap.fromTo(
+          element,
+          { y: 24 },
+          {
+            y: 0,
+            duration: 0.72,
+            ease: "power4.out",
+            scrollTrigger: {
+              trigger: element,
+              start: "clamp(top 88%)",
+              once: true,
+            },
           },
-        });
+        );
+      });
+
+      gsap.utils.toArray<HTMLElement>(".game-feature").forEach((element, index) => {
+        gsap.fromTo(
+          element,
+          { y: 18 },
+          {
+            y: 0,
+            duration: 0.58,
+            delay: index * 0.06,
+            ease: "power4.out",
+            scrollTrigger: {
+              trigger: element,
+              start: "clamp(top 92%)",
+              once: true,
+            },
+          },
+        );
       });
     });
   }, root.value);

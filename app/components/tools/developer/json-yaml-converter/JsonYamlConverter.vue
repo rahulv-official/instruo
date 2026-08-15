@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import type { JsonValue } from "~/utils/browser-tools";
-import { jsonToYaml } from "~/utils/browser-tools";
+import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 const direction = ref<"json-yaml" | "yaml-json">("json-yaml");
 const input = ref("");
 const output = computed(() => {
   try {
     if (!input.value.trim()) return "";
-    if (direction.value === "json-yaml") return jsonToYaml(JSON.parse(input.value) as JsonValue);
-    const object: Record<string, string> = {};
-    input.value.split(/\r?\n/).forEach((line) => {
-      const [key, ...value] = line.split(":");
-      if (key && value.length) object[key.trim()] = value.join(":").trim();
-    });
-    return JSON.stringify(object, null, 2);
+    if (direction.value === "json-yaml") {
+      return stringifyYaml(JSON.parse(input.value), { indent: 2 });
+    }
+    return JSON.stringify(parseYaml(input.value), null, 2);
   } catch (error) {
     return error instanceof Error ? `Error: ${error.message}` : "Could not parse input.";
   }
@@ -49,8 +45,10 @@ const { copyText } = useCopyToClipboard();
       </div>
       <div class="flex justify-end">
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy output"
-          icon="i-lucide-copy"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />

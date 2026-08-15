@@ -52,8 +52,10 @@ const { copyText } = useCopyToClipboard();
         />
         <div class="flex justify-end">
           <UButton
+            color="neutral"
+            variant="soft"
             label="Copy .gitignore"
-            icon="tabler:copy"
+            icon="i-tabler-copy"
             :disabled="!output"
             @click="copyText(output)"
           />

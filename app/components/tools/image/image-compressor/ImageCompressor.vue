@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const { file, sourceUrl, outputUrl, width, height, select, render, download } = useLocalImage();
+const { file, sourceUrl, outputUrl, width, height, error, select, render, download } =
+  useLocalImage();
 const format = ref("image/webp");
 const quality = ref(0.82);
 const processing = ref(false);
@@ -13,12 +14,22 @@ async function process() {
 }
 </script>
 <template>
-  <ToolWorkbench description="Compress JPEG, PNG, or WebP images locally with Canvas."
-    ><div class="grid gap-5">
-      <UInput
-        type="file"
+  <ToolWorkbench description="Compress JPEG, PNG, or WebP images locally with Canvas.">
+    <div class="grid gap-5">
+      <UFileUpload
+        :model-value="file"
         accept="image/*"
-        @change="select"
+        label="Choose an image"
+        description="Drop a JPEG, PNG, or WebP here, or browse this device. Up to 25 MB."
+        @update:model-value="select"
+      />
+      <UAlert
+        v-if="error"
+        color="error"
+        variant="subtle"
+        icon="i-tabler-alert-circle"
+        title="Image not loaded"
+        :description="error"
       />
       <div
         v-if="file"
@@ -32,8 +43,8 @@ async function process() {
         />
       </div>
       <div class="grid gap-4 sm:grid-cols-2">
-        <UFormField label="Output format"
-          ><USelect
+        <UFormField label="Output format">
+          <USelect
             v-model="format"
             :items="[
               { label: 'WebP', value: 'image/webp' },
@@ -41,27 +52,29 @@ async function process() {
               { label: 'PNG', value: 'image/png' },
             ]"
             value-key="value"
-            label-key="label" /></UFormField
-        ><UFormField label="Quality"
-          ><UInput
+            label-key="label"
+          /> </UFormField
+        ><UFormField label="Quality">
+          <UInput
             v-model.number="quality"
             type="number"
             min="0.1"
             max="1"
             step="0.05"
-        /></UFormField>
+          />
+        </UFormField>
       </div>
       <div class="flex flex-wrap gap-2">
         <UButton
           label="Compress image"
-          icon="i-lucide-image-down"
+          icon="i-tabler-photo-down"
           :loading="processing"
           :disabled="!file"
           @click="process"
         /><UButton
-          label="Download"
           color="neutral"
-          variant="outline"
+          variant="soft"
+          label="Download"
           :disabled="!outputUrl"
           @click="download(`compressed-image.${format.split('/')[1]}`)"
         />
@@ -71,6 +84,7 @@ async function process() {
         :src="outputUrl"
         alt="Compressed result"
         class="border-default max-h-64 w-fit border object-contain"
-      /></div
-  ></ToolWorkbench>
+      />
+    </div>
+  </ToolWorkbench>
 </template>

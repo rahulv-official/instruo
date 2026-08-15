@@ -56,13 +56,13 @@ const BOARD_HEIGHT = MAZE_ROWS * CELL_SIZE;
 const BOARD_X = (WIDTH - BOARD_WIDTH) / 2;
 const BOARD_Y = 118 * WORLD_SCALE;
 const FOOTER_Y = BOARD_Y + BOARD_HEIGHT + 15 * WORLD_SCALE;
-const MAZE_SEED = 0x4D415A45;
+const MAZE_SEED = 0x4d415a45;
 const MAX_LEVEL = 10;
 const BASE_STEP_MS = 138;
 const POWER_DURATION_MS = 7_000;
 const LIFE_PAUSE_MS = 850;
 const SWIPE_THRESHOLD = 18 * WORLD_SCALE;
-const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GAME_FONT = "Geist, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 
 const DIRECTIONS = [
   { id: "right", x: 1, y: 0, angle: 0 },
@@ -72,7 +72,6 @@ const DIRECTIONS = [
 ] as const;
 type Direction = (typeof DIRECTIONS)[number];
 
-/* eslint-disable unicorn/number-literal-case */
 const COLORS = {
   background: 0x080b22,
   board: 0x0e1535,
@@ -89,7 +88,6 @@ const COLORS = {
   danger: 0xff6f88,
   ghosts: [0xff7190, 0xffb45e, 0x76e2d5, 0xb997ff],
 };
-/* eslint-enable unicorn/number-literal-case */
 
 function keyOf(position: Position) {
   return `${position.x}:${position.y}`;
@@ -109,7 +107,9 @@ function seededRandom(seed: number) {
 
 function generateMaze(levelIndex: number): GeneratedMaze {
   const random = seededRandom((MAZE_SEED ^ Math.imul(levelIndex + 1, 2_654_435_761)) >>> 0);
-  const board: string[][] = Array.from({ length: MAZE_ROWS }, () => new Array<string>(MAZE_COLUMNS).fill("#"));
+  const board: string[][] = Array.from({ length: MAZE_ROWS }, () =>
+    Array.from<string>({ length: MAZE_COLUMNS }).fill("#"),
+  );
   const carveDirections = [
     { x: 2, y: 0 },
     { x: -2, y: 0 },
@@ -117,10 +117,7 @@ function generateMaze(levelIndex: number): GeneratedMaze {
     { x: 0, y: -2 },
   ];
   const inside = (position: Position) =>
-    position.x > 0 &&
-    position.x < MAZE_COLUMNS - 1 &&
-    position.y > 0 &&
-    position.y < MAZE_ROWS - 1;
+    position.x > 0 && position.x < MAZE_COLUMNS - 1 && position.y > 0 && position.y < MAZE_ROWS - 1;
   const stack: Position[] = [{ x: 1, y: 1 }];
   board[1]![1] = ".";
 
@@ -250,7 +247,8 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
     }
 
     override update(_time: number, delta: number) {
-      if (this.status !== "playing" || this.resolving || performance.now() < this.freezeUntil) return;
+      if (this.status !== "playing" || this.resolving || performance.now() < this.freezeUntil)
+        return;
       this.moveClock += delta;
       const stepMs = Math.max(82, BASE_STEP_MS - Math.min(this.level - 1, 8) * 6);
       while (this.moveClock >= stepMs) {
@@ -306,49 +304,65 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
         fontSize: `${8 * WORLD_SCALE}px`,
         fontStyle: "bold",
       });
-      this.levelText = this.add.text(WIDTH / 2, 56 * WORLD_SCALE, `LEVEL 1 / ${MAX_LEVEL}`, {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      }).setOrigin(0.5, 0);
-      this.livesText = this.add.text(WIDTH - 24 * WORLD_SCALE, 56 * WORLD_SCALE, "LIVES ●●●", {
-        color: "#ff6f88",
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      }).setOrigin(1, 0);
-      this.statusText = this.add.text(WIDTH / 2, 84 * WORLD_SCALE, "READY TO CHASE", {
-        color: COLORS.ink,
-        fontFamily: GAME_FONT,
-        fontSize: `${8 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      }).setOrigin(0.5, 0);
+      this.levelText = this.add
+        .text(WIDTH / 2, 56 * WORLD_SCALE, `LEVEL 1 / ${MAX_LEVEL}`, {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${8 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5, 0);
+      this.livesText = this.add
+        .text(WIDTH - 24 * WORLD_SCALE, 56 * WORLD_SCALE, "LIVES ●●●", {
+          color: "#ff6f88",
+          fontFamily: GAME_FONT,
+          fontSize: `${8 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(1, 0);
+      this.statusText = this.add
+        .text(WIDTH / 2, 84 * WORLD_SCALE, "READY TO CHASE", {
+          color: COLORS.ink,
+          fontFamily: GAME_FONT,
+          fontSize: `${8 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5, 0);
 
       this.boardVisual = this.add.container(0, 0).setDepth(4);
       this.pelletVisual = this.add.container(0, 0).setDepth(6);
       this.actorsVisual = this.add.container(0, 0).setDepth(8);
-      this.add.text(WIDTH / 2, FOOTER_Y, "SWIPE · ARROWS / WASD · SPACE TO START", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${7 * WORLD_SCALE}px`,
-      }).setOrigin(0.5, 0);
+      this.add
+        .text(WIDTH / 2, FOOTER_Y, "SWIPE · ARROWS / WASD · SPACE TO START", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${7 * WORLD_SCALE}px`,
+        })
+        .setOrigin(0.5, 0);
 
-      this.banner = this.add.container(WIDTH / 2, -80 * WORLD_SCALE).setDepth(30).setAlpha(0);
-      const panel = this.add.rectangle(0, 0, 270 * WORLD_SCALE, 64 * WORLD_SCALE, COLORS.board, 0.98)
+      this.banner = this.add
+        .container(WIDTH / 2, -80 * WORLD_SCALE)
+        .setDepth(30)
+        .setAlpha(0);
+      const panel = this.add
+        .rectangle(0, 0, 270 * WORLD_SCALE, 64 * WORLD_SCALE, COLORS.board, 0.98)
         .setStrokeStyle(2 * WORLD_SCALE, COLORS.accent, 1);
-      this.bannerTitle = this.add.text(0, -10 * WORLD_SCALE, "MAZE CLEARED", {
-        color: COLORS.ink,
-        fontFamily: GAME_FONT,
-        fontSize: `${11 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      }).setOrigin(0.5);
-      this.bannerCopy = this.add.text(0, 13 * WORLD_SCALE, "NEXT LEVEL", {
-        color: COLORS.muted,
-        fontFamily: GAME_FONT,
-        fontSize: `${7 * WORLD_SCALE}px`,
-        fontStyle: "bold",
-      }).setOrigin(0.5);
+      this.bannerTitle = this.add
+        .text(0, -10 * WORLD_SCALE, "MAZE CLEARED", {
+          color: COLORS.ink,
+          fontFamily: GAME_FONT,
+          fontSize: `${11 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5);
+      this.bannerCopy = this.add
+        .text(0, 13 * WORLD_SCALE, "NEXT LEVEL", {
+          color: COLORS.muted,
+          fontFamily: GAME_FONT,
+          fontSize: `${7 * WORLD_SCALE}px`,
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5);
       this.banner.add([panel, this.bannerTitle, this.bannerCopy]);
     }
 
@@ -377,7 +391,10 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
       }));
       this.powerPellets = new Set(generated.powerPellets.map(keyOf));
       this.pellets = new Set();
-      const blocked = new Set([keyOf(this.player), ...this.ghosts.map((ghost) => keyOf(ghost.position))]);
+      const blocked = new Set([
+        keyOf(this.player),
+        ...this.ghosts.map((ghost) => keyOf(ghost.position)),
+      ]);
       for (let y = 1; y < MAZE_ROWS - 1; y += 1) {
         for (let x = 1; x < MAZE_COLUMNS - 1; x += 1) {
           const key = keyOf({ x, y });
@@ -389,20 +406,38 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
       this.renderPellets();
       this.renderActors();
       this.updateHud();
-      this.statusText.setText(this.status === "ready" ? "READY TO CHASE" : `LEVEL ${this.level} · COLLECT EVERY PELLET`).setColor(COLORS.ink);
+      this.statusText
+        .setText(
+          this.status === "ready" ? "READY TO CHASE" : `LEVEL ${this.level} · COLLECT EVERY PELLET`,
+        )
+        .setColor(COLORS.ink);
       this.emitState();
     }
 
     private drawBoard() {
       this.boardVisual.removeAll(true);
-      const frame = this.add.rectangle(WIDTH / 2, BOARD_Y + BOARD_HEIGHT / 2, BOARD_WIDTH + 10 * WORLD_SCALE, BOARD_HEIGHT + 10 * WORLD_SCALE, COLORS.board)
+      const frame = this.add
+        .rectangle(
+          WIDTH / 2,
+          BOARD_Y + BOARD_HEIGHT / 2,
+          BOARD_WIDTH + 10 * WORLD_SCALE,
+          BOARD_HEIGHT + 10 * WORLD_SCALE,
+          COLORS.board,
+        )
         .setStrokeStyle(2 * WORLD_SCALE, COLORS.accent, 0.75);
       this.boardVisual.add(frame);
       for (let y = 0; y < MAZE_ROWS; y += 1) {
         for (let x = 0; x < MAZE_COLUMNS; x += 1) {
           const position = this.cellToWorld({ x, y });
           const isWall = this.board[y]?.[x] === "#";
-          const tile = this.add.rectangle(position.x, position.y, CELL_SIZE - (isWall ? 0 : 2 * WORLD_SCALE), CELL_SIZE - (isWall ? 0 : 2 * WORLD_SCALE), isWall ? COLORS.wall : COLORS.floor, 1);
+          const tile = this.add.rectangle(
+            position.x,
+            position.y,
+            CELL_SIZE - (isWall ? 0 : 2 * WORLD_SCALE),
+            CELL_SIZE - (isWall ? 0 : 2 * WORLD_SCALE),
+            isWall ? COLORS.wall : COLORS.floor,
+            1,
+          );
           if (isWall) tile.setStrokeStyle(1 * WORLD_SCALE, COLORS.wallEdge, 0.8);
           this.boardVisual.add(tile);
         }
@@ -418,8 +453,22 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
         const y = Number(rawY ?? 0);
         const position = this.cellToWorld({ x, y });
         const power = this.powerPellets.has(key);
-        const pellet = this.add.circle(position.x, position.y, (power ? 6 : 2.5) * WORLD_SCALE, COLORS.pellet, power ? 1 : 0.9);
-        if (power) this.tweens.add({ targets: pellet, scale: 1.24, duration: 500, yoyo: true, repeat: -1, ease: "Sine.inOut" });
+        const pellet = this.add.circle(
+          position.x,
+          position.y,
+          (power ? 6 : 2.5) * WORLD_SCALE,
+          COLORS.pellet,
+          power ? 1 : 0.9,
+        );
+        if (power)
+          this.tweens.add({
+            targets: pellet,
+            scale: 1.24,
+            duration: 500,
+            yoyo: true,
+            repeat: -1,
+            ease: "Sine.inOut",
+          });
         this.pelletVisual.add(pellet);
         this.pelletVisuals.set(key, pellet);
       });
@@ -444,19 +493,64 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
       const body = this.add.circle(0, 0, CELL_SIZE * 0.32, COLORS.player, 1);
       const mouth = this.add.graphics();
       mouth.fillStyle(COLORS.floor, 1);
-      mouth.fillTriangle(0, 0, CELL_SIZE * 0.34, -CELL_SIZE * 0.12, CELL_SIZE * 0.34, CELL_SIZE * 0.12);
+      mouth.fillTriangle(
+        0,
+        0,
+        CELL_SIZE * 0.34,
+        -CELL_SIZE * 0.12,
+        CELL_SIZE * 0.34,
+        CELL_SIZE * 0.12,
+      );
       root.add([body, mouth]);
       return root;
     }
 
     private createGhostVisual(color: number): GhostVisual {
       const root = this.add.container(0, 0);
-      const body = this.add.ellipse(0, -2 * WORLD_SCALE, CELL_SIZE * 0.62, CELL_SIZE * 0.62, color, 1);
-      const skirt = this.add.rectangle(0, CELL_SIZE * 0.14, CELL_SIZE * 0.62, CELL_SIZE * 0.25, color, 1);
-      const leftEye = this.add.circle(-CELL_SIZE * 0.12, -CELL_SIZE * 0.08, CELL_SIZE * 0.085, 0xFFFFFF, 1);
-      const rightEye = this.add.circle(CELL_SIZE * 0.12, -CELL_SIZE * 0.08, CELL_SIZE * 0.085, 0xFFFFFF, 1);
-      const leftPupil = this.add.circle(-CELL_SIZE * 0.1, -CELL_SIZE * 0.06, CELL_SIZE * 0.04, COLORS.background, 1);
-      const rightPupil = this.add.circle(CELL_SIZE * 0.14, -CELL_SIZE * 0.06, CELL_SIZE * 0.04, COLORS.background, 1);
+      const body = this.add.ellipse(
+        0,
+        -2 * WORLD_SCALE,
+        CELL_SIZE * 0.62,
+        CELL_SIZE * 0.62,
+        color,
+        1,
+      );
+      const skirt = this.add.rectangle(
+        0,
+        CELL_SIZE * 0.14,
+        CELL_SIZE * 0.62,
+        CELL_SIZE * 0.25,
+        color,
+        1,
+      );
+      const leftEye = this.add.circle(
+        -CELL_SIZE * 0.12,
+        -CELL_SIZE * 0.08,
+        CELL_SIZE * 0.085,
+        0xffffff,
+        1,
+      );
+      const rightEye = this.add.circle(
+        CELL_SIZE * 0.12,
+        -CELL_SIZE * 0.08,
+        CELL_SIZE * 0.085,
+        0xffffff,
+        1,
+      );
+      const leftPupil = this.add.circle(
+        -CELL_SIZE * 0.1,
+        -CELL_SIZE * 0.06,
+        CELL_SIZE * 0.04,
+        COLORS.background,
+        1,
+      );
+      const rightPupil = this.add.circle(
+        CELL_SIZE * 0.14,
+        -CELL_SIZE * 0.06,
+        CELL_SIZE * 0.04,
+        COLORS.background,
+        1,
+      );
       root.add([body, skirt, leftEye, rightEye, leftPupil, rightPupil]);
       return { root, body, skirt };
     }
@@ -469,7 +563,13 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
     }
 
     private isOpen(position: Position) {
-      return position.x >= 0 && position.x < MAZE_COLUMNS && position.y >= 0 && position.y < MAZE_ROWS && this.board[position.y]?.[position.x] !== "#";
+      return (
+        position.x >= 0 &&
+        position.x < MAZE_COLUMNS &&
+        position.y >= 0 &&
+        position.y < MAZE_ROWS &&
+        this.board[position.y]?.[position.x] !== "#"
+      );
     }
 
     private directionAt(position: Position, direction: Direction) {
@@ -491,16 +591,27 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
     private stepGhosts() {
       this.ghosts.forEach((ghost) => {
         if (ghost.eatenUntil > performance.now()) return;
-        const options = DIRECTIONS.filter((direction) => this.isOpen(this.directionAt(ghost.position, direction)));
+        const options = DIRECTIONS.filter((direction) =>
+          this.isOpen(this.directionAt(ghost.position, direction)),
+        );
         if (options.length === 0) return;
-        const withoutReverse = options.filter((direction) => !(direction.x === -ghost.direction.x && direction.y === -ghost.direction.y));
+        const withoutReverse = options.filter(
+          (direction) =>
+            !(direction.x === -ghost.direction.x && direction.y === -ghost.direction.y),
+        );
         const choices = withoutReverse.length > 0 ? withoutReverse : options;
         const scored = choices.map((direction) => {
           const position = this.directionAt(ghost.position, direction);
-          return { direction, distance: Math.abs(position.x - this.player.x) + Math.abs(position.y - this.player.y) };
+          return {
+            direction,
+            distance: Math.abs(position.x - this.player.x) + Math.abs(position.y - this.player.y),
+          };
         });
-        scored.sort((a, b) => this.isPowered() ? b.distance - a.distance : a.distance - b.distance);
-        const selected = this.random() < 0.22 ? scored[Math.floor(this.random() * scored.length)] : scored[0];
+        scored.sort((a, b) =>
+          this.isPowered() ? b.distance - a.distance : a.distance - b.distance,
+        );
+        const selected =
+          this.random() < 0.22 ? scored[Math.floor(this.random() * scored.length)] : scored[0];
         if (!selected) return;
         ghost.direction = selected.direction;
         ghost.position = this.directionAt(ghost.position, selected.direction);
@@ -526,7 +637,10 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
         this.playSound("pellet", 0.045);
       }
       this.best = Math.max(this.best, this.score);
-      phaserEventBus.emit(PHASER_EVENTS.hit, { game: "maze-chase", item: power ? "power-pellet" : "pellet" });
+      phaserEventBus.emit(PHASER_EVENTS.hit, {
+        game: "maze-chase",
+        item: power ? "power-pellet" : "pellet",
+      });
       this.updateHud();
       if (this.pellets.size === 0) this.completeLevel();
       else this.emitState();
@@ -536,8 +650,10 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
       const now = performance.now();
       this.ghosts.forEach((ghost) => {
         if (ghost.eatenUntil > now) return;
-        const distance = Math.abs(ghost.position.x - this.player.x) + Math.abs(ghost.position.y - this.player.y);
-        if (distance === 1 && !this.isPowered()) phaserEventBus.emit(PHASER_EVENTS.nearMiss, { game: "maze-chase" });
+        const distance =
+          Math.abs(ghost.position.x - this.player.x) + Math.abs(ghost.position.y - this.player.y);
+        if (distance === 1 && !this.isPowered())
+          phaserEventBus.emit(PHASER_EVENTS.nearMiss, { game: "maze-chase" });
         if (distance !== 0) return;
         if (this.isPowered()) {
           ghost.eatenUntil = now + 1_000;
@@ -567,7 +683,9 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
       }
       this.resetActors();
       this.freezeUntil = performance.now() + LIFE_PAUSE_MS;
-      this.statusText.setText(`${this.lives} LIFE${this.lives === 1 ? "" : "S"} LEFT`).setColor("#ff6f88");
+      this.statusText
+        .setText(`${this.lives} LIFE${this.lives === 1 ? "" : "S"} LEFT`)
+        .setColor("#ff6f88");
       this.updateHud();
       this.emitState();
     }
@@ -614,19 +732,33 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
 
     private showBanner() {
       this.bannerTitle.setText(`LEVEL ${this.level} CLEAR`);
-      this.bannerCopy.setText(this.level >= MAX_LEVEL ? "ARCADE CLEARED" : `NEXT · LEVEL ${this.level + 1}`);
+      this.bannerCopy.setText(
+        this.level >= MAX_LEVEL ? "ARCADE CLEARED" : `NEXT · LEVEL ${this.level + 1}`,
+      );
       this.tweens.killTweensOf(this.banner);
       this.banner.setAlpha(1).setY(-80 * WORLD_SCALE);
       this.tweens.add({ targets: this.banner, y: HEIGHT / 2, duration: 260, ease: "Back.out" });
       this.bannerTimer = this.time.delayedCall(820, () => {
-        this.tweens.add({ targets: this.banner, y: HEIGHT + 80 * WORLD_SCALE, alpha: 0, duration: 260, ease: "Cubic.in" });
+        this.tweens.add({
+          targets: this.banner,
+          y: HEIGHT + 80 * WORLD_SCALE,
+          alpha: 0,
+          duration: 260,
+          ease: "Cubic.in",
+        });
       });
     }
 
     private updatePlayerVisual() {
       if (!this.playerVisual) return;
       const position = this.cellToWorld(this.player);
-      this.tweens.add({ targets: this.playerVisual, x: position.x, y: position.y, duration: 90, ease: "Cubic.out" });
+      this.tweens.add({
+        targets: this.playerVisual,
+        x: position.x,
+        y: position.y,
+        duration: 90,
+        ease: "Cubic.out",
+      });
       this.playerVisual.setRotation(this.direction.angle);
     }
 
@@ -636,8 +768,15 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
         const visual = this.ghostVisuals[index];
         if (!visual) return;
         const position = this.cellToWorld(ghost.position);
-        this.tweens.add({ targets: visual.root, x: position.x, y: position.y, duration: 95, ease: "Cubic.out" });
-        const color = powered && ghost.eatenUntil <= performance.now() ? COLORS.frightened : ghost.color;
+        this.tweens.add({
+          targets: visual.root,
+          x: position.x,
+          y: position.y,
+          duration: 95,
+          ease: "Cubic.out",
+        });
+        const color =
+          powered && ghost.eatenUntil <= performance.now() ? COLORS.frightened : ghost.color;
         visual.body.setFillStyle(color, 1);
         visual.skirt.setFillStyle(color, 1);
       });
@@ -648,7 +787,8 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
       this.ghostVisuals.forEach((visual, index) => {
         const ghost = this.ghosts[index];
         if (!ghost) return;
-        const color = powered && ghost.eatenUntil <= performance.now() ? COLORS.frightened : ghost.color;
+        const color =
+          powered && ghost.eatenUntil <= performance.now() ? COLORS.frightened : ghost.color;
         visual.body.setFillStyle(color, 1);
         visual.skirt.setFillStyle(color, 1);
       });
@@ -665,7 +805,9 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
     private updateHud() {
       this.scoreText?.setText(`SCORE ${String(this.score).padStart(6, "0")}`);
       this.levelText?.setText(`LEVEL ${this.level} / ${MAX_LEVEL}`);
-      this.livesText?.setText(`LIVES ${"●".repeat(Math.max(0, this.lives))}${"○".repeat(Math.max(0, 3 - this.lives))}`);
+      this.livesText?.setText(
+        `LIVES ${"●".repeat(Math.max(0, this.lives))}${"○".repeat(Math.max(0, 3 - this.lives))}`,
+      );
     }
 
     private handleKeydown(event: KeyboardEvent) {
@@ -675,11 +817,24 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
         if (this.status === "ready") this.startFromOverlay();
         return;
       }
-      const direction = code === "ArrowLeft" || code === "KeyA" ? DIRECTIONS[2] : code === "ArrowRight" || code === "KeyD" ? DIRECTIONS[0] : code === "ArrowUp" || code === "KeyW" ? DIRECTIONS[3] : code === "ArrowDown" || code === "KeyS" ? DIRECTIONS[1] : undefined;
+      const direction =
+        code === "ArrowLeft" || code === "KeyA"
+          ? DIRECTIONS[2]
+          : code === "ArrowRight" || code === "KeyD"
+            ? DIRECTIONS[0]
+            : code === "ArrowUp" || code === "KeyW"
+              ? DIRECTIONS[3]
+              : code === "ArrowDown" || code === "KeyS"
+                ? DIRECTIONS[1]
+                : undefined;
       if (!direction) return;
       event.preventDefault();
       this.nextDirection = direction;
-      phaserEventBus.emit(PHASER_EVENTS.action, { game: "maze-chase", action: "turn", direction: direction.id });
+      phaserEventBus.emit(PHASER_EVENTS.action, {
+        game: "maze-chase",
+        action: "turn",
+        direction: direction.id,
+      });
     }
 
     private handlePointerDown(pointer: { x: number; y: number }) {
@@ -692,7 +847,8 @@ export const createMazeChaseGame: PhaserGameFactory = async (parent, onState, on
       const deltaX = pointer.x - this.pointerStartX;
       const deltaY = pointer.y - this.pointerStartY;
       if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < SWIPE_THRESHOLD) return;
-      if (Math.abs(deltaX) > Math.abs(deltaY)) this.nextDirection = deltaX < 0 ? DIRECTIONS[2]! : DIRECTIONS[0]!;
+      if (Math.abs(deltaX) > Math.abs(deltaY))
+        this.nextDirection = deltaX < 0 ? DIRECTIONS[2]! : DIRECTIONS[0]!;
       else this.nextDirection = deltaY < 0 ? DIRECTIONS[3]! : DIRECTIONS[1]!;
       phaserEventBus.emit(PHASER_EVENTS.action, { game: "maze-chase", action: "swipe" });
     }

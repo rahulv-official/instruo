@@ -10,8 +10,8 @@ const output = computed(() =>
 const { copyText } = useCopyToClipboard();
 </script>
 <template>
-  <ToolWorkbench description="Remove comments and unnecessary whitespace from SVG markup."
-    ><div class="grid gap-5 lg:grid-cols-2">
+  <ToolWorkbench description="Remove comments and unnecessary whitespace from SVG markup.">
+    <div class="grid gap-5 lg:grid-cols-2">
       <UTextarea
         v-model="input"
         :rows="16"
@@ -23,11 +23,14 @@ const { copyText } = useCopyToClipboard();
       />
       <div class="flex justify-end lg:col-span-2">
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy SVG"
-          icon="i-lucide-copy"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />
-      </div></div
-  ></ToolWorkbench>
+      </div>
+    </div>
+  </ToolWorkbench>
 </template>

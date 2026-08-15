@@ -58,8 +58,10 @@ const { copyText } = useCopyToClipboard();
             class="w-full font-mono"
           /> </UFormField
         ><UButton
+          color="neutral"
+          variant="soft"
           label="Copy policy"
-          icon="tabler:copy"
+          icon="i-tabler-copy"
           class="w-fit"
           @click="copyText(header)"
         />

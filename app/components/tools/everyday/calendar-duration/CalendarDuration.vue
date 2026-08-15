@@ -16,16 +16,18 @@ const duration = computed(() => {
   <ToolWorkbench description="Find the exact calendar duration between two date and time values.">
     <div class="grid max-w-2xl gap-5">
       <div class="grid gap-4 sm:grid-cols-2">
-        <UFormField label="Start"
-          ><UInput
+        <UFormField label="Start">
+          <UInput
             v-model="start"
             type="datetime-local"
-        /></UFormField>
-        <UFormField label="End"
-          ><UInput
+          />
+        </UFormField>
+        <UFormField label="End">
+          <UInput
             v-model="end"
             type="datetime-local"
-        /></UFormField>
+          />
+        </UFormField>
       </div>
       <UAlert
         color="primary"

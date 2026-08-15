@@ -11,8 +11,8 @@ const output = computed(() =>
 const { copyText } = useCopyToClipboard();
 </script>
 <template>
-  <ToolWorkbench description="Escape literal text or copy useful starter patterns for matching."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Escape literal text or copy useful starter patterns for matching.">
+    <div class="grid gap-5">
       <USelect
         v-model="kind"
         :items="[
@@ -33,11 +33,14 @@ const { copyText } = useCopyToClipboard();
       />
       <div class="flex justify-end">
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy pattern"
-          icon="i-lucide-copy"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />
-      </div></div
-  ></ToolWorkbench>
+      </div>
+    </div>
+  </ToolWorkbench>
 </template>

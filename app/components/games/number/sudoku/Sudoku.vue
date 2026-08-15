@@ -290,7 +290,7 @@ onMounted(() => loadPuzzle());
             :description="`Solved in ${formattedTime}. Every row, column, and box is correct.`"
             color="success"
             variant="soft"
-            icon="i-lucide-circle-check"
+            icon="i-tabler-circle-check"
             :ui="{ root: 'rounded-none' }"
           />
 
@@ -340,14 +340,14 @@ onMounted(() => loadPuzzle());
             label="Reset"
             color="neutral"
             variant="ghost"
-            icon="i-lucide-rotate-ccw"
+            icon="i-tabler-rotate"
             @click="reset"
           />
           <UButton
             label="New puzzle"
             color="neutral"
             variant="outline"
-            icon="i-lucide-refresh-cw"
+            icon="i-tabler-refresh"
             @click="loadPuzzle()"
           />
         </div>

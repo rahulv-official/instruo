@@ -157,7 +157,7 @@ function decode(value: string) {
             :placeholder="`Enter ${name} input…`"
             :rows="10"
             class="w-full"
-            :ui="{ base: 'min-h-56 rounded-none font-mono text-sm leading-6 sm:min-h-72' }"
+            :ui="{ base: 'min-h-56 font-mono text-sm leading-6 sm:min-h-72' }"
           />
         </UFormField>
 
@@ -173,25 +173,25 @@ function decode(value: string) {
             :placeholder="errorMessage ? 'Fix the input to continue.' : 'Output appears here.'"
             :rows="10"
             class="w-full"
-            :ui="{ base: 'min-h-56 rounded-none font-mono text-sm leading-6 sm:min-h-72' }"
+            :ui="{ base: 'min-h-56 font-mono text-sm leading-6 sm:min-h-72' }"
           />
         </UFormField>
       </div>
 
       <div class="border-default/70 flex flex-wrap justify-end gap-2 border-t pt-4">
         <UButton
-          label="Clear"
           color="neutral"
           variant="ghost"
-          icon="i-lucide-rotate-ccw"
+          label="Clear"
+          icon="i-tabler-rotate"
           :disabled="!input"
           @click="input = ''"
         />
         <UButton
-          label="Copy output"
           color="neutral"
-          variant="outline"
-          icon="i-lucide-copy"
+          variant="soft"
+          label="Copy output"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />

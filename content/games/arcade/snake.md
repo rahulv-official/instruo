@@ -3,7 +3,7 @@ title: Snake
 description: Guide a growing snake to its food without hitting a wall or its own tail.
 category: Arcade
 tags: [snake, arcade, classic-game, browser-game, reflex]
-icon: i-lucide-spline
+icon: i-tabler-vector-spline
 ---
 
 ::Snake

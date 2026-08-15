@@ -48,20 +48,20 @@ onBeforeUnmount(() => {
         <UButton
           v-if="!running"
           label="Start"
-          icon="i-lucide-play"
+          icon="i-tabler-player-play"
           @click="start"
         />
         <UButton
           v-else
           label="Pause"
-          icon="i-lucide-pause"
+          icon="i-tabler-player-pause"
           @click="pause"
         />
         <UButton
-          label="Reset"
           color="neutral"
-          variant="outline"
-          icon="i-lucide-rotate-ccw"
+          variant="ghost"
+          label="Reset"
+          icon="i-tabler-rotate"
           @click="reset"
         />
       </div>

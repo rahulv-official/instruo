@@ -3,7 +3,7 @@ title: Tetris
 description: Stack falling pieces, clear lines, and chase a higher level.
 category: Arcade
 tags: [tetris, falling-block, puzzle, keyboard, touch, browser-game]
-icon: i-tabler:blocks
+icon: i-tabler-blocks
 ---
 
 ::Tetris

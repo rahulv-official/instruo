@@ -3,10 +3,10 @@ title: "Slug Generator"
 description: Convert a title or phrase into a clean URL slug.
 category: Text
 tags: [slug, url-slug, seo, text, lowercase]
-icon: i-lucide-link
+icon: i-tabler-link
 ---
 
-::TextTransformer{mode="slug"}
+::SlugGenerator
 ::
 
 ## Create a URL-friendly slug

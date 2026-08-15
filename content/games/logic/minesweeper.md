@@ -3,7 +3,7 @@ title: Minesweeper
 description: Clear a classic minefield with first-click safety, three levels, flags, and a timer.
 category: Logic
 tags: [minesweeper, logic-game, puzzle, timer, classic-game]
-icon: i-lucide-bomb
+icon: i-tabler-bomb
 ---
 
 ::Minesweeper

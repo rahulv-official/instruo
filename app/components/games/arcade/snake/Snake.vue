@@ -94,7 +94,7 @@ function updateState(nextState: Record<string, unknown>) {
             @click="toggleSound"
           >
             <Icon
-              :name="soundMuted ? 'tabler:volume-off' : 'tabler:volume'"
+              :name="soundMuted ? 'i-tabler-volume-off' : 'i-tabler-volume'"
               aria-hidden="true"
             />
           </button>
@@ -161,7 +161,7 @@ function updateState(nextState: Record<string, unknown>) {
                     <small>{{ stage.subtitle }}</small>
                   </span>
                   <Icon
-                    name="tabler:arrow-up-right"
+                    name="i-tabler-arrow-up-right"
                     aria-hidden="true"
                   />
                 </button>
@@ -184,7 +184,7 @@ function updateState(nextState: Record<string, unknown>) {
                 />
                 <span
                   ><Icon
-                    name="tabler:player-play-filled"
+                    name="i-tabler-player-play-filled"
                     aria-hidden="true"
                   />
                   Start {{ selectedStageInfo.label }}</span
@@ -237,7 +237,7 @@ function updateState(nextState: Record<string, unknown>) {
                   ><small>{{ stage.interval }} ms</small></span
                 >
                 <Icon
-                  name="tabler:arrow-up-right"
+                  name="i-tabler-arrow-up-right"
                   aria-hidden="true"
                 />
               </button>
@@ -256,7 +256,7 @@ function updateState(nextState: Record<string, unknown>) {
               />
               <span
                 ><Icon
-                  name="tabler:refresh"
+                  name="i-tabler-refresh"
                   aria-hidden="true"
                 />
                 Run {{ selectedStageInfo.label }}</span
@@ -286,12 +286,12 @@ function updateState(nextState: Record<string, unknown>) {
         <Icon
           :name="
             state.status === 'over'
-              ? 'tabler:skull'
+              ? 'i-tabler-skull'
               : state.status === 'won'
-                ? 'tabler:trophy'
+                ? 'i-tabler-trophy'
                 : state.paused
-                  ? 'tabler:player-pause'
-                  : 'tabler:route-2'
+                  ? 'i-tabler-player-pause'
+                  : 'i-tabler-route-2'
           "
           aria-hidden="true"
         />

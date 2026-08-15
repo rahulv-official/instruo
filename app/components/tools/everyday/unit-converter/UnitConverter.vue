@@ -81,8 +81,8 @@ const result = computed(() =>
 <template>
   <ToolWorkbench description="Convert everyday measurements with instant browser-side results.">
     <div class="grid max-w-3xl gap-5">
-      <UFormField label="Category"
-        ><USelect
+      <UFormField label="Category">
+        <USelect
           v-model="category"
           :items="[
             { label: 'Length', value: 'length' },
@@ -91,28 +91,33 @@ const result = computed(() =>
           ]"
           value-key="value"
           label-key="label"
-      /></UFormField>
+        />
+      </UFormField>
       <div class="grid items-end gap-4 sm:grid-cols-[1fr_auto_1fr]">
-        <UFormField label="Amount"
-          ><UInput
+        <UFormField label="Amount">
+          <UInput
             v-model.number="amount"
             type="number"
             min="0"
-        /></UFormField>
+          />
+        </UFormField>
         <span class="text-muted pb-2 text-center">from</span>
-        <UFormField label="Unit"
-          ><USelect
+        <UFormField label="Unit">
+          <USelect
             v-model="fromSelection"
             :items="units"
-        /></UFormField>
+          />
+        </UFormField>
         <span class="text-muted hidden pb-2 text-center sm:block">to</span>
         <UFormField
           label="Unit"
           class="sm:col-start-3"
-          ><USelect
+        >
+          <USelect
             v-model="toSelection"
             :items="units"
-        /></UFormField>
+          />
+        </UFormField>
       </div>
       <UAlert
         color="primary"

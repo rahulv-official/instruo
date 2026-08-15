@@ -20,16 +20,18 @@ const age = computed(() => {
 <template>
   <ToolWorkbench description="Calculate an age from two dates without sending them anywhere.">
     <div class="grid max-w-xl gap-5 sm:grid-cols-2">
-      <UFormField label="Birth date"
-        ><UInput
+      <UFormField label="Birth date">
+        <UInput
           v-model="birthDate"
           type="date"
-      /></UFormField>
-      <UFormField label="As of"
-        ><UInput
+        />
+      </UFormField>
+      <UFormField label="As of">
+        <UInput
           v-model="today"
           type="date"
-      /></UFormField>
+        />
+      </UFormField>
       <UAlert
         class="sm:col-span-2"
         color="primary"

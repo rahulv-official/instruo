@@ -31,7 +31,7 @@ const statistics = computed(() => {
           :rows="12"
           :maxrows="20"
           class="w-full"
-          :ui="{ base: 'rounded-none text-base leading-7' }"
+          :ui="{ base: 'text-base leading-7' }"
         />
       </UFormField>
 

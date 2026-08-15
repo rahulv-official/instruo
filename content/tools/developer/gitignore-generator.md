@@ -3,7 +3,7 @@ title: Gitignore Generator
 description: Compose a practical .gitignore from common project templates.
 category: Developer
 tags: [git, gitignore, node, nuxt, developer]
-icon: tabler:brand-git
+icon: i-tabler-brand-git
 ---
 
 ::GitignoreGenerator

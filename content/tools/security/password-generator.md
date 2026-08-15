@@ -3,7 +3,7 @@ title: Password Generator
 description: Create strong, customizable passwords with secure randomness from your browser.
 category: Security
 tags: [password, password-generator, security, random, privacy]
-icon: i-lucide-key-round
+icon: i-tabler-key
 ---
 
 ::PasswordGenerator

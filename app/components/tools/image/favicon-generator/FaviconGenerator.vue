@@ -5,23 +5,25 @@ async function process() {
 }
 </script>
 <template>
-  <ToolWorkbench description="Create a 64-pixel favicon PNG from any image locally."
-    ><div class="grid gap-5">
-      <UInput
-        type="file"
+  <ToolWorkbench description="Create a 64-pixel favicon PNG from any image locally.">
+    <div class="grid gap-5">
+      <UFileUpload
+        :model-value="file"
         accept="image/*"
-        @change="select"
+        label="Choose source artwork"
+        description="Drop a square image here or browse this device. PNG and SVG-style artwork work best."
+        @update:model-value="select"
       />
       <div class="flex gap-2">
         <UButton
           label="Create favicon"
-          icon="i-lucide-star"
+          icon="i-tabler-star"
           :disabled="!file"
           @click="process"
         /><UButton
-          label="Download favicon"
           color="neutral"
-          variant="outline"
+          variant="soft"
+          label="Download favicon"
           :disabled="!outputUrl"
           @click="download('favicon.png')"
         />
@@ -31,6 +33,7 @@ async function process() {
         :src="outputUrl"
         alt="Generated favicon"
         class="border-default size-16 border object-contain"
-      /></div
-  ></ToolWorkbench>
+      />
+    </div>
+  </ToolWorkbench>
 </template>

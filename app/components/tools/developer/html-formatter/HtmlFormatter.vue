@@ -8,7 +8,8 @@ const { copyText } = useCopyToClipboard();
 <template>
   <ToolWorkbench
     description="Format readable HTML or remove unnecessary whitespace before shipping it."
-    ><div class="grid gap-5">
+  >
+    <div class="grid gap-5">
       <USelect
         v-model="mode"
         :items="['format', 'minify']"
@@ -28,11 +29,14 @@ const { copyText } = useCopyToClipboard();
       </div>
       <div class="flex justify-end">
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy HTML"
-          icon="i-lucide-copy"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />
-      </div></div
-  ></ToolWorkbench>
+      </div>
+    </div>
+  </ToolWorkbench>
 </template>

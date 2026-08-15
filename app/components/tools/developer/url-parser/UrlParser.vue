@@ -67,10 +67,10 @@ const output = computed(() =>
 
       <div class="flex justify-end">
         <UButton
-          label="Copy parts"
           color="neutral"
-          variant="outline"
-          icon="i-lucide-copy"
+          variant="soft"
+          label="Copy parts"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />

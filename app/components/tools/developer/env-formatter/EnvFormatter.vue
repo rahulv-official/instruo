@@ -53,8 +53,10 @@ const { copyText } = useCopyToClipboard();
           label="Redact secret-looking values in preview"
         />
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy formatted .env"
-          icon="tabler:copy"
+          icon="i-tabler-copy"
           :disabled="!formatted"
           @click="copyText(formatted)"
         />

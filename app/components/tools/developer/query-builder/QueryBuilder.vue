@@ -37,7 +37,7 @@ function removeRow(index: number) {
           placeholder="Value"
           aria-label="Query value"
         /><UButton
-          icon="i-lucide-x"
+          icon="i-tabler-x"
           color="neutral"
           variant="ghost"
           aria-label="Remove row"
@@ -49,7 +49,7 @@ function removeRow(index: number) {
           label="Add parameter"
           color="neutral"
           variant="outline"
-          icon="i-lucide-plus"
+          icon="i-tabler-plus"
           @click="addRow"
         /><code class="border-default/70 min-w-0 border p-3 text-sm break-all">{{
           query || "query=values"

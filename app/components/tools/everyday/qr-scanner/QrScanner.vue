@@ -2,9 +2,14 @@
 const result = ref("");
 const error = ref("");
 const scanning = ref(false);
-async function scan(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0];
-  if (!file) return;
+const selectedFile = shallowRef<File | null>(null);
+async function scan(file: File | null | undefined) {
+  selectedFile.value = file ?? null;
+  if (!file) {
+    result.value = "";
+    error.value = "";
+    return;
+  }
   result.value = "";
   error.value = "";
   scanning.value = true;
@@ -32,10 +37,12 @@ async function scan(event: Event) {
 <template>
   <ToolWorkbench description="Scan a QR code from an image using your browser's native detector.">
     <div class="grid max-w-xl gap-5">
-      <UInput
-        type="file"
+      <UFileUpload
+        :model-value="selectedFile"
         accept="image/*"
-        @change="scan"
+        label="Choose a QR image"
+        description="Drop a screenshot or image here, or browse this device. Nothing is uploaded."
+        @update:model-value="scan"
       />
       <UAlert
         v-if="scanning"

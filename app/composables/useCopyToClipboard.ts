@@ -11,14 +11,14 @@ export function useCopyToClipboard() {
         title: "Copied",
         description: "Output copied to your clipboard.",
         color: "success",
-        icon: "i-lucide-copy-check",
+        icon: "i-tabler-copy-check",
       });
     } catch {
       toast.add({
         title: "Copy failed",
         description: "Select the output and copy it manually.",
         color: "error",
-        icon: "i-lucide-circle-alert",
+        icon: "i-tabler-alert-circle",
       });
     }
   }

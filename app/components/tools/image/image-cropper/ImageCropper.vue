@@ -20,51 +20,57 @@ async function process() {
 }
 </script>
 <template>
-  <ToolWorkbench description="Crop an image by pixel coordinates in your browser."
-    ><div class="grid gap-5">
-      <UInput
-        type="file"
+  <ToolWorkbench description="Crop an image by pixel coordinates in your browser.">
+    <div class="grid gap-5">
+      <UFileUpload
+        :model-value="file"
         accept="image/*"
-        @change="
-          async (event) => {
-            await select(event);
+        label="Choose an image"
+        description="Drop an image here or browse this device. Up to 25 MB."
+        @update:model-value="
+          async (nextFile) => {
+            await select(nextFile);
             syncSize();
           }
         "
       />
       <div class="grid gap-4 sm:grid-cols-2">
-        <UFormField label="X"
-          ><UInput
+        <UFormField label="X">
+          <UInput
             v-model.number="x"
             type="number"
-            min="0" /></UFormField
-        ><UFormField label="Y"
-          ><UInput
+            min="0"
+          /> </UFormField
+        ><UFormField label="Y">
+          <UInput
             v-model.number="y"
             type="number"
-            min="0" /></UFormField
-        ><UFormField label="Width"
-          ><UInput
+            min="0"
+          /> </UFormField
+        ><UFormField label="Width">
+          <UInput
             v-model.number="cropWidth"
             type="number"
-            min="1" /></UFormField
-        ><UFormField label="Height"
-          ><UInput
+            min="1"
+          /> </UFormField
+        ><UFormField label="Height">
+          <UInput
             v-model.number="cropHeight"
             type="number"
             min="1"
-        /></UFormField>
+          />
+        </UFormField>
       </div>
       <div class="flex gap-2">
         <UButton
           label="Crop"
-          icon="i-lucide-crop"
+          icon="i-tabler-crop"
           :disabled="!file"
           @click="process"
         /><UButton
-          label="Download"
           color="neutral"
-          variant="outline"
+          variant="soft"
+          label="Download"
           :disabled="!outputUrl"
           @click="download('cropped-image.png')"
         />
@@ -74,6 +80,7 @@ async function process() {
         :src="outputUrl"
         alt="Cropped image"
         class="border-default max-h-72 w-fit border object-contain"
-      /></div
-  ></ToolWorkbench>
+      />
+    </div>
+  </ToolWorkbench>
 </template>

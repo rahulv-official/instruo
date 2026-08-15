@@ -8,7 +8,9 @@ const [{ data: page }, { data: allGames }] = await Promise.all([
     route.path,
     () => queryCollection("games").path(route.path).first() as Promise<GamesCollectionItem>,
   ),
-  useAsyncData("game_navigation", () => queryCollection("games").all()),
+  useAsyncData("game_navigation", () =>
+    queryCollection("games").select("id", "path", "title", "category", "icon").all(),
+  ),
 ]);
 
 if (!page.value) {
@@ -26,10 +28,10 @@ useSeoMeta({
 <template>
   <div
     v-if="page"
-    class="grid w-full lg:grid-cols-[18rem_minmax(0,1fr)]"
+    class="grid w-full lg:grid-cols-[18.5rem_minmax(0,1fr)]"
   >
     <div
-      class="border-default/70 px-5 pt-8 lg:min-h-[calc(100dvh-4rem)] lg:border-r lg:px-5 lg:py-10"
+      class="border-muted bg-muted/35 px-5 pt-6 lg:min-h-[calc(100dvh-4rem)] lg:border-r lg:px-5 lg:py-7"
     >
       <ResourceSidebar
         :items="allGames ?? []"
@@ -38,34 +40,63 @@ useSeoMeta({
       />
     </div>
 
-    <main class="mx-auto w-full max-w-6xl min-w-0 px-5 pb-14 sm:px-8 lg:px-10 lg:py-12 xl:px-14">
+    <main class="mx-auto w-full max-w-[90rem] min-w-0 px-5 pb-14 sm:px-8 lg:px-10 lg:py-7 xl:px-14">
       <nav
         aria-label="Breadcrumb"
-        class="text-toned mb-8 flex items-center gap-2 font-mono text-xs"
+        class="text-toned mb-5 flex items-center gap-2 text-sm"
       >
         <NuxtLink
           to="/games"
-          class="hover:text-highlighted"
+          class="hover:text-highlighted rounded-sm"
         >
           Games
         </NuxtLink>
-        <span aria-hidden="true">/</span>
+        <UIcon
+          name="i-tabler-chevron-right"
+          class="text-dimmed size-4"
+          aria-hidden="true"
+        />
         <span>{{ page.category }}</span>
       </nav>
 
-      <header class="border-default/70 border-b pb-10">
-        <p class="text-toned mb-3 text-sm">{{ page.category }}</p>
-        <h1
-          class="text-highlighted max-w-5xl text-4xl leading-none font-semibold tracking-[-0.045em] text-balance sm:text-6xl"
-        >
-          {{ page.title }}
-        </h1>
-        <p class="text-muted mt-5 max-w-2xl text-base leading-7 sm:text-lg">
+      <header class="border-muted border-b pb-6">
+        <div class="flex items-start gap-4">
+          <span
+            class="border-muted bg-elevated text-toned flex size-11 shrink-0 items-center justify-center rounded-md border"
+          >
+            <UIcon
+              :name="page.icon || 'i-tabler-device-gamepad-2'"
+              class="size-6"
+              aria-hidden="true"
+            />
+          </span>
+          <div class="min-w-0">
+            <p class="text-toned text-sm">{{ page.category }}</p>
+            <h1
+              id="game-title"
+              class="text-highlighted mt-1 max-w-4xl text-3xl leading-tight font-semibold tracking-[-0.035em] text-balance sm:text-4xl"
+            >
+              {{ page.title }}
+            </h1>
+          </div>
+        </div>
+        <p class="text-muted mt-4 max-w-2xl text-base leading-7">
           {{ page.description }}
+        </p>
+        <p class="text-toned mt-4 flex items-center gap-2 text-sm">
+          <UIcon
+            name="i-tabler-bolt"
+            class="size-4"
+            aria-hidden="true"
+          />
+          Play immediately. No account required.
         </p>
       </header>
 
-      <article class="mt-8">
+      <article
+        aria-labelledby="game-title"
+        class="mt-6"
+      >
         <ContentRenderer :value="page" />
       </article>
     </main>

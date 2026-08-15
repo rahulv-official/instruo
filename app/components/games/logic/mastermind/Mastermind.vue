@@ -94,7 +94,7 @@ function reset() {
           label="New code"
           color="neutral"
           variant="outline"
-          icon="i-lucide-refresh-cw"
+          icon="i-tabler-refresh"
           @click="reset"
         />
       </div>

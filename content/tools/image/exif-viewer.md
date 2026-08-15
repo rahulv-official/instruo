@@ -3,7 +3,7 @@ title: EXIF Viewer
 description: Inspect common image metadata and download a cleaned copy in your browser.
 category: Image
 tags: [exif, metadata, image, privacy]
-icon: tabler:photo-scan
+icon: i-tabler-photo-scan
 ---
 
 ::ExifViewer

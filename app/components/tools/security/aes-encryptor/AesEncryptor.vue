@@ -55,37 +55,50 @@ async function decrypt() {
 }
 </script>
 <template>
-  <ToolWorkbench description="Encrypt or decrypt text with AES-GCM and a password using Web Crypto."
-    ><div class="grid gap-5">
-      <UInput
-        v-model="password"
-        type="password"
-        placeholder="Encryption password"
-      />
-      <div class="grid gap-5 lg:grid-cols-2">
-        <UTextarea
-          v-model="input"
-          :rows="10"
-          placeholder="Plaintext or encrypted JSON payload"
-        /><UTextarea
-          v-model="output"
-          :rows="10"
-          readonly
-          placeholder="Result appears here."
+  <ToolWorkbench
+    description="Encrypt or decrypt text with AES-GCM and a password using Web Crypto."
+  >
+    <div class="grid gap-5">
+      <UFormField
+        label="Password"
+        help="The password stays in memory and is used to derive an AES-256 key."
+      >
+        <UInput
+          v-model="password"
+          type="password"
+          placeholder="Encryption password"
         />
+      </UFormField>
+      <div class="grid gap-5 lg:grid-cols-2">
+        <UFormField label="Input">
+          <UTextarea
+            v-model="input"
+            :rows="10"
+            placeholder="Plaintext or encrypted JSON payload"
+          />
+        </UFormField>
+        <UFormField label="Output">
+          <UTextarea
+            v-model="output"
+            :rows="10"
+            readonly
+            placeholder="Result appears here."
+          />
+        </UFormField>
       </div>
       <div class="flex flex-wrap justify-end gap-2">
         <UButton
           label="Encrypt"
-          icon="i-lucide-lock"
+          icon="i-tabler-lock"
           @click="encrypt"
         /><UButton
           label="Decrypt"
           color="neutral"
           variant="outline"
-          icon="i-lucide-unlock"
+          icon="i-tabler-lock-open"
           @click="decrypt"
         />
-      </div></div
-  ></ToolWorkbench>
+      </div>
+    </div>
+  </ToolWorkbench>
 </template>

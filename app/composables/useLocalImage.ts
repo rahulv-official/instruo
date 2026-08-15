@@ -1,5 +1,8 @@
 export function useLocalImage() {
+  const maxBytes = 25 * 1024 * 1024;
+  const maxPixels = 40_000_000;
   const file = shallowRef<File | null>(null);
+  const error = ref("");
   const sourceUrl = ref("");
   const outputUrl = ref("");
   const width = ref(0);
@@ -16,17 +19,50 @@ export function useLocalImage() {
       image.src = url;
     });
   }
-  async function select(event: Event) {
-    const next = (event.target as HTMLInputElement).files?.[0];
-    if (!next) return;
+  async function select(input: Event | File | null | undefined) {
+    const next = input instanceof File ? input : (input?.target as HTMLInputElement)?.files?.[0];
+    if (!next) {
+      release(sourceUrl.value);
+      release(outputUrl.value);
+      file.value = null;
+      sourceUrl.value = "";
+      outputUrl.value = "";
+      width.value = 0;
+      height.value = 0;
+      error.value = "";
+      return;
+    }
+    error.value = "";
+    if (!next.type.startsWith("image/")) {
+      error.value = "Choose an image file.";
+      return;
+    }
+    if (next.size > maxBytes) {
+      error.value = "That image is larger than 25 MB. Choose a smaller file.";
+      return;
+    }
     release(sourceUrl.value);
     release(outputUrl.value);
     file.value = next;
     sourceUrl.value = URL.createObjectURL(next);
     outputUrl.value = "";
-    const image = await load(sourceUrl.value);
-    width.value = image.naturalWidth;
-    height.value = image.naturalHeight;
+    try {
+      const image = await load(sourceUrl.value);
+      if (image.naturalWidth * image.naturalHeight > maxPixels) {
+        release(sourceUrl.value);
+        sourceUrl.value = "";
+        file.value = null;
+        error.value = "That image has more than 40 megapixels. Choose a smaller image.";
+        return;
+      }
+      width.value = image.naturalWidth;
+      height.value = image.naturalHeight;
+    } catch (cause) {
+      release(sourceUrl.value);
+      sourceUrl.value = "";
+      file.value = null;
+      error.value = cause instanceof Error ? cause.message : "Image could not be decoded.";
+    }
   }
   async function render(options: {
     width?: number;
@@ -82,5 +118,5 @@ export function useLocalImage() {
     release(sourceUrl.value);
     release(outputUrl.value);
   });
-  return { file, sourceUrl, outputUrl, width, height, select, render, download };
+  return { file, sourceUrl, outputUrl, width, height, error, select, render, download };
 }

@@ -83,7 +83,7 @@ function reset() {
             label="New number"
             color="neutral"
             variant="outline"
-            icon="i-lucide-refresh-cw"
+            icon="i-tabler-refresh"
             @click="reset"
           />
         </div>

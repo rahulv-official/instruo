@@ -8,16 +8,17 @@ const output = computed(
 const { copyText } = useCopyToClipboard();
 </script>
 <template>
-  <ToolWorkbench description="Build a copy-ready linear-gradient declaration with a live preview."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Build a copy-ready linear-gradient declaration with a live preview.">
+    <div class="grid gap-5">
       <div class="grid gap-4 sm:grid-cols-3">
         <UFormField label="Start"><UInput v-model="start" /></UFormField
         ><UFormField label="End"><UInput v-model="end" /></UFormField
-        ><UFormField label="Angle"
-          ><UInput
+        ><UFormField label="Angle">
+          <UInput
             v-model.number="angle"
             type="number"
-        /></UFormField>
+          />
+        </UFormField>
       </div>
       <div
         class="border-default min-h-40 border"
@@ -28,10 +29,13 @@ const { copyText } = useCopyToClipboard();
         readonly
         class="font-mono"
       /><UButton
+        color="neutral"
+        variant="soft"
         label="Copy CSS"
-        icon="i-lucide-copy"
+        icon="i-tabler-copy"
         class="w-fit"
         @click="copyText(output)"
-      /></div
-  ></ToolWorkbench>
+      />
+    </div>
+  </ToolWorkbench>
 </template>

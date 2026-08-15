@@ -14,7 +14,8 @@ async function generate() {
 <template>
   <ToolWorkbench
     description="Create a downloadable QR code from text or a URL entirely in your browser."
-    ><div class="grid gap-5">
+  >
+    <div class="grid gap-5">
       <UInput
         v-model="value"
         size="xl"
@@ -23,13 +24,13 @@ async function generate() {
       <div class="flex flex-wrap gap-2">
         <UButton
           label="Generate QR"
-          icon="i-lucide-scan"
+          icon="i-tabler-scan"
           @click="generate"
         /><UButton
-          label="Download PNG"
-          icon="i-lucide-download"
           color="neutral"
-          variant="outline"
+          variant="soft"
+          label="Download PNG"
+          icon="i-tabler-download"
           :disabled="!image"
           @click="downloadDataUrl(image, 'qr-code.png')"
         />
@@ -39,6 +40,7 @@ async function generate() {
         :src="image"
         alt="Generated QR code"
         class="border-default size-72 border bg-white p-3"
-      /></div
-  ></ToolWorkbench>
+      />
+    </div>
+  </ToolWorkbench>
 </template>

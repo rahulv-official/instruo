@@ -53,10 +53,10 @@ function formatXml(value: string) {
     </div>
     <div class="mt-5 flex justify-end">
       <UButton
-        label="Copy XML"
         color="neutral"
-        variant="outline"
-        icon="i-lucide-copy"
+        variant="soft"
+        label="Copy XML"
+        icon="i-tabler-copy"
         :disabled="!output"
         @click="copyText(output)"
       />

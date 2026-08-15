@@ -3,7 +3,7 @@ title: TOTP Generator
 description: Generate six-digit authenticator codes from a Base32 secret or otpauth URI.
 category: Security
 tags: [totp, otp, authenticator, security]
-icon: tabler:device-mobile-star
+icon: i-tabler-device-mobile-star
 ---
 
 ::TotpGenerator

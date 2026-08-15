@@ -79,7 +79,7 @@ onBeforeUnmount(() => timer && clearInterval(timer));
           label="Reset"
           color="neutral"
           variant="outline"
-          icon="i-lucide-refresh-cw"
+          icon="i-tabler-refresh"
           @click="reset"
         />
       </div>

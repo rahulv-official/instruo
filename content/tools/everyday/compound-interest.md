@@ -3,7 +3,7 @@ title: Compound Interest Calculator
 description: Estimate long-term growth with recurring contributions and selectable compounding.
 category: Everyday
 tags: [money, savings, interest, calculator]
-icon: tabler:chart-line
+icon: i-tabler-chart-line
 ---
 
 ::CompoundInterest

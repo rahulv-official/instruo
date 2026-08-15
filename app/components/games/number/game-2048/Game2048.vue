@@ -103,7 +103,7 @@ function updateState(nextState: Record<string, unknown>) {
                 />
                 <span
                   ><Icon
-                    name="tabler:player-play-filled"
+                    name="i-tabler-player-play-filled"
                     aria-hidden="true"
                   />
                   Start game</span
@@ -127,7 +127,7 @@ function updateState(nextState: Record<string, unknown>) {
                 class="game-card__mark game-card__mark--over"
                 aria-hidden="true"
               >
-                <Icon name="tabler:rotate-2" />
+                <Icon name="i-tabler-rotate-2" />
               </div>
               <h2 id="game-2048-over-title">No more moves</h2>
               <p class="game-card__score">{{ state.score }}</p>
@@ -147,7 +147,7 @@ function updateState(nextState: Record<string, unknown>) {
                 />
                 <span
                   ><Icon
-                    name="tabler:refresh"
+                    name="i-tabler-refresh"
                     aria-hidden="true"
                   />
                   Try again</span
@@ -168,7 +168,7 @@ function updateState(nextState: Record<string, unknown>) {
               class="game-card__mark game-card__mark--over"
               aria-hidden="true"
             >
-              <Icon name="tabler:alert-triangle" />
+              <Icon name="i-tabler-alert-triangle" />
             </div>
             <h2>Game unavailable</h2>
             <p>Something blocked the game renderer. Reload the page and try once more.</p>

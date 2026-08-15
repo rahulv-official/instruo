@@ -156,7 +156,7 @@ onBeforeUnmount(() => {
             ? 'Restart pattern'
             : 'Start game'
         "
-        icon="i-lucide-play"
+        icon="i-tabler-player-play"
         size="xl"
         class="justify-center"
         @click="start"

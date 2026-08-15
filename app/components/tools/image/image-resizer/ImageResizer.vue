@@ -52,10 +52,18 @@ function releaseOutput() {
   outputBlob.value = null;
 }
 
-async function selectImage(event: Event) {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file) return;
+async function selectImage(file: File | null | undefined) {
+  if (!file) {
+    if (sourceUrl.value) URL.revokeObjectURL(sourceUrl.value);
+    releaseOutput();
+    sourceFile.value = null;
+    sourceUrl.value = "";
+    sourceWidth.value = 0;
+    sourceHeight.value = 0;
+    targetWidth.value = 0;
+    errorMessage.value = "";
+    return;
+  }
 
   if (sourceUrl.value) URL.revokeObjectURL(sourceUrl.value);
   releaseOutput();
@@ -146,12 +154,13 @@ onUnmounted(() => {
         :error="errorMessage || undefined"
         :ui="{ container: 'mt-2' }"
       >
-        <UInput
-          type="file"
+        <UFileUpload
+          :model-value="sourceFile"
           accept="image/jpeg,image/png,image/webp"
           size="lg"
-          class="w-full"
-          @change="selectImage"
+          label="Choose an image"
+          description="Drop a JPEG, PNG, or WebP here, or browse this device."
+          @update:model-value="selectImage"
         />
       </UFormField>
 
@@ -186,7 +195,7 @@ onUnmounted(() => {
               label-key="label"
               size="lg"
               class="w-full"
-              :ui="{ base: 'rounded-none', content: 'rounded-none', item: 'before:rounded-none' }"
+              :ui="{ base: 'rounded-md', content: 'rounded-md', item: 'before:rounded-md' }"
               @update:model-value="setFormat"
             />
           </UFormField>
@@ -213,7 +222,7 @@ onUnmounted(() => {
 
           <UButton
             label="Create resized image"
-            icon="i-lucide-image-down"
+            icon="i-tabler-photo-down"
             size="lg"
             :loading="processing"
             @click="createImage"
@@ -236,7 +245,7 @@ onUnmounted(() => {
             class="text-muted grid justify-items-center gap-3 text-center text-sm"
           >
             <UIcon
-              name="i-lucide-image"
+              name="i-tabler-photo"
               class="size-8"
             />
             <p>Create the image to see its preview.</p>
@@ -255,10 +264,10 @@ onUnmounted(() => {
           </template>
         </p>
         <UButton
-          label="Download image"
           color="neutral"
-          variant="outline"
-          icon="i-lucide-download"
+          variant="soft"
+          label="Download image"
+          icon="i-tabler-download"
           :disabled="!outputUrl"
           @click="downloadImage"
         />

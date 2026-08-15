@@ -44,8 +44,12 @@ function updateState(next: Record<string, unknown>) {
           <p class="text-muted mt-1 font-mono text-xs">Stack Lab · local run</p>
         </div>
         <div class="text-muted flex gap-3 font-mono text-xs">
-          <span>Score <strong class="text-highlighted">{{ state.score }}</strong></span>
-          <span>Level <strong class="text-highlighted">{{ state.level }}</strong></span>
+          <span
+            >Score <strong class="text-highlighted">{{ state.score }}</strong></span
+          >
+          <span
+            >Level <strong class="text-highlighted">{{ state.level }}</strong></span
+          >
         </div>
       </header>
 
@@ -83,11 +87,12 @@ function updateState(next: Record<string, unknown>) {
               class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl font-bold"
               aria-hidden="true"
             >
-              <Icon name="tabler:arrows-move" />
+              <Icon name="i-tabler-arrows-move" />
             </div>
             <h2 class="text-highlighted text-xl font-semibold">Keep the well clear</h2>
             <p class="text-muted text-sm leading-6">
-              Move and rotate each piece, then clear complete rows. The board gets faster every ten lines.
+              Move and rotate each piece, then clear complete rows. The board gets faster every ten
+              lines.
             </p>
             <button
               type="button"
@@ -102,11 +107,13 @@ function updateState(next: Record<string, unknown>) {
                 width="232"
                 height="70"
               />
-              <span class="relative inline-flex items-center gap-2"><Icon
-                name="tabler:player-play-filled"
-                aria-hidden="true"
-              />
-                Start game</span>
+              <span class="relative inline-flex items-center gap-2"
+                ><Icon
+                  name="i-tabler-player-play-filled"
+                  aria-hidden="true"
+                />
+                Start game</span
+              >
             </button>
             <p class="text-muted font-mono text-xs">
               ← → / A D move · ↑ / W rotate · Space hard drop · swipe or tap
@@ -128,7 +135,7 @@ function updateState(next: Record<string, unknown>) {
               class="bg-error text-inverted mx-auto grid size-14 place-items-center text-2xl"
               aria-hidden="true"
             >
-              <Icon name="tabler:alert-triangle" />
+              <Icon name="i-tabler-alert-triangle" />
             </div>
             <h2
               id="tetris-over-title"
@@ -158,11 +165,13 @@ function updateState(next: Record<string, unknown>) {
                 width="232"
                 height="70"
               />
-              <span class="relative inline-flex items-center gap-2"><Icon
-                name="tabler:refresh"
-                aria-hidden="true"
-              />
-                Try again</span>
+              <span class="relative inline-flex items-center gap-2"
+                ><Icon
+                  name="i-tabler-refresh"
+                  aria-hidden="true"
+                />
+                Try again</span
+              >
             </button>
           </div>
         </div>
@@ -177,7 +186,7 @@ function updateState(next: Record<string, unknown>) {
             variant="subtle"
             title="Game unavailable"
             description="Reload the page and try once more."
-            icon="i-lucide-circle-alert"
+            icon="i-tabler-alert-circle"
           />
         </div>
       </div>

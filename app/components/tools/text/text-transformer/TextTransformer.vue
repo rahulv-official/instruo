@@ -125,7 +125,7 @@ function sortLines(value: string, selectedOperation: string) {
             :rows="12"
             :maxrows="18"
             class="w-full"
-            :ui="{ base: 'rounded-none font-mono text-sm leading-6' }"
+            :ui="{ base: 'font-mono text-sm leading-6' }"
           />
         </UFormField>
         <UFormField label="Output">
@@ -137,25 +137,25 @@ function sortLines(value: string, selectedOperation: string) {
             :rows="12"
             :maxrows="18"
             class="w-full"
-            :ui="{ base: 'rounded-none font-mono text-sm leading-6' }"
+            :ui="{ base: 'font-mono text-sm leading-6' }"
           />
         </UFormField>
       </div>
 
       <div class="flex flex-wrap justify-end gap-2">
         <UButton
-          label="Clear"
           color="neutral"
           variant="ghost"
-          icon="i-lucide-rotate-ccw"
+          label="Clear"
+          icon="i-tabler-rotate"
           :disabled="!input"
           @click="input = ''"
         />
         <UButton
-          label="Copy output"
           color="neutral"
-          variant="outline"
-          icon="i-lucide-copy"
+          variant="soft"
+          label="Copy output"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />

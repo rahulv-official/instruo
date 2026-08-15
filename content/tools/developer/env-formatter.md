@@ -3,7 +3,7 @@ title: .env Formatter
 description: Normalize environment-file spacing while preserving comments and values.
 category: Developer
 tags: [env, formatter, configuration, developer]
-icon: tabler:file-settings
+icon: i-tabler-file-settings
 ---
 
 ::EnvFormatter

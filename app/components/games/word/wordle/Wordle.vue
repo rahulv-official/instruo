@@ -192,19 +192,19 @@ useEventListener("keydown", handleKeydown);
         >
           <UIcon
             v-if="status === 'lost'"
-            name="i-lucide-circle-x"
+            name="i-tabler-circle-x"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
           <UIcon
             v-else-if="status === 'won'"
-            name="i-lucide-circle-check"
+            name="i-tabler-circle-check"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
           <UIcon
             v-else-if="notice.error"
-            name="i-lucide-circle-alert"
+            name="i-tabler-alert-circle"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
@@ -315,7 +315,7 @@ useEventListener("keydown", handleKeydown);
             label="New word"
             color="neutral"
             variant="outline"
-            icon="i-lucide-rotate-ccw"
+            icon="i-tabler-rotate"
             @click="newWord"
           />
         </div>

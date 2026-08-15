@@ -3,10 +3,10 @@ title: "JSON Formatter"
 description: Format, validate, and indent JSON directly in your browser.
 category: Developer
 tags: [json, formatter, validator, pretty-print, developer]
-icon: i-lucide-braces
+icon: i-tabler-braces
 ---
 
-::JsonFormatter{mode="format"}
+::JsonFormatterTool
 ::
 
 ## Format and validate JSON

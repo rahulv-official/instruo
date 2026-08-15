@@ -3,7 +3,7 @@ title: Tic Tac Toe
 description: Make three in a row against a friend or an unbeatable computer opponent.
 category: Strategy
 tags: [tic-tac-toe, noughts-and-crosses, strategy, two-player, puzzle]
-icon: i-lucide-grid-2x2
+icon: i-tabler-layout-grid
 ---
 
 ::TicTacToe

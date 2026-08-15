@@ -3,10 +3,10 @@ title: "JSON Minifier"
 description: Remove unnecessary whitespace from valid JSON.
 category: Developer
 tags: [json, minifier, compact-json, validator, developer]
-icon: i-lucide-minimize-2
+icon: i-tabler-arrows-diagonal-minimize
 ---
 
-::JsonFormatter{mode="minify"}
+::JsonMinifier
 ::
 
 ## Minify valid JSON

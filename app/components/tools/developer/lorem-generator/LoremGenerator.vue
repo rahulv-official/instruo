@@ -33,10 +33,10 @@ const output = computed(() =>
       <p class="border-default/70 text-muted border p-5 text-base leading-8">{{ output }}</p>
       <div class="flex justify-end">
         <UButton
-          label="Copy text"
           color="neutral"
-          variant="outline"
-          icon="i-lucide-copy"
+          variant="soft"
+          label="Copy text"
+          icon="i-tabler-copy"
           @click="copyText(output)"
         />
       </div>

@@ -77,7 +77,7 @@ const output = computed(() => result.value.matches.map((match) => match.value).j
           :maxrows="18"
           class="w-full"
           placeholder="Paste text to test…"
-          :ui="{ base: 'rounded-none font-mono text-sm leading-6' }"
+          :ui="{ base: 'font-mono text-sm leading-6' }"
         />
       </UFormField>
 
@@ -112,10 +112,10 @@ const output = computed(() => result.value.matches.map((match) => match.value).j
 
       <div class="flex justify-end">
         <UButton
-          label="Copy matches"
           color="neutral"
-          variant="outline"
-          icon="i-lucide-copy"
+          variant="soft"
+          label="Copy matches"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />

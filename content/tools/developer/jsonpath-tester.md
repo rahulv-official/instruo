@@ -3,7 +3,7 @@ title: JSONPath Tester
 description: Query JSON with common JSONPath properties, indexes, and wildcards in your browser.
 category: Developer
 tags: [jsonpath, json, query, developer]
-icon: tabler:brackets
+icon: i-tabler-brackets
 ---
 
 ::JsonPathTester

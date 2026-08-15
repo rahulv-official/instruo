@@ -2,6 +2,7 @@ shellEmulator: true
 trustPolicy: no-downgrade
 
 overrides:
+  nanoid: 3.3.18
   vite: npm:rolldown-vite@7.3.1
 
 ignoredBuiltDependencies:

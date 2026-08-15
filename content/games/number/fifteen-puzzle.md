@@ -3,7 +3,7 @@ title: 15 Puzzle
 description: Slide numbered tiles into order with one empty square and a running timer.
 category: Number
 tags: [15-puzzle, sliding-puzzle, number-game, browser-game, puzzle]
-icon: tabler:grid-4x4
+icon: i-tabler-grid-4x4
 ---
 
 ::FifteenPuzzle

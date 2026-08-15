@@ -104,7 +104,7 @@ onMounted(useCurrentTime);
               label-key="label"
               size="lg"
               class="w-full"
-              :ui="{ base: 'rounded-none', content: 'rounded-none', item: 'before:rounded-none' }"
+              :ui="{ base: 'rounded-md', content: 'rounded-md', item: 'before:rounded-md' }"
               @update:model-value="setUnit"
             />
           </UFormField>
@@ -136,14 +136,14 @@ onMounted(useCurrentTime);
             label="Use current time"
             color="neutral"
             variant="ghost"
-            icon="i-lucide-clock-3"
+            icon="i-tabler-clock"
             @click="useCurrentTime"
           />
           <UButton
-            label="Copy ISO time"
             color="neutral"
-            variant="outline"
-            icon="i-lucide-copy"
+            variant="soft"
+            label="Copy ISO time"
+            icon="i-tabler-copy"
             :disabled="!timestampResult"
             @click="copyText(timestampResult?.iso || '')"
           />
@@ -190,10 +190,10 @@ onMounted(useCurrentTime);
 
         <div class="flex flex-wrap justify-end gap-2">
           <UButton
-            label="Copy seconds"
             color="neutral"
-            variant="outline"
-            icon="i-lucide-copy"
+            variant="soft"
+            label="Copy seconds"
+            icon="i-tabler-copy"
             :disabled="!dateResult"
             @click="copyText(dateResult?.seconds || '')"
           />

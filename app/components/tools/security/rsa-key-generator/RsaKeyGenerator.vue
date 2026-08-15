@@ -29,28 +29,31 @@ async function generate() {
 }
 </script>
 <template>
-  <ToolWorkbench description="Generate an RSA-OAEP 2048-bit public and private key pair locally."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Generate an RSA-OAEP 2048-bit public and private key pair locally.">
+    <div class="grid gap-5">
       <div class="flex flex-wrap gap-2">
         <UButton
           label="Generate key pair"
-          icon="i-lucide-key-round"
+          icon="i-tabler-key"
           :loading="loading"
           @click="generate"
         /><UButton
-          label="Copy keys"
           color="neutral"
-          variant="outline"
+          variant="soft"
+          label="Copy keys"
           :disabled="!output"
           @click="copyBrowserText(output)"
         />
       </div>
-      <UTextarea
-        v-model="output"
-        :rows="20"
-        readonly
-        class="font-mono text-xs"
-        placeholder="PEM keys appear here."
-      /></div
-  ></ToolWorkbench>
+      <UFormField label="Generated PEM key pair">
+        <UTextarea
+          v-model="output"
+          :rows="20"
+          readonly
+          class="font-mono text-xs"
+          placeholder="PEM keys appear here."
+        />
+      </UFormField>
+    </div>
+  </ToolWorkbench>
 </template>

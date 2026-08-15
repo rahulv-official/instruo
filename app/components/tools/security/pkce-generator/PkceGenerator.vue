@@ -15,23 +15,26 @@ async function generate() {
 }
 </script>
 <template>
-  <ToolWorkbench description="Generate an OAuth PKCE verifier and S256 challenge locally."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Generate an OAuth PKCE verifier and S256 challenge locally.">
+    <div class="grid gap-5">
       <UButton
         label="Generate PKCE pair"
-        icon="i-lucide-shield-check"
+        icon="i-tabler-shield-check"
         class="w-fit"
         @click="generate"
-      /><UFormField label="Code verifier"
-        ><UInput
+      /><UFormField label="Code verifier">
+        <UInput
           v-model="verifier"
           readonly
-          class="font-mono" /></UFormField
-      ><UFormField label="S256 code challenge"
-        ><UInput
+          class="font-mono"
+        /> </UFormField
+      ><UFormField label="S256 code challenge">
+        <UInput
           v-model="challenge"
           readonly
           class="font-mono"
-      /></UFormField></div
-  ></ToolWorkbench>
+        />
+      </UFormField>
+    </div>
+  </ToolWorkbench>
 </template>

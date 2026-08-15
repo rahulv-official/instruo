@@ -34,10 +34,10 @@ const output = computed(() =>
     </div>
     <div class="mt-5 flex justify-end">
       <UButton
-        label="Copy CSS"
         color="neutral"
-        variant="outline"
-        icon="i-lucide-copy"
+        variant="soft"
+        label="Copy CSS"
+        icon="i-tabler-copy"
         :disabled="!output"
         @click="copyText(output)"
       />

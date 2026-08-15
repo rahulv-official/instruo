@@ -228,13 +228,13 @@ function numberClass(value: number) {
         >
           <UIcon
             v-if="gameStatus === 'lost'"
-            name="i-lucide-circle-x"
+            name="i-tabler-circle-x"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
           <UIcon
             v-else-if="gameStatus === 'won'"
-            name="i-lucide-circle-check"
+            name="i-tabler-circle-check"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
@@ -287,12 +287,12 @@ function numberClass(value: number) {
           >
             <UIcon
               v-if="cell.flagged && !cell.open"
-              name="i-lucide-flag"
+              name="i-tabler-flag"
               class="text-primary size-4"
             />
             <UIcon
               v-else-if="cell.mine && cell.open"
-              name="i-lucide-bomb"
+              name="i-tabler-bomb"
               class="size-4"
             />
             <span v-else-if="cell.open && cell.adjacent">{{ cell.adjacent }}</span>
@@ -324,7 +324,7 @@ function numberClass(value: number) {
               label="Reveal"
               :color="inputMode === 'reveal' ? 'primary' : 'neutral'"
               :variant="inputMode === 'reveal' ? 'solid' : 'outline'"
-              icon="i-lucide-mouse-pointer-2"
+              icon="i-tabler-pointer"
               class="sm:hidden"
               @click="inputMode = 'reveal'"
             />
@@ -332,7 +332,7 @@ function numberClass(value: number) {
               label="Flag"
               :color="inputMode === 'flag' ? 'primary' : 'neutral'"
               :variant="inputMode === 'flag' ? 'solid' : 'outline'"
-              icon="i-lucide-flag"
+              icon="i-tabler-flag"
               class="sm:hidden"
               @click="inputMode = 'flag'"
             />
@@ -340,7 +340,7 @@ function numberClass(value: number) {
               label="New board"
               color="neutral"
               variant="outline"
-              icon="i-lucide-refresh-cw"
+              icon="i-tabler-refresh"
               @click="reset()"
             />
           </div>

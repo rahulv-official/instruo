@@ -96,7 +96,7 @@ function updateState(next: Record<string, unknown>) {
               class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl"
               aria-hidden="true"
             >
-              <Icon name="tabler:circle-dot" />
+              <Icon name="i-tabler-circle-dot" />
             </div>
             <h2 class="text-highlighted text-xl font-semibold">Set your opening</h2>
             <p class="text-muted text-sm leading-6">
@@ -118,7 +118,7 @@ function updateState(next: Record<string, unknown>) {
               />
               <span class="relative inline-flex items-center gap-2"
                 ><Icon
-                  name="tabler:player-play-filled"
+                  name="i-tabler-player-play-filled"
                   aria-hidden="true"
                 />
                 Start match</span
@@ -142,7 +142,7 @@ function updateState(next: Record<string, unknown>) {
               class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl"
               aria-hidden="true"
             >
-              <Icon :name="state.winner ? 'tabler:trophy' : 'tabler:equal'" />
+              <Icon :name="state.winner ? 'i-tabler-trophy' : 'i-tabler-equal'" />
             </div>
             <h2
               id="connect-four-over-title"
@@ -169,7 +169,7 @@ function updateState(next: Record<string, unknown>) {
               />
               <span class="relative inline-flex items-center gap-2"
                 ><Icon
-                  name="tabler:refresh"
+                  name="i-tabler-refresh"
                   aria-hidden="true"
                 />
                 New match</span
@@ -188,7 +188,7 @@ function updateState(next: Record<string, unknown>) {
             variant="subtle"
             title="Game unavailable"
             description="Reload the page and try once more."
-            icon="i-lucide-circle-alert"
+            icon="i-tabler-alert-circle"
           />
         </div>
       </div>

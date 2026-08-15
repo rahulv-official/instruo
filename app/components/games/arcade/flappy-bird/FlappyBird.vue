@@ -94,7 +94,7 @@ function updateState(nextState: Record<string, unknown>) {
                 />
                 <span>
                   <Icon
-                    name="tabler:player-play-filled"
+                    name="i-tabler-player-play-filled"
                     aria-hidden="true"
                   />
                   Play now
@@ -118,7 +118,7 @@ function updateState(nextState: Record<string, unknown>) {
                 class="flappy-card__mark"
                 aria-hidden="true"
               >
-                <Icon name="tabler:wind" />
+                <Icon name="i-tabler-wind" />
               </div>
               <h2 id="flappy-over-title">Flight over</h2>
               <p class="flappy-card__score">{{ state.score }}</p>
@@ -138,7 +138,7 @@ function updateState(nextState: Record<string, unknown>) {
                 />
                 <span>
                   <Icon
-                    name="tabler:refresh"
+                    name="i-tabler-refresh"
                     aria-hidden="true"
                   />
                   Try again
@@ -159,7 +159,7 @@ function updateState(nextState: Record<string, unknown>) {
               class="flappy-card__mark"
               aria-hidden="true"
             >
-              <Icon name="tabler:alert-triangle" />
+              <Icon name="i-tabler-alert-triangle" />
             </div>
             <h2>Flight deck unavailable</h2>
             <p>Something blocked the game renderer. Reload this page and try once more.</p>

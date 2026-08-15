@@ -120,7 +120,7 @@ onMounted(generate);
 
         <UButton
           label="Generate"
-          icon="i-lucide-refresh-cw"
+          icon="i-tabler-refresh"
           size="lg"
           @click="generate"
         />
@@ -132,16 +132,16 @@ onMounted(generate);
           readonly
           :rows="Math.min(Math.max(isNameBased ? 1 : count, 5), 15)"
           class="w-full"
-          :ui="{ base: 'rounded-none font-mono text-sm leading-7' }"
+          :ui="{ base: 'font-mono text-sm leading-7' }"
         />
       </UFormField>
 
       <div class="flex justify-end">
         <UButton
-          label="Copy output"
           color="neutral"
-          variant="outline"
-          icon="i-lucide-copy"
+          variant="soft"
+          label="Copy output"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />

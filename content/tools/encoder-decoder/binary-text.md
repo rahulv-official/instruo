@@ -3,10 +3,10 @@ title: "Binary"
 description: Convert text to binary or binary to text with ease.
 category: Encoder Decoder
 tags: [encoder, decoder, binary-to-text, text-to-binary, binary]
-icon: i-lucide-binary
+icon: i-tabler-binary
 ---
 
-::EncoderDecoder{kind="binary"}
+::BinaryText
 ::
 
 ## Convert text and binary

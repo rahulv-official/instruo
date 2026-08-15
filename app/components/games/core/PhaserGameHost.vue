@@ -84,10 +84,8 @@ onMounted(async () => {
     // Load both weights before Phaser rasterizes any canvas text. This keeps
     // the first frame from swapping from a fallback into the scalable UI font.
     await Promise.all([
-      document.fonts.load('400 16px "Manrope"'),
-      document.fonts.load('700 16px "Manrope"'),
-      document.fonts.load('400 16px "Kenney Future"'),
-      document.fonts.load('700 16px "Kenney Future"'),
+      document.fonts.load('400 16px "Geist"'),
+      document.fonts.load('700 16px "Geist"'),
     ]);
     game = await props.create(
       mount.value,

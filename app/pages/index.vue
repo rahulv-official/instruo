@@ -1,48 +1,44 @@
 <script setup lang="ts">
 const [{ data: tools }, { data: games }] = await Promise.all([
-  useAsyncData("home_tools", () => queryCollection("tools").all()),
-  useAsyncData("home_games", () => queryCollection("games").all()),
+  useAsyncData("home_tools", () =>
+    queryCollection("tools")
+      .select("id", "path", "title", "description", "category", "tags", "icon")
+      .all(),
+  ),
+  useAsyncData("home_games", () =>
+    queryCollection("games")
+      .select("id", "path", "title", "description", "category", "tags", "icon")
+      .all(),
+  ),
 ]);
 
-const featuredPaths = [
+const query = ref("");
+
+const featuredToolPaths = [
   "/tools/image/image-resizer",
   "/tools/security/password-generator",
   "/tools/developer/json-formatter",
   "/tools/developer/timestamp-converter",
   "/tools/text/word-char-counter",
 ];
-const featuredGamePaths = [
-  "/games/number/2048",
-  "/games/word/wordle",
-  "/games/number/sudoku",
-  "/games/arcade/snake",
-  "/games/logic/minesweeper",
-  "/games/strategy/tic-tac-toe",
-];
-const featureSpans = [
-  "lg:col-span-7",
-  "lg:col-span-5",
-  "lg:col-span-4",
-  "lg:col-span-5",
-  "lg:col-span-3",
-];
-const gameSpans = [
-  "lg:col-span-7",
-  "lg:col-span-5",
-  "lg:col-span-5",
-  "lg:col-span-7",
-  "lg:col-span-7",
-  "lg:col-span-5",
+
+const featuredGamePaths = ["/games/arcade/flappy-bird", "/games/number/2048", "/games/word/wordle"];
+
+const categoryLinks = [
+  { label: "Developer Tools", value: "Developer", icon: "i-tabler-code" },
+  { label: "Image", value: "Image", icon: "i-tabler-photo" },
+  { label: "Security", value: "Security", icon: "i-tabler-shield-lock" },
+  { label: "Text", value: "Text", icon: "i-tabler-cursor-text" },
+  { label: "Everyday", value: "Everyday", icon: "i-tabler-calculator" },
+  { label: "Encoder Decoder", value: "Encoder Decoder", icon: "i-tabler-arrows-exchange" },
 ];
 
 const featuredTools = computed(() => {
   const byPath = new Map((tools.value ?? []).map((tool) => [tool.path, tool]));
-  return featuredPaths
+  return featuredToolPaths
     .map((path) => byPath.get(path))
     .filter((tool): tool is NonNullable<typeof tool> => Boolean(tool));
 });
-
-const quickLaunchTools = computed(() => featuredTools.value.slice(0, 4));
 
 const featuredGames = computed(() => {
   const byPath = new Map((games.value ?? []).map((game) => [game.path, game]));
@@ -51,286 +47,321 @@ const featuredGames = computed(() => {
     .filter((game): game is NonNullable<typeof game> => Boolean(game));
 });
 
-const categories = computed(() => {
-  const counts = new Map<string, number>();
-  for (const tool of tools.value ?? []) {
-    counts.set(tool.category, (counts.get(tool.category) ?? 0) + 1);
-  }
+const matches = computed(() => {
+  const normalized = query.value.trim().toLowerCase();
+  if (!normalized) return featuredTools.value.slice(0, 5);
 
-  return [...counts.entries()]
-    .toSorted(([a], [b]) => a.localeCompare(b))
-    .map(([name, count]) => ({
-      name,
-      count,
-      label: name === "Developer" ? "Developer Tools" : name,
-      description:
-        {
-          Developer: "Format data, create digests, and convert timestamps.",
-          "Encoder Decoder": "Translate Base64, binary, Morse code, and URLs.",
-          Image: "Resize and compress local image files.",
-          Security: "Generate strong passwords on this device.",
-          Text: "Count, clean, sort, and reshape plain text.",
-        }[name] ?? "Focused utilities that run in your browser.",
-    }));
+  return [...(tools.value ?? []), ...(games.value ?? [])]
+    .filter((item) =>
+      [item.title, item.description, item.category, ...(item.tags ?? [])]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(normalized),
+    )
+    .toSorted((a, b) => a.title.localeCompare(b.title))
+    .slice(0, 6);
 });
 
 useSeoMeta({
   title: "Free browser tools and games",
   description:
-    "Resize images, generate passwords, format data, clean text, and play quick games in your browser. No signup or installation.",
+    "Format data, prepare images, generate secure values, and play polished browser games without creating an account.",
 });
 </script>
 
 <template>
-  <HomeMotion>
-    <section class="border-default/70 border-b">
-      <UContainer class="grid min-h-[calc(78dvh-4rem)] lg:grid-cols-12">
-        <div
-          class="border-default/70 flex flex-col justify-center border-b py-16 sm:py-20 lg:col-span-8 lg:border-r lg:border-b-0 lg:py-24 lg:pr-16 xl:pr-24"
-        >
-          <p class="hero-reveal text-toned font-mono text-xs">
-            {{ tools?.length ?? 0 }} tools / {{ games?.length ?? 0 }} games / no signup
+  <HomeMotion class="instruo-home">
+    <section class="border-muted border-b">
+      <UContainer
+        class="grid min-h-[38rem] items-center gap-12 py-14 sm:py-18 lg:grid-cols-12 lg:gap-16 lg:py-20"
+      >
+        <div class="lg:col-span-7">
+          <p class="hero-reveal text-toned font-mono text-xs tabular-nums">
+            {{ tools?.length ?? 0 }} tools · {{ games?.length ?? 0 }} games · no account
           </p>
           <h1
-            class="hero-reveal text-highlighted mt-8 max-w-5xl text-[clamp(3.5rem,7vw,7.25rem)] leading-[0.88] font-semibold tracking-[-0.065em]"
+            class="hero-reveal text-highlighted mt-6 max-w-4xl text-[clamp(3.25rem,5.5vw,4.75rem)] leading-[0.94] font-semibold tracking-[-0.055em] text-balance"
           >
-            <span class="block">Small tools.</span>
-            <span class="block">Clear results.</span>
+            Tools for the task.<br />Games for the break.
           </h1>
-          <p class="hero-reveal text-muted mt-8 max-w-xl text-lg leading-8 sm:text-xl">
-            Format, convert, clean, generate, or play. No account, upload, or setup.
+          <p class="hero-reveal text-muted mt-7 max-w-xl text-lg leading-8 sm:text-xl">
+            Format, convert, calculate, or play. Everything opens in this browser without setup.
           </p>
-          <div class="hero-reveal mt-10 flex flex-wrap items-center gap-3">
+          <div class="hero-reveal mt-8 flex flex-wrap gap-3">
             <UButton
-              label="Explore tools"
+              label="Find a tool"
               to="/tools"
               size="xl"
-              trailing-icon="i-lucide-arrow-right"
+              trailing-icon="i-tabler-arrow-right"
             />
             <UButton
-              label="Play a game"
+              label="Choose a game"
               to="/games"
               color="neutral"
               variant="outline"
               size="xl"
-              trailing-icon="i-lucide-arrow-right"
+              trailing-icon="i-tabler-arrow-right"
             />
           </div>
         </div>
 
-        <aside
-          class="hero-reveal flex flex-col justify-center py-12 lg:col-span-4 lg:py-16 lg:pl-10"
+        <section
+          class="hero-reveal bg-elevated overflow-hidden rounded-lg shadow-[inset_0_0_0_1px_var(--ui-border-muted),0_24px_80px_rgb(0_0_0/0.14)] lg:col-span-5"
+          aria-labelledby="launcher-heading"
         >
-          <div class="flex items-end justify-between gap-4">
-            <h2 class="text-highlighted text-lg font-semibold">Open something useful</h2>
-            <span class="text-toned font-mono text-xs">Quick launch</span>
-          </div>
+          <header class="border-muted border-b px-5 py-4 sm:px-6">
+            <div class="flex items-center justify-between gap-4">
+              <h2
+                id="launcher-heading"
+                class="text-highlighted text-sm font-semibold"
+              >
+                Open something
+              </h2>
+              <span class="text-dimmed font-mono text-xs">Tools + games</span>
+            </div>
+            <UInput
+              v-model="query"
+              icon="i-tabler-search"
+              size="xl"
+              placeholder="What are you trying to do?"
+              aria-label="Search tools and games"
+              class="mt-4 w-full"
+            />
+          </header>
+
           <nav
-            class="border-default/70 mt-5 border-t"
-            aria-label="Quick launch"
+            class="p-2"
+            aria-label="Quick launcher results"
           >
             <NuxtLink
-              v-for="(tool, index) in quickLaunchTools"
-              :key="tool.id"
-              :to="tool.path"
-              class="group border-default/70 focus-visible:ring-primary hover:bg-elevated/35 grid min-h-20 grid-cols-[auto_1fr_auto] items-center gap-4 border-b px-2 transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              v-for="match in matches"
+              :key="match.id"
+              :to="match.path"
+              class="group focus-visible:outline-primary hover:bg-accented/65 grid min-h-14 grid-cols-[auto_1fr_auto] items-center gap-3 rounded-md px-3 py-2 transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2"
             >
-              <span class="text-toned font-mono text-xs tabular-nums">
-                {{ String(index + 1).padStart(2, "0") }}
+              <span class="bg-muted text-toned flex size-9 items-center justify-center rounded-md">
+                <UIcon
+                  :name="match.icon || 'i-tabler-tools'"
+                  class="size-5"
+                  aria-hidden="true"
+                />
               </span>
-              <span>
-                <span class="text-highlighted block text-sm font-semibold">{{ tool.title }}</span>
-                <span class="text-muted mt-0.5 block text-xs">{{ tool.category }}</span>
+              <span class="min-w-0">
+                <span class="text-highlighted block truncate text-sm font-medium">
+                  {{ match.title }}
+                </span>
+                <span class="text-dimmed block truncate text-xs">{{ match.category }}</span>
               </span>
               <UIcon
-                name="i-lucide-arrow-right"
-                class="text-dimmed size-4 transition-transform duration-300 group-hover:translate-x-1"
+                name="i-tabler-arrow-up-right"
+                class="text-dimmed size-4 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden="true"
               />
             </NuxtLink>
+
+            <p
+              v-if="!matches.length"
+              class="text-muted px-4 py-10 text-center text-sm"
+            >
+              No match. Try “crop image,” “JSON,” or “Sudoku.”
+            </p>
           </nav>
-        </aside>
+        </section>
       </UContainer>
     </section>
 
-    <section class="home-reveal py-20 sm:py-24">
-      <UContainer class="grid gap-10 lg:grid-cols-12 lg:gap-16">
-        <div class="lg:col-span-4">
-          <p class="text-toned font-mono text-xs">Tool directory</p>
-          <h2
-            class="text-highlighted mt-5 max-w-md text-4xl leading-[0.95] font-semibold tracking-[-0.045em] sm:text-5xl"
+    <section class="home-reveal py-18 sm:py-22 lg:py-26">
+      <UContainer>
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <h2 class="text-highlighted text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
+              Start with a useful one.
+            </h2>
+            <p class="text-muted mt-4 max-w-2xl leading-7">
+              Five dependable tools, selected for common tasks. The full directory stays one click
+              away.
+            </p>
+          </div>
+          <div class="lg:col-span-5 lg:text-right">
+            <UButton
+              label="Browse all tools"
+              to="/tools"
+              color="neutral"
+              variant="outline"
+              trailing-icon="i-tabler-arrow-right"
+            />
+          </div>
+        </div>
+
+        <div
+          v-if="featuredTools.length"
+          class="bg-elevated mt-9 grid overflow-hidden rounded-lg shadow-[inset_0_0_0_1px_var(--ui-border-muted)] lg:grid-cols-[1.1fr_0.9fr]"
+        >
+          <NuxtLink
+            :to="featuredTools[0]?.path"
+            class="group border-muted focus-visible:outline-primary hover:bg-accented/45 flex min-h-72 flex-col border-b p-6 transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:p-8 lg:border-r lg:border-b-0"
           >
-            Tools, grouped by the job.
-          </h2>
-          <p class="text-muted mt-6 max-w-sm leading-7">
-            Start with the kind of input you have. Each tool opens directly to its workbench.
-          </p>
+            <div class="flex items-start justify-between gap-5">
+              <span class="bg-muted text-toned flex size-11 items-center justify-center rounded-md">
+                <UIcon
+                  :name="featuredTools[0]?.icon || 'i-tabler-tools'"
+                  class="size-6"
+                  aria-hidden="true"
+                />
+              </span>
+              <UIcon
+                name="i-tabler-arrow-up-right"
+                class="text-dimmed size-5 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden="true"
+              />
+            </div>
+            <div class="mt-auto pt-12">
+              <p class="text-dimmed text-sm">{{ featuredTools[0]?.category }}</p>
+              <h3 class="text-highlighted mt-2 text-3xl font-semibold tracking-[-0.035em]">
+                {{ featuredTools[0]?.title }}
+              </h3>
+              <p class="text-muted mt-3 max-w-xl leading-7">{{ featuredTools[0]?.description }}</p>
+            </div>
+          </NuxtLink>
+
+          <nav aria-label="Popular tools">
+            <NuxtLink
+              v-for="tool in featuredTools.slice(1)"
+              :key="tool.id"
+              :to="tool.path"
+              class="group border-muted focus-visible:outline-primary hover:bg-accented/45 grid min-h-[4.75rem] grid-cols-[auto_1fr_auto] items-center gap-4 border-b px-5 py-3 transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] last:border-b-0 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:px-6"
+            >
+              <UIcon
+                :name="tool.icon || 'i-tabler-tools'"
+                class="text-toned size-5"
+                aria-hidden="true"
+              />
+              <span class="min-w-0">
+                <span class="text-highlighted block truncate text-sm font-semibold">{{
+                  tool.title
+                }}</span>
+                <span class="text-muted mt-0.5 block truncate text-xs">{{ tool.description }}</span>
+              </span>
+              <UIcon
+                name="i-tabler-arrow-right"
+                class="text-dimmed size-4 transition-transform duration-150 group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </NuxtLink>
+          </nav>
         </div>
 
         <nav
-          class="border-default/70 border-t lg:col-span-8"
+          class="bg-elevated/30 mt-5 grid overflow-hidden rounded-lg shadow-[inset_0_0_0_1px_var(--ui-border-muted)] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6"
           aria-label="Tool categories"
         >
           <NuxtLink
-            v-for="category in categories"
-            :key="category.name"
-            :to="{ path: '/tools', query: { category: category.name } }"
-            class="group border-default/70 focus-visible:ring-primary hover:bg-elevated/35 grid min-h-28 gap-5 border-b px-1 py-6 transition-colors focus-visible:ring-2 focus-visible:outline-none sm:grid-cols-[minmax(0,1fr)_minmax(16rem,1fr)_auto] sm:items-center"
+            v-for="category in categoryLinks"
+            :key="category.value"
+            :to="{ path: '/tools', query: { category: category.value } }"
+            class="group border-muted bg-default focus-visible:outline-primary hover:bg-elevated flex min-h-14 items-center gap-2.5 border-r border-b px-4 text-sm font-medium transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px]"
           >
-            <span class="text-highlighted text-xl font-semibold">{{ category.label }}</span>
-            <span class="text-muted text-sm leading-6">{{ category.description }}</span>
-            <span class="text-toned flex items-center gap-4 font-mono text-xs tabular-nums">
-              {{ category.count }}
-              <UIcon
-                name="i-lucide-arrow-right"
-                class="size-4 transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </span>
+            <UIcon
+              :name="category.icon"
+              class="text-toned size-4"
+              aria-hidden="true"
+            />
+            <span class="text-highlighted truncate">{{ category.label }}</span>
           </NuxtLink>
         </nav>
       </UContainer>
     </section>
 
-    <section class="home-reveal border-default/70 bg-muted/20 border-y py-20 sm:py-24">
+    <section class="home-reveal border-muted bg-muted/60 border-y py-18 sm:py-22 lg:py-26">
       <UContainer>
-        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
-          <div class="lg:col-span-8">
-            <p class="text-toned font-mono text-xs">Frequently useful</p>
-            <h2
-              class="text-highlighted mt-5 max-w-3xl text-4xl leading-[0.95] font-semibold tracking-[-0.045em] sm:text-6xl"
-            >
-              Go straight to the workbench.
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <h2 class="text-highlighted text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
+              Take the better kind of break.
             </h2>
+            <p class="text-muted mt-4 max-w-2xl leading-7">
+              Keyboard and touch-ready games with their own mechanics, sound, and visual identity.
+            </p>
           </div>
-          <div class="lg:col-span-4 lg:justify-self-end">
+          <div class="lg:col-span-5 lg:text-right">
             <UButton
-              label="See every tool"
-              to="/tools"
+              label="See all games"
+              to="/games"
               color="neutral"
               variant="outline"
-              trailing-icon="i-lucide-arrow-right"
+              trailing-icon="i-tabler-arrow-right"
             />
           </div>
         </div>
 
-        <div class="border-default/70 mt-12 grid grid-flow-dense border-t border-l lg:grid-cols-12">
-          <NuxtLink
-            v-for="(tool, index) in featuredTools"
-            :key="tool.id"
-            :to="tool.path"
-            class="group border-default/70 focus-visible:ring-primary bg-default hover:bg-elevated/40 min-h-52 border-r border-b p-6 transition-colors focus-visible:z-10 focus-visible:ring-2 focus-visible:outline-none sm:p-8"
-            :class="featureSpans[index]"
-          >
-            <article class="flex h-full flex-col">
-              <div class="flex items-start justify-between gap-8">
-                <span class="text-toned font-mono text-xs">
-                  {{ tool.category === "Developer" ? "Developer Tools" : tool.category }}
-                </span>
-                <UIcon
-                  name="i-lucide-arrow-up-right"
-                  class="text-dimmed group-hover:text-highlighted size-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-                />
-              </div>
-              <div class="mt-auto pt-12">
-                <UIcon
-                  :name="tool.icon || 'i-lucide-wrench'"
-                  class="text-primary mb-5 size-6"
-                />
-                <h3 class="text-highlighted text-2xl font-semibold tracking-tight">
-                  {{ tool.title }}
-                </h3>
-                <p class="text-muted mt-3 max-w-xl text-sm leading-6">
-                  {{ tool.description }}
-                </p>
-              </div>
-            </article>
-          </NuxtLink>
-        </div>
-      </UContainer>
-    </section>
-
-    <section
-      v-if="featuredGames.length"
-      class="home-reveal py-20 sm:py-24"
-    >
-      <UContainer>
-        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
-          <div class="lg:col-span-8">
-            <p class="text-toned font-mono text-xs">Games</p>
-            <h2
-              class="text-highlighted mt-5 max-w-3xl text-4xl leading-[0.95] font-semibold tracking-[-0.045em] sm:text-6xl"
-            >
-              Take a break without making an account.
-            </h2>
-          </div>
-          <p class="text-muted max-w-md leading-7 lg:col-span-4 lg:justify-self-end">
-            Arcade, word, number, logic, and strategy games that begin as soon as the page opens.
-          </p>
-        </div>
-
-        <div class="border-default/70 mt-12 grid border-t border-l lg:grid-cols-12">
+        <div class="mt-9 grid gap-4 lg:grid-cols-12">
           <NuxtLink
             v-for="(game, index) in featuredGames"
             :key="game.id"
             :to="game.path"
-            class="group border-default/70 focus-visible:ring-primary hover:bg-elevated/35 min-h-60 border-r border-b p-6 transition-colors focus-visible:z-10 focus-visible:ring-2 focus-visible:outline-none sm:p-8"
-            :class="gameSpans[index]"
+            :aria-label="`Play ${game.title}`"
+            class="game-feature group bg-elevated focus-visible:outline-primary overflow-hidden rounded-[10px] shadow-[inset_0_0_0_1px_var(--ui-border-muted)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2"
+            :class="index === 0 ? 'lg:col-span-6' : 'lg:col-span-3'"
           >
-            <article class="flex h-full flex-col">
-              <div class="flex items-start justify-between gap-6">
-                <span class="text-toned font-mono text-xs">{{ game.category }}</span>
+            <article class="flex h-full min-h-72 flex-col">
+              <GamePreview
+                :path="game.path"
+                :title="game.title"
+                :category="game.category"
+                :icon="game.icon"
+                featured
+                class="min-h-44 flex-1"
+              />
+              <div class="flex items-end justify-between gap-5 p-5 sm:p-6">
+                <div class="min-w-0">
+                  <h3 class="text-highlighted text-xl font-semibold tracking-tight">
+                    {{ game.title }}
+                  </h3>
+                  <p
+                    v-if="index === 0"
+                    class="text-muted mt-2 line-clamp-2 text-sm leading-5"
+                  >
+                    {{ game.description }}
+                  </p>
+                </div>
                 <UIcon
-                  name="i-lucide-arrow-up-right"
-                  class="text-dimmed group-hover:text-highlighted size-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                  name="i-tabler-arrow-up-right"
+                  class="text-dimmed size-5 shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  aria-hidden="true"
                 />
-              </div>
-              <div class="mt-auto pt-12">
-                <UIcon
-                  :name="game.icon || 'i-lucide-gamepad-2'"
-                  class="text-primary mb-5 size-7"
-                />
-                <h3 class="text-highlighted text-3xl font-semibold tracking-tight">
-                  {{ game.title }}
-                </h3>
-                <p class="text-muted mt-3 max-w-xl text-sm leading-6">{{ game.description }}</p>
               </div>
             </article>
           </NuxtLink>
         </div>
-
-        <UButton
-          label="Open all games"
-          to="/games"
-          color="neutral"
-          variant="link"
-          trailing-icon="i-lucide-arrow-right"
-          class="mt-6 px-0"
-        />
       </UContainer>
     </section>
 
-    <section class="home-reveal border-default/70 border-t py-20 sm:py-24">
-      <UContainer class="grid gap-8 lg:grid-cols-12 lg:items-end">
+    <section class="home-reveal py-16 sm:py-20">
+      <UContainer class="grid gap-8 lg:grid-cols-12 lg:items-center">
         <div class="lg:col-span-8">
-          <p class="text-toned font-mono text-xs">Local by default</p>
-          <h2
-            class="text-highlighted mt-5 max-w-4xl text-4xl leading-[0.95] font-semibold tracking-[-0.045em] sm:text-6xl"
-          >
-            Your input stays in this browser.
+          <h2 class="text-highlighted text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
+            Nothing to install. Nothing to sign into.
           </h2>
-          <p class="text-muted mt-6 max-w-2xl text-lg leading-8">
-            Current tools process text, data, and images on this page. Nothing is sent to an Instruo
-            server.
+          <p class="text-muted mt-3 max-w-2xl leading-7">
+            Current tools process their input on this page. Inspect the source if you want to verify
+            how one works.
           </p>
         </div>
-        <div class="lg:col-span-4 lg:justify-self-end">
+        <div class="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
           <UButton
-            label="View the source"
+            label="Browse tools"
+            to="/tools"
+            trailing-icon="i-tabler-arrow-right"
+          />
+          <UButton
+            label="View source"
             to="https://github.com/rahulv-official/instruo"
             target="_blank"
+            rel="noopener noreferrer"
             color="neutral"
             variant="outline"
-            icon="i-simple-icons-github"
-            size="xl"
+            icon="i-tabler-brand-github"
           />
         </div>
       </UContainer>

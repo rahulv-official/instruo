@@ -6,8 +6,8 @@ const output = computed(() => formatScript(input.value, mode.value === "minify")
 const { copyText } = useCopyToClipboard();
 </script>
 <template>
-  <ToolWorkbench description="Clean up or compact small JavaScript snippets locally."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Clean up or compact small JavaScript snippets locally.">
+    <div class="grid gap-5">
       <USelect
         v-model="mode"
         :items="['format', 'minify']"
@@ -27,11 +27,14 @@ const { copyText } = useCopyToClipboard();
       </div>
       <div class="flex justify-end">
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy JavaScript"
-          icon="i-lucide-copy"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />
-      </div></div
-  ></ToolWorkbench>
+      </div>
+    </div>
+  </ToolWorkbench>
 </template>

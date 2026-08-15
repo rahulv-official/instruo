@@ -17,8 +17,8 @@ const output = computed(() => {
 const { copyText } = useCopyToClipboard();
 </script>
 <template>
-  <ToolWorkbench description="Turn tab-separated rows into a clean Markdown table."
-    ><div class="grid gap-5 lg:grid-cols-2">
+  <ToolWorkbench description="Turn tab-separated rows into a clean Markdown table.">
+    <div class="grid gap-5 lg:grid-cols-2">
       <UTextarea
         v-model="input"
         :rows="12"
@@ -30,11 +30,14 @@ const { copyText } = useCopyToClipboard();
       />
       <div class="flex justify-end lg:col-span-2">
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy table"
-          icon="i-lucide-copy"
+          icon="i-tabler-copy"
           :disabled="!output"
           @click="copyText(output)"
         />
-      </div></div
-  ></ToolWorkbench>
+      </div>
+    </div>
+  </ToolWorkbench>
 </template>

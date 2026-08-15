@@ -33,9 +33,8 @@ const BOARD_Y = 164 * WORLD_SCALE;
 const SHUFFLE_MOVES = 120;
 const TILE_TEXTURE = "tile-grey";
 const BEST_KEY = "instruo:fifteen-puzzle-best";
-const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GAME_FONT = "Geist, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 
-/* eslint-disable unicorn/number-literal-case */
 const COLORS = {
   background: 0x151a21,
   panel: 0x27313b,
@@ -46,7 +45,6 @@ const COLORS = {
   accentText: "#f4bd68",
   number: "#19232d",
 };
-/* eslint-enable unicorn/number-literal-case */
 
 const SOLVED_BOARD = Array.from({ length: TILE_COUNT }, (_, index) => (index + 1) % TILE_COUNT);
 
@@ -196,7 +194,7 @@ export const createFifteenPuzzleGame: PhaserGameFactory = async (
           COLORS.panelDark,
           1,
         )
-        .setStrokeStyle(2 * WORLD_SCALE, COLORS.muted, 0.35)
+        .setStrokeStyle(2 * WORLD_SCALE, 0x9ba7b4, 0.35)
         .setDepth(1);
       this.emptySlot = this.add
         .image(0, 0, "empty-slot")

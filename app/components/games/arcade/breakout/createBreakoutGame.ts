@@ -49,11 +49,10 @@ const ARENA_LEFT = (WIDTH - ARENA_WIDTH) / 2;
 const ARENA_TOP = ARENA_CENTER_Y - ARENA_HEIGHT / 2;
 const ARENA_BOTTOM = ARENA_CENTER_Y + ARENA_HEIGHT / 2;
 const BEST_KEY = "instruo:breakout-best";
-const GAME_FONT = "Manrope, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+const GAME_FONT = "Geist, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
 const TOTAL_BRICKS = BRICK_COLUMNS * BRICK_ROWS;
 const ASSET_ROOT = "/game-assets/kenney/puzzle-pack-1/PNG/Default";
 
-/* eslint-disable unicorn/number-literal-case */
 const COLORS = {
   background: 0x101b2d,
   arena: 0x172943,
@@ -65,7 +64,6 @@ const COLORS = {
   accentText: "#f4bd68",
   bricks: [0x65d4e8, 0x6f9ee8, 0xb88be8, 0xe7a6d8, 0xe87373, 0xf3a86d],
 };
-/* eslint-enable unicorn/number-literal-case */
 
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
@@ -96,10 +94,10 @@ function seededRandom(seed: number) {
 }
 
 function createLevelPattern(level: number, seed: number) {
-  if (level === 1) return new Array<boolean>(TOTAL_BRICKS).fill(true);
+  if (level === 1) return Array.from<boolean>({ length: TOTAL_BRICKS }).fill(true);
 
   const random = seededRandom((seed ^ Math.imul(level, 2_654_435_761)) >>> 0);
-  const pattern = new Array<boolean>(TOTAL_BRICKS).fill(false);
+  const pattern = Array.from<boolean>({ length: TOTAL_BRICKS }).fill(false);
   const density = Math.min(0.86, 0.56 + level * 0.035);
 
   for (let row = 0; row < BRICK_ROWS; row += 1) {
@@ -326,9 +324,7 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
         .rectangle(WIDTH / 2, ARENA_CENTER_Y, ARENA_WIDTH, ARENA_HEIGHT, COLORS.arena)
         .setStrokeStyle(2 * WORLD_SCALE, COLORS.accent, 0.3);
       this.arenaMask = this.add.graphics().setVisible(false);
-      /* eslint-disable unicorn/number-literal-case */
       this.arenaMask.fillStyle(0xffffff, 1);
-      /* eslint-enable unicorn/number-literal-case */
       this.arenaMask.fillRect(ARENA_LEFT, ARENA_TOP, ARENA_WIDTH, ARENA_HEIGHT);
       const mask = this.arenaMask.createGeometryMask();
       const brickTextures = [
@@ -355,13 +351,34 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
       });
       this.paddle = this.add.container(this.paddleX, PADDLE_Y).setDepth(8).setMask(mask);
       const paddleShadow = this.add
-        .rectangle(0, 3 * WORLD_SCALE, PADDLE_WIDTH + 12 * WORLD_SCALE, PADDLE_HEIGHT + 7 * WORLD_SCALE, 0x061222, 0.75)
+        .rectangle(
+          0,
+          3 * WORLD_SCALE,
+          PADDLE_WIDTH + 12 * WORLD_SCALE,
+          PADDLE_HEIGHT + 7 * WORLD_SCALE,
+          0x061222,
+          0.75,
+        )
         .setOrigin(0.5);
       const paddleFrame = this.add
-        .rectangle(0, 0, PADDLE_WIDTH, PADDLE_HEIGHT, 0x0B1D31, 1)
-        .setStrokeStyle(2 * WORLD_SCALE, 0x8BEAFF, 0.9);
-      const paddleFace = this.add.rectangle(0, 0, PADDLE_WIDTH - 8 * WORLD_SCALE, PADDLE_HEIGHT - 6 * WORLD_SCALE, COLORS.paddle, 1);
-      const paddleCenter = this.add.rectangle(0, 0, PADDLE_WIDTH * 0.48, PADDLE_HEIGHT - 8 * WORLD_SCALE, 0xF9F4E6, 1);
+        .rectangle(0, 0, PADDLE_WIDTH, PADDLE_HEIGHT, 0x0b1d31, 1)
+        .setStrokeStyle(2 * WORLD_SCALE, 0x8beaff, 0.9);
+      const paddleFace = this.add.rectangle(
+        0,
+        0,
+        PADDLE_WIDTH - 8 * WORLD_SCALE,
+        PADDLE_HEIGHT - 6 * WORLD_SCALE,
+        COLORS.paddle,
+        1,
+      );
+      const paddleCenter = this.add.rectangle(
+        0,
+        0,
+        PADDLE_WIDTH * 0.48,
+        PADDLE_HEIGHT - 8 * WORLD_SCALE,
+        0xf9f4e6,
+        1,
+      );
       this.paddle.add([paddleShadow, paddleFrame, paddleFace, paddleCenter]);
       this.ball = this.add
         .image(this.ballX, this.ballY, "breakout-ball")
@@ -438,7 +455,9 @@ export const createBreakoutGame: PhaserGameFactory = async (parent, onState, onR
         this.endRound();
         return;
       }
-      this.statusText.setText(`KEEP BALL IN PLAY · ${this.lives} LIVES`).setColor(COLORS.accentText);
+      this.statusText
+        .setText(`KEEP BALL IN PLAY · ${this.lives} LIVES`)
+        .setColor(COLORS.accentText);
       this.resetBall(true);
       this.emitState();
     }

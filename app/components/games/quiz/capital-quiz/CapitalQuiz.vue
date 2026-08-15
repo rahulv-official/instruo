@@ -74,7 +74,7 @@ function reset() {
       <UButton
         v-else
         label="Play again"
-        icon="i-lucide-refresh-cw"
+        icon="i-tabler-refresh"
         class="mx-auto"
         @click="reset"
       />

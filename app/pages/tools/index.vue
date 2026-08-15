@@ -11,8 +11,9 @@ useSeoMeta({
 <template>
   <Catalogue
     :items="tools ?? []"
-    title="Browser tools for quick jobs."
-    description="Resize images, generate passwords, format data, clean text, and create identifiers without installing another app."
+    kind="tool"
+    title="The right tool, without the detour."
+    description="Search by task, browse a category, or reopen something recent. Every result opens ready to use."
     search-placeholder="Search tools, categories, or tasks…"
   />
 </template>

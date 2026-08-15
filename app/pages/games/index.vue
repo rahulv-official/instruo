@@ -11,8 +11,9 @@ useSeoMeta({
 <template>
   <Catalogue
     :items="games ?? []"
-    title="Browser games for a quick break."
-    description="Open an arcade game or puzzle and play. No account, streak pressure, or setup between you and the board."
+    kind="game"
+    title="Pick a game. Start playing."
+    description="Arcade, word, number, logic, and strategy games built for keyboard and touch. No account gate."
     search-placeholder="Search games or categories…"
   />
 </template>

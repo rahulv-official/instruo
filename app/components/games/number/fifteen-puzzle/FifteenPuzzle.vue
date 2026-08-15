@@ -85,7 +85,7 @@ function updateState(next: Record<string, unknown>) {
               class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl"
               aria-hidden="true"
             >
-              <Icon name="tabler:grid-4x4" />
+              <Icon name="i-tabler-grid-4x4" />
             </div>
             <h2 class="text-highlighted text-xl font-semibold">Set the tiles free</h2>
             <p class="text-muted text-sm leading-6">
@@ -107,7 +107,7 @@ function updateState(next: Record<string, unknown>) {
               />
               <span class="relative inline-flex items-center gap-2">
                 <Icon
-                  name="tabler:player-play-filled"
+                  name="i-tabler-player-play-filled"
                   aria-hidden="true"
                 />
                 Start puzzle
@@ -131,7 +131,7 @@ function updateState(next: Record<string, unknown>) {
               class="bg-success text-inverted mx-auto grid size-14 place-items-center text-2xl"
               aria-hidden="true"
             >
-              <Icon name="tabler:confetti" />
+              <Icon name="i-tabler-confetti" />
             </div>
             <h2
               id="fifteen-puzzle-won-title"
@@ -160,7 +160,7 @@ function updateState(next: Record<string, unknown>) {
               />
               <span class="relative inline-flex items-center gap-2">
                 <Icon
-                  name="tabler:refresh"
+                  name="i-tabler-refresh"
                   aria-hidden="true"
                 />
                 Play again
@@ -179,7 +179,7 @@ function updateState(next: Record<string, unknown>) {
             variant="subtle"
             title="Game unavailable"
             description="Reload the page and try once more."
-            icon="i-lucide-circle-alert"
+            icon="i-tabler-alert-circle"
           />
         </div>
       </div>

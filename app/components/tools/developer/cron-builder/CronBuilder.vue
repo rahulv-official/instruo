@@ -10,30 +10,35 @@ const expression = computed(
 const { copyText } = useCopyToClipboard();
 </script>
 <template>
-  <ToolWorkbench description="Build a five-field cron schedule from familiar fields."
-    ><div class="grid gap-5">
+  <ToolWorkbench description="Build a five-field cron schedule from familiar fields.">
+    <div class="grid gap-5">
       <div class="grid gap-4 sm:grid-cols-5">
-        <UFormField label="Minute"
-          ><UInput
+        <UFormField label="Minute">
+          <UInput
             v-model="minute"
-            placeholder="*" /></UFormField
-        ><UFormField label="Hour"
-          ><UInput
+            placeholder="*"
+          /> </UFormField
+        ><UFormField label="Hour">
+          <UInput
             v-model="hour"
-            placeholder="*" /></UFormField
-        ><UFormField label="Day"
-          ><UInput
+            placeholder="*"
+          /> </UFormField
+        ><UFormField label="Day">
+          <UInput
             v-model="day"
-            placeholder="*" /></UFormField
-        ><UFormField label="Month"
-          ><UInput
+            placeholder="*"
+          /> </UFormField
+        ><UFormField label="Month">
+          <UInput
             v-model="month"
-            placeholder="*" /></UFormField
-        ><UFormField label="Weekday"
-          ><UInput
+            placeholder="*"
+          /> </UFormField
+        ><UFormField label="Weekday">
+          <UInput
             v-model="weekday"
             placeholder="*"
-        /></UFormField>
+          />
+        </UFormField>
       </div>
       <UInput
         :model-value="expression"
@@ -42,10 +47,13 @@ const { copyText } = useCopyToClipboard();
       />
       <div class="flex justify-end">
         <UButton
+          color="neutral"
+          variant="soft"
           label="Copy cron"
-          icon="i-lucide-copy"
+          icon="i-tabler-copy"
           @click="copyText(expression)"
         />
-      </div></div
-  ></ToolWorkbench>
+      </div>
+    </div>
+  </ToolWorkbench>
 </template>

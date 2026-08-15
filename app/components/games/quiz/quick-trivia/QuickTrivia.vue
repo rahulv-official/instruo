@@ -110,13 +110,13 @@ if (import.meta.dev && questions.some((question) => !question.options[question.a
         >
           <UIcon
             v-if="(isComplete && score < 4) || (isAnswered && !isCorrect)"
-            name="i-lucide-circle-x"
+            name="i-tabler-circle-x"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
           <UIcon
             v-else-if="isComplete || (isAnswered && isCorrect)"
-            name="i-lucide-circle-check"
+            name="i-tabler-circle-check"
             class="size-4 shrink-0"
             aria-hidden="true"
           />
@@ -161,7 +161,7 @@ if (import.meta.dev && questions.some((question) => !question.options[question.a
           :label="isComplete ? 'Play again' : 'Next question'"
           color="neutral"
           variant="outline"
-          trailing-icon="i-lucide-arrow-right"
+          trailing-icon="i-tabler-arrow-right"
           :disabled="!isAnswered"
           @click="nextQuestion"
         />

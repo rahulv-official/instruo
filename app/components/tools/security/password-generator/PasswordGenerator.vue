@@ -87,7 +87,7 @@ onMounted(generatePassword);
               :label="strength.label"
               :color="strength.color"
               variant="soft"
-              class="rounded-none"
+              class="rounded-sm"
             />
             <span class="text-toned font-mono text-xs">{{ entropyBits }} bits</span>
           </div>
@@ -135,14 +135,14 @@ onMounted(generatePassword);
           label="Generate again"
           color="neutral"
           variant="ghost"
-          icon="i-lucide-refresh-cw"
+          icon="i-tabler-refresh"
           @click="generatePassword"
         />
         <UButton
-          label="Copy password"
           color="neutral"
-          variant="outline"
-          icon="i-lucide-copy"
+          variant="soft"
+          label="Copy password"
+          icon="i-tabler-copy"
           :disabled="!password"
           @click="copyText(password)"
         />
