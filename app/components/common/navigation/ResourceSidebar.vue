@@ -65,7 +65,7 @@ function openResource(path: string | undefined) {
   <aside class="hidden lg:block">
     <nav
       :aria-label="`${kind === 'tool' ? 'Tool' : 'Game'} navigation`"
-      class="sticky top-20 max-h-[calc(100dvh-5.5rem)] overflow-y-auto pr-1"
+      class="pr-1"
     >
       <NuxtLink
         :to="kind === 'tool' ? '/tools' : '/games'"

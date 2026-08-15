@@ -28,10 +28,10 @@ useSeoMeta({
 <template>
   <div
     v-if="page"
-    class="grid w-full lg:grid-cols-[18.5rem_minmax(0,1fr)]"
+    class="grid w-full lg:grid-cols-[18.5rem_minmax(0,1fr)] lg:items-start"
   >
     <div
-      class="border-muted bg-muted/35 px-5 pt-6 lg:min-h-[calc(100dvh-4rem)] lg:border-r lg:px-5 lg:py-7"
+      class="border-muted bg-muted/35 px-5 pt-6 lg:sticky lg:top-16 lg:box-border lg:h-[calc(100dvh-4rem)] lg:max-h-[calc(100dvh-4rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:border-r lg:px-5 lg:py-7"
     >
       <ResourceSidebar
         :items="allTools ?? []"
