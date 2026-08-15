@@ -1,5 +1,5 @@
 {
   "version": 1,
   "include": ["/*"],
-  "exclude": ["/api/*", "/_nuxt/*", "/__nuxt_*"]
+  "exclude": ["/api/*", "/_nuxt/*", "/__nuxt_*", "/game-arts/*", "/game-assets/*"]
 }

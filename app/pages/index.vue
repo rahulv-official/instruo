@@ -30,6 +30,7 @@ const categoryLinks = [
   { label: "Security", value: "Security", icon: "i-tabler-shield-lock" },
   { label: "Text", value: "Text", icon: "i-tabler-cursor-text" },
   { label: "Everyday", value: "Everyday", icon: "i-tabler-calculator" },
+  { label: "Productivity", value: "Productivity", icon: "i-tabler-checklist" },
   { label: "Encoder Decoder", value: "Encoder Decoder", icon: "i-tabler-arrows-exchange" },
 ];
 

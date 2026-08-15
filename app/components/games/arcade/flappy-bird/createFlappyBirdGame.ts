@@ -92,9 +92,12 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       this.load.image("flappy-rock-up", `${ASSET_ROOT}/rockGrassDown.png`);
       this.load.image("flappy-rock-down", `${ASSET_ROOT}/rockGrass.png`);
       this.load.image("flappy-star", `${ASSET_ROOT}/starGold.png`);
-      this.load.image(
+      // Keep runtime asset URLs free of spaces/parentheses. Cloudflare Pages
+      // can serve the atlas reliably across encoded URL variants.
+      this.load.atlasXML(
         "flappy-bird",
-        "/game-assets/kenney/animal-pack/PNG/Round%20(outline)/parrot.png",
+        "/game-assets/kenney/animal-pack/Spritesheet/round_outline.png",
+        "/game-assets/kenney/animal-pack/Spritesheet/round_outline.xml",
       );
       this.load.image("flappy-particle-spark", `${PARTICLE_ROOT}/spark_01.png`);
       this.load.image("flappy-particle-circle", `${PARTICLE_ROOT}/circle_01.png`);
@@ -325,6 +328,7 @@ export const createFlappyBirdGame: PhaserGameFactory = async (
       this.bird = this.addToWorld(
         this.add
           .image(BIRD_X, this.birdY, "flappy-bird")
+          .setFrame("parrot.png")
           .setDisplaySize(36 * WORLD_SCALE, 36 * WORLD_SCALE)
           .setDepth(20),
       );
