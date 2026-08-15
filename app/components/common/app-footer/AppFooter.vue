@@ -6,7 +6,6 @@ interface FooterLink {
 }
 
 const { footer } = useAppConfig();
-const route = useRoute();
 
 function isExternal(link: FooterLink) {
   return link.target === "_blank";
@@ -15,12 +14,7 @@ function isExternal(link: FooterLink) {
 
 <template>
   <UFooter
-    class="border-t transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
-    :class="
-      route.path === '/'
-        ? 'instruo-home border-muted bg-muted/55 mt-0'
-        : 'border-muted bg-muted/55 mt-20'
-    "
+    class="instruo-home border-muted bg-muted/55 mt-0 border-t transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
     :ui="{
       top: 'border-muted border-b py-0',
       container: 'py-5 lg:py-5',
@@ -42,7 +36,7 @@ function isExternal(link: FooterLink) {
               height="28"
               class="size-7 shrink-0"
             />
-            <span class="text-base font-semibold tracking-[-0.025em]">Instruo</span>
+            <span class="text-base font-semibold tracking-tight">Instruo</span>
           </NuxtLink>
 
           <p class="text-muted mt-5 max-w-sm text-sm leading-6">
