@@ -171,6 +171,7 @@ export default defineAppConfig({
         viewport: "p-2",
         group: "p-1",
         item: "rounded-md data-highlighted:before:bg-muted/80",
+        itemLabelPrefix: "hidden",
       },
     },
     checkbox: {

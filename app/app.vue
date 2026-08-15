@@ -10,8 +10,8 @@ const [{ data: tools }, { data: games }] = await Promise.all([
 ]);
 
 const [{ data: toolsNav }, { data: gamesNav }] = await Promise.all([
-  useAsyncData("search_tools_nav", () => queryCollectionNavigation("tools")),
-  useAsyncData("search_games_nav", () => queryCollectionNavigation("games")),
+  useAsyncData("search_tools_nav", () => queryCollectionNavigation("tools", ["icon"])),
+  useAsyncData("search_games_nav", () => queryCollectionNavigation("games", ["icon"])),
 ]);
 
 const files = tools.value && games.value ? [...tools.value, ...games.value] : [];
