@@ -127,17 +127,17 @@ export default defineAppConfig({
     },
     input: {
       slots: {
-        base: "min-h-10 rounded-md !bg-[var(--ui-bg-field)] !ring-[var(--ui-border-field)] shadow-[inset_0_1px_0_rgb(255_255_255/0.55)] transition-[background-color,box-shadow,color] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:!ring-default focus-visible:!ring-primary/35 read-only:!bg-muted/65 dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.04)]",
+        base: "min-h-10 rounded-md !bg-[var(--ui-bg-field)] !ring-[var(--ui-border-field)] placeholder:text-dimmed/60 shadow-[inset_0_1px_0_rgb(255_255_255/0.55)] transition-[background-color,box-shadow,color] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:!ring-default focus-visible:!ring-primary/35 read-only:!bg-muted/65 dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.04)]",
       },
     },
     inputNumber: {
       slots: {
-        base: "min-h-10 rounded-md !bg-[var(--ui-bg-field)] !ring-[var(--ui-border-field)] shadow-[inset_0_1px_0_rgb(255_255_255/0.55)] transition-[background-color,box-shadow,color] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:!ring-default focus-visible:!ring-primary/35 dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.04)]",
+        base: "min-h-10 rounded-md !bg-[var(--ui-bg-field)] !ring-[var(--ui-border-field)] placeholder:text-dimmed/60 shadow-[inset_0_1px_0_rgb(255_255_255/0.55)] transition-[background-color,box-shadow,color] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:!ring-default focus-visible:!ring-primary/35 dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.04)]",
       },
     },
     textarea: {
       slots: {
-        base: "rounded-md !bg-[var(--ui-bg-field)] !ring-[var(--ui-border-field)] shadow-[inset_0_1px_0_rgb(255_255_255/0.55)] transition-[background-color,box-shadow,color] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:!ring-default focus-visible:!ring-primary/35 read-only:!bg-muted/65 dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.04)]",
+        base: "rounded-md !bg-[var(--ui-bg-field)] !ring-[var(--ui-border-field)] placeholder:text-dimmed/60 shadow-[inset_0_1px_0_rgb(255_255_255/0.55)] transition-[background-color,box-shadow,color] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:!ring-default focus-visible:!ring-primary/35 read-only:!bg-muted/65 dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.04)]",
       },
     },
     select: {
