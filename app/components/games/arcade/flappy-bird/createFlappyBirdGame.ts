@@ -36,7 +36,9 @@ const FLAP_VELOCITY = -350 * WORLD_SCALE;
 const BEST_KEY = "instruo:flappy-bird-best";
 const HUD_DEPTH = 100;
 const ASSET_ROOT = "/game-assets/kenney/tappy-plane/PNG";
-const PARTICLE_ROOT = "/game-assets/kenney/particle-pack/PNG%20(Transparent)";
+// Keep runtime asset URLs URL-safe. Some static hosts do not reliably decode
+// spaces/parentheses in nested public paths (notably Cloudflare Pages).
+const PARTICLE_ROOT = "/game-assets/kenney/particle-pack/png-transparent";
 
 const COLORS = {
   skyDeep: 0x66b8d7,

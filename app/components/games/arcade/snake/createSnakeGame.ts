@@ -113,7 +113,9 @@ const CELL_SIZE = BOARD_WIDTH / SNAKE_COLUMNS;
 const SWIPE_THRESHOLD = 24 * SCALE;
 const START_ROW = 9;
 const START_COLUMN = 5;
-const PARTICLE_ROOT = "/game-assets/kenney/particle-pack/PNG%20(Transparent)";
+// Keep runtime asset URLs URL-safe. Some static hosts do not reliably decode
+// spaces/parentheses in nested public paths (notably Cloudflare Pages).
+const PARTICLE_ROOT = "/game-assets/kenney/particle-pack/png-transparent";
 
 function openingForStage(id: SnakeStageId) {
   if (id === "circuit") {
