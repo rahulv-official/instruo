@@ -79,7 +79,7 @@ async function process() {
         v-if="outputUrl"
         :src="outputUrl"
         alt="Cropped image"
-        class="border-default max-h-72 w-fit border object-contain"
+        class="border-default max-h-72 w-fit rounded-md border object-contain"
       />
     </div>
   </ToolWorkbench>

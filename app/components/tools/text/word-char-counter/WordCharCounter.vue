@@ -35,7 +35,9 @@ const statistics = computed(() => {
         />
       </UFormField>
 
-      <dl class="border-default/70 grid border-t border-l sm:grid-cols-2 lg:grid-cols-3">
+      <dl
+        class="border-default/70 grid overflow-hidden rounded-lg border-t border-l sm:grid-cols-2 lg:grid-cols-3"
+      >
         <div
           v-for="statistic in statistics"
           :key="statistic.label"

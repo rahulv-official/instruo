@@ -79,7 +79,7 @@ onMounted(generatePassword);
 <template>
   <ToolWorkbench description="Generated with your browser's cryptographic random number generator.">
     <div class="grid gap-6">
-      <div class="border-default/70 bg-muted/20 border p-5 sm:p-6">
+      <div class="border-default/70 bg-muted/20 rounded-lg border p-5 sm:p-6">
         <div class="flex flex-wrap items-center justify-between gap-4">
           <span class="text-toned font-mono text-xs">Generated password</span>
           <div class="flex items-center gap-2">
@@ -87,7 +87,6 @@ onMounted(generatePassword);
               :label="strength.label"
               :color="strength.color"
               variant="soft"
-              class="rounded-sm"
             />
             <span class="text-toned font-mono text-xs">{{ entropyBits }} bits</span>
           </div>

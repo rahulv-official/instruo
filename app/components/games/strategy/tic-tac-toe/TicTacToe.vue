@@ -220,7 +220,6 @@ function changeMode(value: string | undefined) {
             label-key="label"
             size="lg"
             class="w-full"
-            :ui="{ base: 'rounded-none', content: 'rounded-none', item: 'before:rounded-none' }"
             @update:model-value="changeMode"
           />
         </UFormField>

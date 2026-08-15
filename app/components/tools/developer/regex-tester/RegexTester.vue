@@ -91,7 +91,7 @@ const output = computed(() => result.value.matches.map((match) => match.value).j
         </div>
         <p
           v-if="!result.matches.length"
-          class="text-muted border-default mt-4 border p-4 text-sm"
+          class="text-muted border-default mt-4 rounded-md border p-4 text-sm"
         >
           No matches yet. Add test text or adjust the pattern.
         </p>

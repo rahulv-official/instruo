@@ -30,7 +30,7 @@ const result = computed(() => {
           class="w-full font-mono"
         />
       </UFormField>
-      <div class="border-default/70 grid gap-3 border p-5">
+      <div class="border-default/70 grid gap-3 rounded-lg border p-5">
         <span class="text-muted text-xs uppercase">Symbolic mode</span
         ><strong class="text-highlighted font-mono text-3xl">{{
           result.symbolic || "---------"

@@ -47,7 +47,7 @@ useSeoMeta({
       >
         <NuxtLink
           to="/tools"
-          class="hover:text-highlighted rounded-sm"
+          class="hover:text-highlighted rounded-md"
         >
           Tools
         </NuxtLink>

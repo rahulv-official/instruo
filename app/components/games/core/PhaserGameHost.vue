@@ -169,6 +169,7 @@ onBeforeUnmount(() => {
   aspect-ratio: var(--phaser-game-aspect);
   margin-inline: auto;
   overflow: hidden;
+  border-radius: 10px;
   border: 1px solid var(--phaser-game-loading-bg, #17324c);
   background: var(--phaser-game-loading-bg, #17324c);
   box-shadow: 0 18px 50px rgb(23 50 76 / 18%);

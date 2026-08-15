@@ -110,7 +110,9 @@ onMounted(useCurrentTime);
           </UFormField>
         </div>
 
-        <dl class="border-default/70 divide-default/70 divide-y border-y">
+        <dl
+          class="border-default/70 divide-default/70 divide-y overflow-hidden rounded-lg border-y"
+        >
           <div class="grid gap-1 py-4">
             <dt class="text-toned text-xs">ISO 8601</dt>
             <dd class="text-highlighted font-mono text-sm break-all">
@@ -173,7 +175,9 @@ onMounted(useCurrentTime);
           />
         </UFormField>
 
-        <dl class="border-default/70 divide-default/70 divide-y border-y">
+        <dl
+          class="border-default/70 divide-default/70 divide-y overflow-hidden rounded-lg border-y"
+        >
           <div class="grid gap-1 py-4">
             <dt class="text-toned text-xs">Seconds</dt>
             <dd class="text-highlighted font-mono text-lg tabular-nums">

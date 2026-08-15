@@ -36,7 +36,7 @@ const emit = defineEmits<{
   height: 2.5rem;
   place-items: center;
   border: 1px solid rgb(255 255 255 / 26%);
-  border-radius: 0.55rem;
+  border-radius: 6px;
   background: rgb(23 50 76 / 88%);
   color: #fff;
   cursor: pointer;

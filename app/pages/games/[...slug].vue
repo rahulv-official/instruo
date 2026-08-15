@@ -47,7 +47,7 @@ useSeoMeta({
       >
         <NuxtLink
           to="/games"
-          class="hover:text-highlighted rounded-sm"
+          class="hover:text-highlighted rounded-md"
         >
           Games
         </NuxtLink>

@@ -16,7 +16,7 @@ const ratio = computed(() => {
         ><UFormField label="Background"><UInput v-model="background" /></UFormField>
       </div>
       <div
-        class="border-default grid min-h-32 place-items-center border p-5 text-lg"
+        class="border-default grid min-h-32 place-items-center rounded-lg border p-5 text-lg"
         :style="{ color: foreground, backgroundColor: background }"
       >
         Readable sample text

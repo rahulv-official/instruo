@@ -34,7 +34,7 @@ const filtered = computed(() =>
         icon="i-tabler-search"
         placeholder="Search 404, forbidden, timeout…"
       />
-      <dl class="border-default grid border-t border-l">
+      <dl class="border-default grid overflow-hidden rounded-lg border-t border-l">
         <div
           v-for="[code, label] in filtered"
           :key="code"

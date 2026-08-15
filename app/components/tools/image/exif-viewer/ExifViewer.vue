@@ -140,9 +140,9 @@ onBeforeUnmount(() => {
         <img
           :src="previewUrl"
           :alt="file.name"
-          class="border-default max-h-80 w-full border object-contain"
+          class="border-default max-h-80 w-full rounded-md border object-contain"
         />
-        <dl class="divide-default border-default divide-y border-y">
+        <dl class="divide-default border-default divide-y overflow-hidden rounded-lg border-y">
           <div
             v-for="(value, key) in metadata"
             :key="key"

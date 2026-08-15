@@ -22,7 +22,7 @@ const color = ref("#17324c");
         />
       </div>
       <article
-        class="border-default grid min-h-64 content-end gap-2 border p-6 text-white"
+        class="border-default grid min-h-64 content-end gap-2 rounded-lg border p-6 text-white"
         :style="{ background: color }"
       >
         <span class="font-mono text-xs tracking-[0.16em] uppercase">Instruo</span>

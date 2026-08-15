@@ -195,14 +195,14 @@ function updateState(nextState: Record<string, unknown>) {
   --phaser-game-loading-bg: #23232a;
   position: relative;
   overflow: hidden;
-  border-radius: 0;
+  border-radius: 10px;
   background: #23232a;
   box-shadow: 0 20px 58px rgb(35 35 42 / 20%);
 }
 
 .game-2048-stage :deep(.phaser-game-host) {
   border: 0;
-  border-radius: 0;
+  border-radius: 10px;
   background: #23232a;
   box-shadow: none;
   touch-action: none;
@@ -235,7 +235,7 @@ function updateState(nextState: Record<string, unknown>) {
   width: min(100%, 20rem);
   padding: 1.8rem 1.5rem 1.5rem;
   border: 2px solid rgb(255 246 220 / 18%);
-  border-radius: 0;
+  border-radius: 10px;
   background: #fff6dc;
   color: #263b4d;
   text-align: center;
@@ -264,7 +264,7 @@ function updateState(nextState: Record<string, unknown>) {
   height: 3.3rem;
   margin: 0 auto 0.85rem;
   place-items: center;
-  border-radius: 0.7rem;
+  border-radius: 10px;
   background: #54c28a;
   color: #ffffff;
   font-family: var(--font-sans), system-ui, sans-serif;

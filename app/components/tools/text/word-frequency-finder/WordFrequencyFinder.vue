@@ -54,7 +54,7 @@ const frequencies = computed(() => {
 
       <div
         v-if="frequencies.length"
-        class="border-default/70 border-t"
+        class="border-default/70 overflow-hidden rounded-lg border-t"
       >
         <div
           v-for="item in frequencies"
@@ -68,7 +68,7 @@ const frequencies = computed(() => {
 
       <p
         v-else
-        class="text-muted border-default/70 border p-5 text-sm"
+        class="text-muted border-default/70 rounded-lg border p-5 text-sm"
       >
         Add one or more comma-separated words to see their frequency.
       </p>

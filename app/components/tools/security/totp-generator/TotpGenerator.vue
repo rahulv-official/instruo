@@ -128,7 +128,7 @@ onBeforeUnmount(() => {
         title="Could not generate code"
         :description="error"
       />
-      <div class="border-default bg-elevated grid gap-3 border p-5 text-center">
+      <div class="border-default bg-elevated grid gap-3 rounded-lg border p-5 text-center">
         <span class="text-muted text-sm">{{ issuer || account || "Authenticator code" }}</span>
         <output
           class="text-highlighted font-mono text-5xl font-semibold tracking-[0.25em] tabular-nums"

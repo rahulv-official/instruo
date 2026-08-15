@@ -21,7 +21,7 @@ const { copyText } = useCopyToClipboard();
         </UFormField>
       </div>
       <div
-        class="border-default min-h-40 border"
+        class="border-default min-h-40 rounded-lg border"
         :style="{ background: `linear-gradient(${angle}deg, ${start}, ${end})` }"
       />
       <UInput

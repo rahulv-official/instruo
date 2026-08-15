@@ -192,7 +192,7 @@ inspect();
       />
 
       <template v-if="document">
-        <div class="border-default bg-elevated grid gap-5 border p-5">
+        <div class="border-default bg-elevated grid gap-5 rounded-lg border p-5">
           <div class="flex flex-wrap items-start justify-between gap-4">
             <div>
               <h3 class="text-highlighted text-xl font-semibold">{{ title }}</h3>
@@ -245,7 +245,7 @@ inspect();
           <div class="grid gap-3 lg:grid-cols-3">
             <div
               v-if="servers.length"
-              class="border-default border p-4"
+              class="border-default rounded-lg border p-4"
             >
               <p class="text-muted mb-3 text-sm font-medium">Servers</p>
               <div
@@ -266,7 +266,7 @@ inspect();
             </div>
             <div
               v-if="tags.length"
-              class="border-default border p-4"
+              class="border-default rounded-lg border p-4"
             >
               <p class="text-muted mb-3 text-sm font-medium">Tags</p>
               <div
@@ -285,7 +285,7 @@ inspect();
             </div>
             <div
               v-if="securitySchemes.length"
-              class="border-default border p-4"
+              class="border-default rounded-lg border p-4"
             >
               <p class="text-muted mb-3 text-sm font-medium">Security schemes</p>
               <div
@@ -318,7 +318,7 @@ inspect();
             <article
               v-for="endpoint in endpoints"
               :key="`${endpoint.method}-${endpoint.path}`"
-              class="border-default border p-5"
+              class="border-default rounded-lg border p-5"
             >
               <div class="flex flex-wrap items-center gap-3">
                 <UBadge
@@ -355,7 +355,7 @@ inspect();
               >
                 <details
                   v-if="endpoint.operation.tags"
-                  class="border-default border px-4 py-3"
+                  class="border-default rounded-md border px-4 py-3"
                 >
                   <summary class="text-highlighted cursor-pointer text-sm font-medium">
                     Tags
@@ -366,7 +366,7 @@ inspect();
                 </details>
                 <details
                   v-if="endpoint.operation.parameters"
-                  class="border-default border px-4 py-3"
+                  class="border-default rounded-md border px-4 py-3"
                 >
                   <summary class="text-highlighted cursor-pointer text-sm font-medium">
                     Parameters ({{
@@ -381,7 +381,7 @@ inspect();
                 </details>
                 <details
                   v-if="endpoint.operation.requestBody"
-                  class="border-default border px-4 py-3"
+                  class="border-default rounded-md border px-4 py-3"
                 >
                   <summary class="text-highlighted cursor-pointer text-sm font-medium">
                     Request body
@@ -393,7 +393,7 @@ inspect();
                 <details
                   v-if="endpoint.operation.responses"
                   open
-                  class="border-default border px-4 py-3"
+                  class="border-default rounded-md border px-4 py-3"
                 >
                   <summary class="text-highlighted cursor-pointer text-sm font-medium">
                     Responses ({{ objectEntries(endpoint.operation.responses).length }})
@@ -402,7 +402,7 @@ inspect();
                     <div
                       v-for="[status, response] in objectEntries(endpoint.operation.responses)"
                       :key="status"
-                      class="border-default bg-elevated border p-3"
+                      class="border-default bg-elevated rounded-md border p-3"
                     >
                       <div class="flex items-center gap-2">
                         <UBadge
@@ -427,7 +427,7 @@ inspect();
                 >
                   <details
                     v-if="operationValue(endpoint.operation, field)"
-                    class="border-default border px-4 py-3"
+                    class="border-default rounded-md border px-4 py-3"
                   >
                     <summary class="text-highlighted cursor-pointer text-sm font-medium">
                       {{ field }}
@@ -459,7 +459,7 @@ inspect();
             <details
               v-for="group in componentGroups"
               :key="group.name"
-              class="border-default border p-4"
+              class="border-default rounded-lg border p-4"
             >
               <summary class="text-highlighted cursor-pointer text-sm font-medium">
                 {{ group.name }} <span class="text-muted">({{ group.entries.length }})</span>
@@ -468,7 +468,7 @@ inspect();
                 <details
                   v-for="[name, value] in group.entries"
                   :key="name"
-                  class="border-default border px-3 py-2"
+                  class="border-default rounded-md border px-3 py-2"
                 >
                   <summary class="text-highlighted cursor-pointer font-mono text-xs">
                     {{ name }}
@@ -482,7 +482,7 @@ inspect();
           </div>
         </section>
 
-        <details class="border-default border p-5">
+        <details class="border-default rounded-lg border p-5">
           <summary class="text-highlighted cursor-pointer font-medium">Raw parsed document</summary>
           <pre
             class="text-muted mt-4 max-h-[32rem] overflow-auto text-xs leading-5 whitespace-pre-wrap"

@@ -32,7 +32,7 @@ async function process() {
         v-if="outputUrl"
         :src="outputUrl"
         alt="Generated favicon"
-        class="border-default size-16 border object-contain"
+        class="border-default size-16 rounded-md border object-contain"
       />
     </div>
   </ToolWorkbench>

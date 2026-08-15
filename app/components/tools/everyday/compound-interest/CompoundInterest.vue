@@ -81,7 +81,7 @@ const rows = computed(() =>
           />
         </UFormField>
       </div>
-      <div class="border-default bg-elevated grid gap-4 border p-5">
+      <div class="border-default bg-elevated grid gap-4 rounded-lg border p-5">
         <div>
           <p class="text-muted text-sm">Estimated balance</p>
           <p class="text-highlighted text-4xl font-semibold">{{ money.format(futureValue) }}</p>

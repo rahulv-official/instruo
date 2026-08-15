@@ -42,7 +42,9 @@ const result = computed(() => {
           placeholder="#f97316"
         />
       </UFormField>
-      <dl class="border-default/70 grid border-t border-l sm:grid-cols-2">
+      <dl
+        class="border-default/70 grid overflow-hidden rounded-lg border-t border-l sm:grid-cols-2"
+      >
         <div class="border-default/70 grid gap-2 border-r border-b p-5">
           <dt class="text-muted text-xs uppercase">RGB</dt>
           <dd class="text-highlighted font-mono">{{ result.rgb || "—" }}</dd>

@@ -41,7 +41,7 @@ function escapeHtml(value: string) {
         />
       </UFormField>
       <section
-        class="border-default/70 min-h-72 border p-5"
+        class="border-default/70 min-h-72 rounded-lg border p-5"
         aria-label="Markdown preview"
       >
         <div

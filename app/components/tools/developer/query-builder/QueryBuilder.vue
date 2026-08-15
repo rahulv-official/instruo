@@ -51,7 +51,7 @@ function removeRow(index: number) {
           variant="outline"
           icon="i-tabler-plus"
           @click="addRow"
-        /><code class="border-default/70 min-w-0 border p-3 text-sm break-all">{{
+        /><code class="border-default/70 min-w-0 rounded-md border p-3 text-sm break-all">{{
           query || "query=values"
         }}</code>
       </div>

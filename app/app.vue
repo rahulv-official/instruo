@@ -56,16 +56,6 @@ useHead({
       :navigation="nav"
       :color-mode="false"
       placeholder="Search tools and games…"
-      :ui="{
-        modal:
-          'bg-elevated h-full rounded-none ring-1 ring-muted shadow-menu sm:h-136 sm:max-w-2xl sm:rounded-lg',
-        root: 'bg-elevated divide-y divide-muted',
-        input: 'm-2 w-[calc(100%-1rem)] rounded-md bg-(--ui-bg-field)! ring-muted! shadow-none',
-        content: 'bg-elevated',
-        viewport: 'p-2',
-        group: 'p-1',
-        item: 'rounded-md data-highlighted:before:bg-muted/80',
-      }"
     />
   </UApp>
 </template>

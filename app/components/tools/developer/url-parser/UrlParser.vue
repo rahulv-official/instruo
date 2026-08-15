@@ -47,7 +47,7 @@ const output = computed(() =>
 
       <dl
         v-if="fields.length"
-        class="border-default/70 grid border-t border-l sm:grid-cols-2"
+        class="border-default/70 grid overflow-hidden rounded-lg border-t border-l sm:grid-cols-2"
       >
         <div
           v-for="[label, value] in fields"
@@ -60,7 +60,7 @@ const output = computed(() =>
       </dl>
       <p
         v-else
-        class="text-muted border-default/70 border p-5 text-sm"
+        class="text-muted border-default/70 rounded-lg border p-5 text-sm"
       >
         Parsed URL parts will appear here.
       </p>

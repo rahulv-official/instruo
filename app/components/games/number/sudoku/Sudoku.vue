@@ -291,7 +291,6 @@ onMounted(() => loadPuzzle());
             color="success"
             variant="soft"
             icon="i-tabler-circle-check"
-            :ui="{ root: 'rounded-none' }"
           />
 
           <div class="grid grid-cols-5 gap-2 sm:grid-cols-10 lg:grid-cols-3">
@@ -330,7 +329,6 @@ onMounted(() => loadPuzzle());
             label-key="label"
             size="lg"
             class="w-full sm:max-w-sm"
-            :ui="{ base: 'rounded-none', content: 'rounded-none', item: 'before:rounded-none' }"
             @update:model-value="changeLevel"
           />
         </UFormField>

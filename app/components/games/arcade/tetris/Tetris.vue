@@ -54,7 +54,7 @@ function updateState(next: Record<string, unknown>) {
       </header>
 
       <div
-        class="border-default relative overflow-hidden border"
+        class="border-default relative overflow-hidden rounded-lg border"
         data-phaser-game-shell
         style="--phaser-game-loading-bg: #151d2b"
       >
@@ -81,7 +81,7 @@ function updateState(next: Record<string, unknown>) {
           class="bg-default/70 absolute inset-0 z-10 grid place-items-center p-5"
         >
           <div
-            class="border-default bg-elevated grid w-full max-w-sm gap-4 border p-6 text-center shadow-xl"
+            class="border-default bg-elevated grid w-full max-w-sm gap-4 rounded-lg border p-6 text-center shadow-xl"
           >
             <div
               class="bg-primary text-inverted mx-auto grid size-14 place-items-center text-2xl font-bold"
@@ -129,7 +129,7 @@ function updateState(next: Record<string, unknown>) {
           aria-labelledby="tetris-over-title"
         >
           <div
-            class="border-default bg-elevated grid w-full max-w-sm gap-3 border p-6 text-center shadow-xl"
+            class="border-default bg-elevated grid w-full max-w-sm gap-3 rounded-lg border p-6 text-center shadow-xl"
           >
             <div
               class="bg-error text-inverted mx-auto grid size-14 place-items-center text-2xl"

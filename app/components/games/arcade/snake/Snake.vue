@@ -327,14 +327,14 @@ function updateState(nextState: Record<string, unknown>) {
   --phaser-game-loading-bg: var(--snake-stage-surface, #102f36);
   position: relative;
   overflow: hidden;
-  border-radius: 0;
+  border-radius: 10px;
   background: var(--snake-stage-surface, #102f36);
   box-shadow: 0 22px 64px rgb(16 47 54 / 22%);
 }
 
 .snake-stage :deep(.phaser-game-host) {
   border: 0;
-  border-radius: 0;
+  border-radius: 10px;
   background: var(--snake-stage-surface, #102f36);
   box-shadow: none;
 }
@@ -369,7 +369,7 @@ function updateState(nextState: Record<string, unknown>) {
   overflow: auto;
   padding: 1.25rem 1.1rem 1rem;
   border: 1px solid rgb(246 243 229 / 26%);
-  border-radius: 0;
+  border-radius: 10px;
   background: #f6f1df;
   color: #19353b;
   text-align: center;
@@ -446,7 +446,7 @@ function updateState(nextState: Record<string, unknown>) {
   min-height: 3.15rem;
   padding: 0.5rem 0.65rem;
   border: 1px solid #c9d3c8;
-  border-radius: 0;
+  border-radius: 6px;
   background: #e9eadc;
   color: #19353b;
   cursor: pointer;
@@ -554,7 +554,7 @@ function updateState(nextState: Record<string, unknown>) {
   height: 2.45rem;
   place-items: center;
   border: 1px solid rgb(246 243 229 / 28%);
-  border-radius: 0;
+  border-radius: 6px;
   background: rgb(11 29 34 / 76%);
   color: #f6f1df;
   cursor: pointer;

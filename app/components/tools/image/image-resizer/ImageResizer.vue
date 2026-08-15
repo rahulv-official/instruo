@@ -230,7 +230,7 @@ onUnmounted(() => {
         </div>
 
         <div
-          class="border-default/70 bg-muted/20 flex min-h-80 items-center justify-center border p-4"
+          class="border-default/70 bg-muted/20 flex min-h-80 items-center justify-center rounded-lg border p-4"
         >
           <!-- eslint-disable vue/html-self-closing -->
           <img

@@ -39,7 +39,7 @@ async function generate() {
         v-if="image"
         :src="image"
         alt="Generated QR code"
-        class="border-default size-72 border bg-white p-3"
+        class="border-default size-72 rounded-lg border bg-white p-3"
       />
     </div>
   </ToolWorkbench>

@@ -30,7 +30,9 @@ const output = computed(() =>
           class="w-full"
         />
       </UFormField>
-      <p class="border-default/70 text-muted border p-5 text-base leading-8">{{ output }}</p>
+      <p class="border-default/70 text-muted rounded-lg border p-5 text-base leading-8">
+        {{ output }}
+      </p>
       <div class="flex justify-end">
         <UButton
           color="neutral"

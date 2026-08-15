@@ -39,7 +39,7 @@ async function process() {
         ><img
           :src="sourceUrl"
           alt="Selected source"
-          class="border-default max-h-64 w-fit border object-contain"
+          class="border-default max-h-64 w-fit rounded-md border object-contain"
         />
       </div>
       <div class="grid gap-4 sm:grid-cols-2">
@@ -83,7 +83,7 @@ async function process() {
         v-if="outputUrl"
         :src="outputUrl"
         alt="Compressed result"
-        class="border-default max-h-64 w-fit border object-contain"
+        class="border-default max-h-64 w-fit rounded-md border object-contain"
       />
     </div>
   </ToolWorkbench>

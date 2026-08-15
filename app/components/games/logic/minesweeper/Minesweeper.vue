@@ -314,7 +314,6 @@ function numberClass(value: number) {
               label-key="label"
               size="lg"
               class="w-full sm:max-w-sm"
-              :ui="{ base: 'rounded-none', content: 'rounded-none', item: 'before:rounded-none' }"
               @update:model-value="changeLevel"
             />
           </UFormField>

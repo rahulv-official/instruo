@@ -15,8 +15,8 @@ const items = computed<NavigationMenuItem[]>(() => [
     mode="drawer"
     class="border-muted bg-default/95 sticky top-0 border-b backdrop-blur-md transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
     :ui="{
-      container: 'h-16 max-w-[92rem] px-5 sm:px-8 lg:px-10',
-      content: 'bg-default rounded-none',
+      container: 'h-16 max-w-368 px-5 sm:px-8 lg:px-10',
+      content: 'bg-default rounded-lg',
       body: 'px-5 pb-6',
       toggle: 'rounded-md',
     }"
@@ -34,7 +34,7 @@ const items = computed<NavigationMenuItem[]>(() => [
           height="28"
           class="size-7 shrink-0"
         />
-        <span class="text-highlighted text-base font-semibold tracking-[-0.025em]">Instruo</span>
+        <span class="text-highlighted text-base font-semibold tracking-tight">Instruo</span>
       </NuxtLink>
     </template>
 

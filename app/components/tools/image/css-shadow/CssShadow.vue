@@ -35,7 +35,7 @@ const { copyText } = useCopyToClipboard();
           /> </UFormField
         ><UFormField label="Color"><UInput v-model="color" /></UFormField>
       </div>
-      <div class="border-default bg-elevated grid min-h-32 place-items-center border">
+      <div class="border-default bg-elevated grid min-h-32 place-items-center rounded-lg border">
         <div
           class="bg-default size-24"
           :style="{ boxShadow: `${x}px ${y}px ${blur}px ${spread}px ${color}` }"
