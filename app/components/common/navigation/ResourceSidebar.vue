@@ -14,6 +14,7 @@ const props = defineProps<{
 }>();
 
 const search = ref("");
+const navigation = ref<HTMLElement | null>(null);
 
 const visibleItems = computed(() => {
   const query = search.value.trim().toLowerCase();
@@ -44,6 +45,50 @@ const selectItems = computed(() =>
 function openResource(path: string | undefined) {
   if (path && path !== props.currentPath) navigateTo(path);
 }
+
+function getScrollContainer(element: HTMLElement) {
+  let parent = element.parentElement;
+
+  while (parent && parent !== document.body) {
+    const styles = getComputedStyle(parent);
+    const canScroll = /auto|scroll|overlay/.test(styles.overflowY);
+
+    if (canScroll && parent.scrollHeight > parent.clientHeight) return parent;
+    parent = parent.parentElement;
+  }
+
+  return null;
+}
+
+/** Keep the active resource discoverable after a route change. */
+function keepCurrentResourceVisible() {
+  const navigationElement = navigation.value;
+  if (!navigationElement) return;
+
+  const activeLink = [
+    ...navigationElement.querySelectorAll<HTMLElement>("[data-resource-path]"),
+  ].find((element) => element.dataset.resourcePath === props.currentPath);
+  if (!activeLink) return;
+
+  const scrollContainer = getScrollContainer(activeLink);
+  const containerRect = scrollContainer?.getBoundingClientRect() ?? {
+    top: 0,
+    bottom: window.innerHeight,
+  };
+  const linkRect = activeLink.getBoundingClientRect();
+  const isVisible = linkRect.top >= containerRect.top && linkRect.bottom <= containerRect.bottom;
+
+  if (!isVisible) {
+    activeLink.scrollIntoView({ block: "center", inline: "nearest", behavior: "auto" });
+  }
+}
+
+onMounted(() => nextTick(keepCurrentResourceVisible));
+watch(
+  () => props.currentPath,
+  () => nextTick(keepCurrentResourceVisible),
+  { flush: "post" },
+);
 </script>
 
 <template>
@@ -64,6 +109,7 @@ function openResource(path: string | undefined) {
 
   <aside class="hidden lg:block">
     <nav
+      ref="navigation"
       :aria-label="`${kind === 'tool' ? 'Tool' : 'Game'} navigation`"
       class="pr-1"
     >
@@ -105,6 +151,7 @@ function openResource(path: string | undefined) {
             v-for="resource in resources"
             :key="resource.id"
             :to="resource.path"
+            :data-resource-path="resource.path"
             class="focus-visible:outline-primary flex min-h-9 items-center gap-2.5 rounded-md border-l-2 px-2.5 py-1.5 text-sm transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2"
             :class="
               resource.path === currentPath

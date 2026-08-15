@@ -98,8 +98,8 @@ const showFeaturedGames = computed(
 
 const visibleGames = computed(() => {
   if (!showFeaturedGames.value) return filteredItems.value;
-  const featured = new Set(featuredGamePaths);
-  return filteredItems.value.filter((item) => !featured.has(item.path));
+  // const featured = new Set(featuredGamePaths);
+  return filteredItems.value; //.filter((item) => !featured.has(item.path));
 });
 
 function remember(item: CatalogueEntry) {

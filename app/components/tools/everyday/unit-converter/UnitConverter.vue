@@ -80,51 +80,84 @@ const result = computed(() =>
 
 <template>
   <ToolWorkbench description="Convert everyday measurements with instant browser-side results.">
-    <div class="grid max-w-3xl gap-5">
-      <UFormField label="Category">
-        <USelect
-          v-model="category"
-          :items="[
-            { label: 'Length', value: 'length' },
-            { label: 'Weight', value: 'weight' },
-            { label: 'Temperature', value: 'temperature' },
-          ]"
-          value-key="value"
-          label-key="label"
-        />
-      </UFormField>
-      <div class="grid items-end gap-4 sm:grid-cols-[1fr_auto_1fr]">
-        <UFormField label="Amount">
-          <UInput
-            v-model.number="amount"
-            type="number"
-            min="0"
-          />
-        </UFormField>
-        <span class="text-muted pb-2 text-center">from</span>
-        <UFormField label="Unit">
-          <USelect
-            v-model="fromSelection"
-            :items="units"
-          />
-        </UFormField>
-        <span class="text-muted hidden pb-2 text-center sm:block">to</span>
-        <UFormField
-          label="Unit"
-          class="sm:col-start-3"
+    <div class="grid max-w-4xl gap-7">
+      <div class="grid items-end gap-5 sm:grid-cols-[minmax(0,1.6fr)_auto_minmax(12rem,1fr)]">
+        <div class="grid gap-5">
+          <div class="grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(10rem,0.85fr)]">
+            <UFormField
+              label="Category"
+              class="w-full"
+            >
+              <USelect
+                v-model="category"
+                :items="[
+                  { label: 'Length', value: 'length' },
+                  { label: 'Weight', value: 'weight' },
+                  { label: 'Temperature', value: 'temperature' },
+                ]"
+                class="w-full"
+                value-key="value"
+                label-key="label"
+              />
+            </UFormField>
+            <div
+              class="hidden sm:block"
+              aria-hidden="true"
+            />
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(10rem,0.85fr)]">
+            <UFormField label="Amount">
+              <UInput
+                v-model.number="amount"
+                type="number"
+                min="0"
+                inputmode="decimal"
+                class="w-full"
+              />
+            </UFormField>
+            <UFormField label="From">
+              <USelect
+                v-model="fromSelection"
+                :items="units"
+                class="w-full"
+              />
+            </UFormField>
+          </div>
+        </div>
+
+        <div
+          class="text-muted hidden items-center justify-center pb-2 sm:flex"
+          aria-hidden="true"
         >
+          <Icon
+            name="tabler:arrow-right"
+            class="size-5"
+          />
+        </div>
+
+        <UFormField label="To">
           <USelect
             v-model="toSelection"
             :items="units"
+            class="w-full"
           />
         </UFormField>
       </div>
-      <UAlert
-        color="primary"
-        variant="subtle"
-        title="Result"
-        :description="`${result} ${targetUnit}`"
-      />
+
+      <div
+        class="border-muted bg-muted/35 rounded-md border px-4 py-4 sm:flex sm:items-center sm:justify-between sm:gap-6"
+      >
+        <div>
+          <p class="text-muted text-sm font-medium">Result</p>
+          <p class="text-highlighted mt-1 font-mono text-xl font-semibold tracking-tight">
+            {{ result }} {{ targetUnit }}
+          </p>
+        </div>
+        <p class="text-dimmed mt-2 text-sm sm:mt-0">
+          {{ amount || 0 }} {{ sourceUnit }} converted locally
+        </p>
+      </div>
     </div>
   </ToolWorkbench>
 </template>
