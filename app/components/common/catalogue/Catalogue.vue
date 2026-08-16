@@ -7,6 +7,7 @@ interface CatalogueEntry {
   category: string;
   tags: string[];
   icon?: string;
+  art?: string;
 }
 
 const props = defineProps<{
@@ -135,7 +136,7 @@ onKeyStroke("/", (event) => {
           {{ kind === "tool" ? "Browser tools" : "Browser games" }}
         </p>
         <h1
-          class="text-highlighted mt-4 max-w-4xl text-4xl leading-[0.98] font-semibold tracking-[-0.05em] text-balance sm:text-5xl lg:text-6xl"
+          class="text-highlighted mt-4 max-w-4xl text-4xl leading-[0.98] font-semibold tracking-tighter text-balance sm:text-5xl lg:text-6xl"
         >
           {{ title }}
         </h1>
@@ -163,7 +164,7 @@ onKeyStroke("/", (event) => {
                 :items="categoryOptions"
                 value-key="value"
                 label-key="label"
-                class="!bg-elevated w-full"
+                class="bg-elevated! w-full"
               />
             </UFormField>
 
@@ -295,7 +296,7 @@ onKeyStroke("/", (event) => {
                   v-for="item in entries"
                   :key="item.id"
                   :to="item.path"
-                  class="group border-muted bg-elevated focus-visible:outline-primary hover:bg-muted/40 grid min-h-[5.5rem] grid-cols-[auto_1fr_auto] items-center gap-3 border-b p-4 transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] md:odd:border-r"
+                  class="group border-muted bg-elevated focus-visible:outline-primary hover:bg-muted/40 grid min-h-22 grid-cols-[auto_1fr_auto] items-center gap-3 border-b p-4 transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 md:odd:border-r"
                   @click="remember(item)"
                 >
                   <span
@@ -303,7 +304,7 @@ onKeyStroke("/", (event) => {
                   >
                     <UIcon
                       :name="item.icon || 'i-tabler-tools'"
-                      class="size-[1.125rem]"
+                      class="size-4.5"
                       aria-hidden="true"
                     />
                   </span>
@@ -364,6 +365,7 @@ onKeyStroke("/", (event) => {
                 :title="item.title"
                 :category="item.category"
                 :icon="item.icon"
+                :art="item.art"
                 featured
                 class="min-h-44 flex-1"
               />
@@ -401,7 +403,7 @@ onKeyStroke("/", (event) => {
             icon="i-tabler-search"
             size="xl"
             aria-label="Search games"
-            class="!bg-elevated w-full"
+            class="bg-elevated! w-full"
           >
             <template #trailing>
               <UKbd
@@ -446,12 +448,13 @@ onKeyStroke("/", (event) => {
           @click="remember(item)"
         >
           <article>
-            <div class="relative aspect-[4/3]">
+            <div class="relative aspect-4/3">
               <GamePreview
                 :path="item.path"
                 :title="item.title"
                 :category="item.category"
                 :icon="item.icon"
+                :art="item.art"
               />
               <UIcon
                 name="i-tabler-arrow-up-right"

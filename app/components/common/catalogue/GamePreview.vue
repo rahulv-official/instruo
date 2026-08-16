@@ -5,13 +5,14 @@ const props = withDefaults(
     title: string;
     category: string;
     icon?: string;
+    art?: string;
     featured?: boolean;
   }>(),
   { icon: "i-tabler-device-gamepad-2", featured: false },
 );
 
 const slug = computed(() => props.path.split("/").at(-1) ?? "");
-const source = computed(() => `/game-arts/${slug.value}.jpg`);
+const source = computed(() => props.art || `/game-arts/${slug.value}.jpg`);
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 ---
 title: Quick Trivia
-description: Answer five clean, timeless questions across familiar topics.
+description: Play a rotating ten-question round from the Open Trivia DB question library.
 category: Quiz
 tags: [trivia, quiz, general-knowledge, browser-game, learning]
 icon: i-tabler-help-circle
@@ -13,12 +13,12 @@ icon: i-tabler-help-circle
 
 1. Answer one multiple-choice question at a time.
 2. Your first answer is locked for that question.
-3. See the correct answer immediately, then continue.
-4. Finish all five questions to see your score.
+3. See the correct answer and a short explanation immediately, then continue.
+4. Finish ten questions to see your score, or start a fresh round.
 
 ## Controls
 
-Select an answer, then choose **Next question**. There is no timer, so take your time.
+Select an answer, read the explanation, then choose **Next question**. There is no timer, so take your time. Questions are fetched from [Open Trivia DB](https://opentdb.com/) in your browser. If the service is unavailable, a local fallback bank keeps the game playable.
 
 ## A brief history
 
@@ -28,4 +28,4 @@ Sources: [The Strong National Museum of Play](https://www.museumofplay.org/press
 
 ## Privacy
 
-Answers and score remain in this browser tab. No account, analytics event, or network request is required.
+Answers and score remain in this browser tab. The game requests trivia questions from Open Trivia DB; no account or gameplay submission is required.
