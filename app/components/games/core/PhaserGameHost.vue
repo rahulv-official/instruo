@@ -36,6 +36,63 @@ const fullscreenTarget = ref<HTMLElement | null>(null);
 let game: Awaited<ReturnType<PhaserGameFactory>> | undefined;
 let disposed = false;
 
+interface PhaserKeyboardRuntime {
+  input?: {
+    keyboard?: {
+      enabled: boolean;
+      preventDefault: boolean;
+    } | null;
+  };
+  scene?: {
+    getScenes: (isActive?: boolean) => Array<{
+      input?: {
+        keyboard?: {
+          enabled: boolean;
+        } | null;
+      };
+    }>;
+  };
+}
+
+function isInsideGameScope(target: EventTarget | null) {
+  const scope = fullscreenTarget.value ?? getFullscreenTarget();
+  if (!(target instanceof Node) || !scope?.contains(target)) return false;
+
+  const element = target instanceof HTMLElement ? target : target.parentElement;
+  if (element?.closest("input, textarea, select, [contenteditable='true'], [role='textbox']")) {
+    return false;
+  }
+  return true;
+}
+
+function setKeyboardActive(active: boolean) {
+  const runtime = game as unknown as PhaserKeyboardRuntime | undefined;
+  if (!runtime) return;
+
+  // Phaser's capture list is global to the document. Keep the captures for
+  // scroll prevention inside the game, but release them while another control
+  // (search, form field, dialog, etc.) owns focus.
+  if (runtime.input?.keyboard) {
+    runtime.input.keyboard.enabled = active;
+    runtime.input.keyboard.preventDefault = active;
+  }
+  for (const scene of runtime.scene?.getScenes(true) ?? []) {
+    if (scene.input?.keyboard) scene.input.keyboard.enabled = active;
+  }
+}
+
+function handleFocusIn(event: FocusEvent) {
+  setKeyboardActive(isInsideGameScope(event.target));
+}
+
+function handlePointerDown(event: PointerEvent) {
+  setKeyboardActive(isInsideGameScope(event.target));
+}
+
+function handleWindowBlur() {
+  setKeyboardActive(false);
+}
+
 function start(option?: unknown) {
   game?.startGame?.(option);
 }
@@ -78,6 +135,9 @@ onMounted(async () => {
 
   fullscreenTarget.value = getFullscreenTarget();
   document.addEventListener("fullscreenchange", syncFullscreen);
+  document.addEventListener("focusin", handleFocusIn);
+  document.addEventListener("pointerdown", handlePointerDown);
+  window.addEventListener("blur", handleWindowBlur);
   syncFullscreen();
 
   try {
@@ -103,6 +163,9 @@ onMounted(async () => {
         }
       },
     );
+    // Games start behind a DOM overlay. Do not let their global keyboard
+    // capture affect page controls until the player interacts with the stage.
+    setKeyboardActive(false);
     if (disposed) game.destroy(true);
   } catch (error) {
     loading.value = false;
@@ -113,6 +176,10 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   disposed = true;
   document.removeEventListener("fullscreenchange", syncFullscreen);
+  document.removeEventListener("focusin", handleFocusIn);
+  document.removeEventListener("pointerdown", handlePointerDown);
+  window.removeEventListener("blur", handleWindowBlur);
+  setKeyboardActive(false);
   game?.destroy(true);
 });
 </script>
@@ -126,6 +193,7 @@ onBeforeUnmount(() => {
     :aria-label="props.label"
     :aria-busy="loading"
     role="application"
+    tabindex="0"
   >
     <div
       v-if="loading"

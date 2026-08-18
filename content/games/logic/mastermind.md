@@ -1,6 +1,6 @@
 ---
 title: Mastermind
-description: Crack a four-digit code using exact and close-match clues.
+description: Crack a four-color code using exact and close-match clues.
 category: Logic
 tags: [mastermind, code, deduction, puzzle, logic]
 icon: i-tabler-lock
@@ -11,7 +11,7 @@ icon: i-tabler-lock
 
 ## Rules
 
-1. Guess four digits from 1 through 6.
+1. Choose four colors from the six available pegs.
 2. Exact counts show digits in the correct place.
 3. Close counts show matching digits in another place.
 4. Crack the code in eight attempts.

@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@nuxt/content",
     "@vueuse/nuxt",
+    "nuxt-gtag",
   ],
 
   alias: {
