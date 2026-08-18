@@ -15,7 +15,7 @@ icon: i-tabler-stack-2
 2. A turn removes one or more stones from exactly one pile.
 3. The player taking the final stone wins.
 
-This version uses three piles and supports two people sharing one screen.
+This version uses three piles and supports a local two-player match or a solo match against a local computer opponent.
 
 ## A brief history
 

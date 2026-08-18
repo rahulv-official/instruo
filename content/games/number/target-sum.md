@@ -14,7 +14,8 @@ icon: i-tabler-target
 1. Read the target number.
 2. Select exactly two tiles.
 3. Their values must add to the target.
-4. Start a new target for another round.
+4. You have three attempts; swap either tile to revise a pair.
+5. Start a new target for another round.
 
 ## A brief history
 
