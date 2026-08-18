@@ -1,6 +1,6 @@
 ---
 title: Lights Out
-description: Switch lights and their neighbors until the entire five-by-five board is dark.
+description: Solve a seeded daily light circuit, or practise on classic five-by-five and larger boards.
 category: Logic
 tags: [lights-out, logic, puzzle, toggle, brain-teaser]
 icon: i-tabler-bulb
@@ -11,12 +11,13 @@ icon: i-tabler-bulb
 
 ## Rules
 
-1. The board has twenty-five lights arranged in a five-by-five grid.
+1. Choose Daily Circuit, Classic 5 × 5, Progressive 6 × 6, or Progressive 7 × 7.
 2. Selecting one light toggles it and its direct neighbors: up, down, left, and right.
 3. Diagonal lights are not affected.
 4. Clear every light to finish the puzzle.
+5. Your score is your move count plus two penalty moves for every hint.
 
-Each puzzle is built by applying legal moves to an empty board, so a solution always exists. The move counter records every tile press.
+Daily Circuit uses the same seeded puzzle for everyone on a given day. Every board is built by applying legal moves to an empty board, so a solution always exists. The game shows the solver’s optimal move count as par, and your daily completion streak is stored locally.
 
 ## A brief history
 
@@ -24,4 +25,4 @@ Lights Out was released as an electronic puzzle by Tiger Electronics in 1995. It
 
 ## Privacy
 
-The board and move count live only in this browser tab. No account or network request is required.
+The board, score, best result, and daily streak live only in this browser. No account or network request is required.
