@@ -515,8 +515,8 @@ onBeforeUnmount(() => {
 .mastermind-art-wash {
   z-index: -1;
   background:
-    linear-gradient(90deg, rgb(7 9 14 / 0.94) 0%, rgb(7 9 14 / 0.72) 39%, rgb(7 9 14 / 0.56) 100%),
-    rgb(6 8 12 / 0.22);
+    linear-gradient(180deg, rgb(0 0 0 / 0.42), rgb(0 0 0 / 0.3) 46%, rgb(0 0 0 / 0.9)),
+    rgb(0 0 0 / 0.22);
 }
 
 .mastermind-state,
@@ -540,12 +540,8 @@ onBeforeUnmount(() => {
   justify-items: center;
   gap: 0.75rem;
   max-width: 34rem;
-  padding: 2rem;
-  border: 1px solid rgb(255 255 255 / 0.14);
-  border-radius: 1rem;
-  background: rgb(12 15 22 / 0.85);
-  box-shadow: 0 22px 60px rgb(0 0 0 / 0.32);
-  backdrop-filter: blur(14px);
+  padding: 1rem;
+  text-shadow: 0 2px 18px rgb(0 0 0 / 0.65);
 }
 
 .mastermind-state-card h2,
@@ -615,12 +611,12 @@ onBeforeUnmount(() => {
   position: relative;
   min-width: 0;
   align-self: center;
-  border: 1px solid rgb(255 255 255 / 0.18);
-  border-radius: 1.25rem;
-  background: rgb(15 18 25 / 0.94);
+  border: 1px solid rgb(254 243 199 / 0.25);
+  border-radius: 1rem;
+  background: rgb(0 0 0 / 0.75);
   color: white;
-  box-shadow: 0 24px 70px rgb(0 0 0 / 0.46);
-  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 70px rgb(0 0 0 / 0.45);
+  backdrop-filter: blur(4px);
 }
 
 .mastermind-console-body {
@@ -934,7 +930,7 @@ onBeforeUnmount(() => {
   gap: 0.7rem;
   padding: 1.5rem;
   border-radius: inherit;
-  background: rgb(7 9 14 / 0.82);
+  background: rgb(0 0 0 / 0.65);
   text-align: center;
   backdrop-filter: blur(12px);
 }
