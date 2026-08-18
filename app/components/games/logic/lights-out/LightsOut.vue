@@ -74,10 +74,12 @@ onMounted(reset);
   <ToolWorkbench
     description="Switching a light also switches its direct neighbors. Clear every light to win."
   >
-    <div class="mx-auto grid max-w-xl gap-6">
-      <div class="border-default/70 flex items-center justify-between gap-4 border-b pb-4">
+    <div class="mx-auto grid w-full max-w-xl min-w-0 gap-6">
+      <div
+        class="border-default/70 flex min-w-0 flex-wrap items-center justify-between gap-3 border-b pb-4"
+      >
         <p
-          class="text-toned flex items-center gap-2 text-sm leading-6"
+          class="text-toned flex min-w-0 flex-1 items-center gap-2 text-sm leading-6"
           :class="isWon ? 'text-success' : ''"
           role="status"
           aria-live="polite"
@@ -93,9 +95,9 @@ onMounted(reset);
         <span class="text-toned shrink-0 font-mono text-sm tabular-nums">{{ moves }} moves</span>
       </div>
 
-      <div class="flex justify-center">
+      <div class="flex min-w-0 justify-center px-0.5 sm:px-2">
         <div
-          class="bg-muted/20 border-inverted grid aspect-square w-[min(88vw,28rem)] gap-1 border-2 p-1 sm:gap-2 sm:p-2"
+          class="bg-muted/20 border-inverted grid aspect-square w-full max-w-[28rem] min-w-0 gap-1 border-2 p-1 sm:gap-2 sm:p-2"
           :style="boardStyle"
           aria-label="Lights Out board"
         >
@@ -126,7 +128,7 @@ onMounted(reset);
       <div
         class="border-default/70 flex flex-wrap items-center justify-between gap-4 border-t pt-5"
       >
-        <p class="text-muted text-sm leading-6">
+        <p class="text-muted min-w-0 flex-1 text-sm leading-6">
           Every puzzle starts from legal moves, so every board is solvable.
         </p>
         <UButton
